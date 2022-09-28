@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./interfaces/IPriceOracle.sol";
 import "./interfaces/ISystem.sol";
 
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+
 contract CollateralManager {
     using SafeMath for uint;
 
@@ -54,7 +56,7 @@ contract CollateralManager {
         return total;
     }
 
-    function getCollateralPrice(address asset) public view returns(uint){
-        return uint(IPriceOracle(cAssetsOracle[asset]).latestAnswer());
+    function get_price(address asset) public view returns(uint, uint){
+        return (uint(IPriceOracle(cAssetsOracle[asset]).latestAnswer()), IPriceOracle(cAssetsOracle[asset]).decimals());
     }
 }

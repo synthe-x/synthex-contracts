@@ -9,5 +9,5 @@ interface IDebtManager {
     function _increaseDebt(address user, address asset, uint amount) external;
     function _decreaseDebt(address user, address asset, uint amount) external;
 
-    function totalDebt(address account) external view returns(uint);
+    function totalDebt(address account) external returns(uint);
 }

@@ -5,7 +5,7 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./interfaces/IPriceOracle.sol";
 import "./interfaces/ISystem.sol";
-import "./OneERC20.sol";
+import "./SynthERC20.sol";
 
 contract DebtManager {
     using SafeMath for uint;
@@ -15,8 +15,6 @@ contract DebtManager {
     uint public dAssetsCount = 0;
     mapping (uint => address) public dAssets;
     
-    mapping(address => mapping(address => uint)) public debt;
-
     constructor(ISystem _system){
         system = _system;
     }
@@ -24,7 +22,8 @@ contract DebtManager {
     event NewPool(address asset);
 
     function create(string memory name, string memory symbol) public {
-        OneERC20 pool = new OneERC20(name, symbol, system);
+        require(msg.sender == system.owner(), "Not owner");
+        SynthERC20 pool = new SynthERC20(name, symbol, system);
         dAssets[dAssetsCount] = address(pool);
         dAssetsCount += 1;
 
@@ -32,21 +31,20 @@ contract DebtManager {
     }
 
     function _increaseDebt(address user, address asset, uint amount) external {
-        require(msg.sender == system.reserve(), "Not reserve");
-        debt[user][asset] += amount;
-        OneERC20(asset).issue(user, amount);
+        require(msg.sender == system.reserve() || msg.sender == system.exchanger(), "DebtManager: Not Reserve or Exchanger");
+        SynthERC20(asset).borrow(user, amount);
     }
 
     function _decreaseDebt(address user, address asset, uint amount) external {
-        require(msg.sender == system.reserve(), "Not reserve");
-        debt[user][asset] -= amount;
-        OneERC20(asset).burn(user, amount);
+        require(msg.sender == system.reserve() || msg.sender == system.exchanger(), "DebtManager: Not Reserve or Exchanger");
+        SynthERC20(asset).repay(user, amount);
     }
 
-    function totalDebt(address account) public view returns(uint){
+    function totalDebt(address account) public returns(uint){
         uint total = 0;
         for(uint i = 0; i < dAssetsCount; i++){
-            total += debt[account][dAssets[i]].mul(OneERC20(dAssets[i]).get_price()).div(10**OneERC20(dAssets[i]).priceDecimals());
+            (uint price, uint decimals) = SynthERC20(dAssets[i]).get_price();
+            total += SynthERC20(dAssets[i]).getBorrowBalance(account).mul(price).div(10**decimals);
         }
         return total;
     }

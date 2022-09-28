@@ -25,12 +25,20 @@ export default async function main() {
   const cManager = await CollateralManager.deploy(sys.address);
   await cManager.deployed();
 
+  const Helper = await ethers.getContractFactory("Helper");
+  const helper = await Helper.deploy(sys.address);
+  await helper.deployed();
+
+  const FixedInterestRate = await ethers.getContractFactory("FixedInterestRate");
+  const fixedIntRate = await FixedInterestRate.deploy(sys.address);
+  await fixedIntRate.deployed();
+
   await addr.importAddresses(
     ["SYSTEM", "RESERVE", "EXCHANGER", "DEBT_MANAGER", "COLLATERAL_MANAGER"].map((x) => ethers.utils.formatBytes32String(x)), 
     [sys.address, reserve.address, exchanger.address, dManager.address, cManager.address]
   )
 
-  return { addr, sys, reserve, exchanger, dManager, cManager };
+  return { addr, sys, reserve, exchanger, dManager, cManager, helper, fixedIntRate };
 }
 
 // We recommend this pattern to be able to use async/await everywhere

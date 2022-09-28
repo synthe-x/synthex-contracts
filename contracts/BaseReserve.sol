@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import "./OneERC20.sol";
+import "./interfaces/ISynthERC20.sol";
 import "./interfaces/IReserve.sol";
 import "./interfaces/ICollateralManager.sol";
 import "./interfaces/IDebtManager.sol";
@@ -11,6 +11,7 @@ import "./interfaces/IExchanger.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract BaseReserve {
     using SafeMath for uint;
@@ -54,7 +55,7 @@ contract BaseReserve {
         require(amount > 0);
     }
 
-    function collateralRatio(address account) public view returns(uint){
+    function collateralRatio(address account) public returns(uint){
         uint256 _debt = IDebtManager(system.dManager()).totalDebt(account);
         if(_debt == 0){
             return 2**256 - 1;
