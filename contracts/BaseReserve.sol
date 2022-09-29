@@ -7,7 +7,7 @@ import "./interfaces/ICollateralManager.sol";
 import "./interfaces/IDebtManager.sol";
 import "./interfaces/ISystem.sol";
 import "./interfaces/IExchanger.sol";
-
+import "./interfaces/ILiquidator.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -17,6 +17,8 @@ contract BaseReserve {
     using SafeMath for uint;
     
     ISystem system;
+
+    uint public cRatioDecimals = 18;
 
     function _exchangeInternal(address src, uint srcAmount, address dst) internal {
         IExchanger(system.exchanger()).exchange(msg.sender, src, srcAmount, dst);
@@ -34,10 +36,20 @@ contract BaseReserve {
     function _decreaseCollateralInternal(address user, address asset, uint amount) internal {
         ICollateralManager(system.cManager())._decreaseCollateral(user, asset, amount);
         require(collateralRatio(user) > ICollateralManager(system.cManager()).minCRatio(), "cRatio too low");
+        transferOutInternal(user, asset, amount);
+    }
+
+    function transferOut(address user, address asset, uint amount) external {
+        require(msg.sender == system.liquidator(), "Only liquidator can transfer out");
+
+        transferOutInternal(user, asset, amount);
+    }
+
+    function transferOutInternal(address user, address asset, uint amount) internal {
         if(asset == address(0)){
             payable(user).transfer(amount);
         } else {
-            IERC20(asset).transfer(msg.sender, amount);
+            IERC20(asset).transfer(user, amount);
         }
     }
 
@@ -50,9 +62,14 @@ contract BaseReserve {
         IDebtManager(system.dManager())._decreaseDebt(msg.sender, token, amount);
     }
 
-    function _liquidateInternal(address user, uint amount) internal {
-        require(collateralRatio(user) < ICollateralManager(system.cManager()).minCRatio(), "cRatio too high");
-        require(amount > 0);
+    function _liquidateInternal(address liquidator, address user) internal {
+        require(collateralRatio(user) < ICollateralManager(system.cManager()).minCRatio(), "Reserve: Cannot be liquidated, cRation is above MinCRatio");
+        ILiquidator(system.liquidator()).liquidate(liquidator, user);
+    }
+
+    function _partialLiquidateInternal(address liquidator, address user, address asset, uint amount) internal {
+        require(collateralRatio(user) < ICollateralManager(system.cManager()).minCRatio(), "Reserve: Cannot be liquidated, cRation is above MinCRatio");
+        ILiquidator(system.liquidator()).partialLiquidate(liquidator, user, asset, amount);
     }
 
     function collateralRatio(address account) public returns(uint){
@@ -60,6 +77,6 @@ contract BaseReserve {
         if(_debt == 0){
             return 2**256 - 1;
         }
-        return ICollateralManager(system.cManager()).totalCollateral(account).mul(1e18).div(_debt);
+        return ICollateralManager(system.cManager()).totalCollateral(account).mul(10**cRatioDecimals).div(_debt);
     }
 }

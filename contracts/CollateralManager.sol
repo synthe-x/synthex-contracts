@@ -30,12 +30,12 @@ contract CollateralManager {
     }
 
     function _increaseCollateral(address user, address asset, uint amount) external {
-        require(msg.sender == system.reserve(), "Not reserve");
+        require(msg.sender == system.reserve(), "CollateralManager: Not reserve");
         collateral[user][asset] += amount;
     }
 
     function _decreaseCollateral(address user, address asset, uint amount) external {
-        require(msg.sender == system.reserve(), "Not reserve");
+        require(msg.sender == system.reserve() || msg.sender == system.liquidator(), "CollateralManager: Not reserve or liquidator");
         collateral[user][asset] -= amount;
     }
 

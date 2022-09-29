@@ -64,4 +64,8 @@ contract System {
     function exchanger() external view returns (address){
         return _addrResolver.getAddress("EXCHANGER");
     }
+
+    function liquidator() external view returns (address){
+        return _addrResolver.getAddress("LIQUIDATOR");
+    }
 }

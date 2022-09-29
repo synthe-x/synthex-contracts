@@ -10,7 +10,7 @@ const BTCUSD = "0xA39434A63A52E749F02807ae27335515BA4b07F7";
 const LINKUSD = "0xb4c4a493AB6356497713A78FFA6c60FB53517c63";
 const FORTHUSD = "0x7A65Cf6C2ACE993f09231EC1Ea7363fb29C13f2F";
 
-describe("Checking InterestRate Models", function () {
+describe("Checking Liquidations", function () {
   let reserve: Contract, cManager: Contract, dManager: Contract, 
   usdOracle: Contract, ethOracle: Contract, 
   helper: Contract, fixedIntRate: Contract, usdpool: any
@@ -85,19 +85,34 @@ describe("Checking InterestRate Models", function () {
     expect(await reserve.callStatic.collateralRatio(accounts[0].address)).to.be.greaterThan(ethers.utils.parseEther("1.3"));
   })
 
-  it("check borrowBalance now", async function () {
-    let borrowedAmount = ethers.utils.parseEther("100");
-    let borrowBalance = await usdpool.callStatic.getBorrowBalance(accounts[0].address);
-    expect(borrowBalance).to.be.equal(borrowedAmount);
+  it("should allow liquidation if ETH drops by 87%", async function () {
+    await ethOracle.setPrice("12000000000")
+    expect(await reserve.callStatic.collateralRatio(accounts[0].address)).to.be.lessThan(ethers.utils.parseEther("1.3"));
   })
 
-  it("check borrowBalance after 1 year", async function () {
-    // increase time by 1 year
-    await time.increase(time.duration.days(365));
-    let borrowedAmountPlusInterest = ethers.utils.parseEther("100").mul("101").div("100");
-    let borrowBalance = await usdpool.callStatic.getBorrowBalance(accounts[0].address);
-    // console.log(borrowBalance.toString());
-    expect(borrowBalance).to.be.greaterThanOrEqual(borrowedAmountPlusInterest);
+  it("user 2 prepares to liquidate user 1", async function () {
+    // user 1 issues 100 sUSD against 2 ETH
+    let depositAmount = ethers.utils.parseEther("2");
+    await reserve.connect(accounts[1]).increaseCollateral(ethers.constants.AddressZero, 0, {value: depositAmount});
+    let borrowAmount = ethers.utils.parseEther("101");
+    await reserve.connect(accounts[1]).borrow(usdpool.address, borrowAmount);
+    expect(await usdpool.balanceOf(accounts[1].address)).to.be.equal(borrowAmount);
+  })
+
+  it("partially liquidate 10 USD", async function () {
+    let liquidationAmount = ethers.utils.parseEther("10");
+    let ethBalanceBefore = await ethers.provider.getBalance(accounts[0].address);
+    await reserve.connect(accounts[1]).partialLiquidate(accounts[0].address, usdpool.address, liquidationAmount);
+    let ethBalanceAfter = await ethers.provider.getBalance(accounts[0].address);
+    expect(parseFloat(ethers.utils.formatEther(ethBalanceAfter.sub(ethBalanceBefore)))).to.be.closeTo(0.1, 0.00001);
+  })
+
+  it("liquidate", async function () {
+    let ethBalanceBefore = await ethers.provider.getBalance(accounts[0].address);
+    // await reserve.connect(accounts[1]).liquidate(accounts[0].address);
+    await reserve.connect(accounts[1]).partialLiquidate(accounts[0].address, usdpool.address, ethers.utils.parseEther("90"));
+    let ethBalanceAfter = await ethers.provider.getBalance(accounts[0].address);
+    expect(parseFloat(ethers.utils.formatEther(ethBalanceAfter.sub(ethBalanceBefore)))).to.be.closeTo(0.9, 0.00001);
   })
 
   it("check all assets", async function () {

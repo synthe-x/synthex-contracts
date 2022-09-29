@@ -1,4 +1,5 @@
 import { ethers } from "hardhat";
+import { Liquidator } from '../typechain-types/contracts/Liquidator';
 
 export default async function main() {
   const AddressResolver = await ethers.getContractFactory("AddressResolver");
@@ -23,6 +24,7 @@ export default async function main() {
 
   const CollateralManager = await ethers.getContractFactory("CollateralManager");
   const cManager = await CollateralManager.deploy(sys.address);
+  cManager.setMinCRatio(ethers.utils.parseEther("1.3"));
   await cManager.deployed();
 
   const Helper = await ethers.getContractFactory("Helper");
@@ -33,12 +35,16 @@ export default async function main() {
   const fixedIntRate = await FixedInterestRate.deploy(sys.address);
   await fixedIntRate.deployed();
 
+  const Liquidator = await ethers.getContractFactory("Liquidator");
+  const liq = await Liquidator.deploy(sys.address);
+  await liq.deployed();
+
   await addr.importAddresses(
-    ["SYSTEM", "RESERVE", "EXCHANGER", "DEBT_MANAGER", "COLLATERAL_MANAGER"].map((x) => ethers.utils.formatBytes32String(x)), 
-    [sys.address, reserve.address, exchanger.address, dManager.address, cManager.address]
+    ["SYSTEM", "RESERVE", "EXCHANGER", "DEBT_MANAGER", "COLLATERAL_MANAGER", "LIQUIDATOR"].map((x) => ethers.utils.formatBytes32String(x)), 
+    [sys.address, reserve.address, exchanger.address, dManager.address, cManager.address, liq.address]
   )
 
-  return { addr, sys, reserve, exchanger, dManager, cManager, helper, fixedIntRate };
+  return { addr, sys, reserve, exchanger, dManager, cManager, helper, fixedIntRate, liq };
 }
 
 // We recommend this pattern to be able to use async/await everywhere

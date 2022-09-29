@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 import "./BaseReserve.sol";
 
-contract Reserve is BaseReserve, IReserve, ReentrancyGuard {
+contract Reserve is BaseReserve, ReentrancyGuard {
 
     constructor(ISystem _system){
         system = _system;
@@ -38,7 +38,11 @@ contract Reserve is BaseReserve, IReserve, ReentrancyGuard {
         _repayInternal(asset, amount);
     }
 
-    function liquidate(address user, uint amount) external {
-        _liquidateInternal(user, amount);
+    function liquidate(address user) external {
+        _liquidateInternal(msg.sender, user);
+    }
+
+    function partialLiquidate(address user, address borrowedAsset, uint borrowedAmount) external {
+        _partialLiquidateInternal(msg.sender, user, borrowedAsset, borrowedAmount);
     }
 }

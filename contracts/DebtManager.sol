@@ -37,7 +37,7 @@ contract DebtManager {
 
     function _decreaseDebt(address user, address asset, uint amount) external {
         require(msg.sender == system.reserve() || msg.sender == system.exchanger(), "DebtManager: Not Reserve or Exchanger");
-        SynthERC20(asset).repay(user, amount);
+        SynthERC20(asset).repay(user, user, amount);
     }
 
     function totalDebt(address account) public returns(uint){

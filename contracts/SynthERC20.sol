@@ -121,23 +121,22 @@ contract SynthERC20 is
         _mint(account, borrowAmount);
     }
 
-    function repay(address account, uint repayAmount) public {
+    function repay(address user, address caller, uint repayAmount) public {
         accureInterest();
-        require(msg.sender == system.dManager() || msg.sender == system.exchanger(), "OneERC20 Issue: Can only be called internally");
+        require(msg.sender == system.dManager() || msg.sender == system.exchanger() || msg.sender == system.liquidator(), "OneERC20 Issue: Can only be called internally");
         /* We fetch the amount the borrower owes, with accumulated interest */
-        uint accountBorrowsPrev = getBorrowBalanceStored(account);
+        uint accountBorrowsPrev = getBorrowBalanceStored(user);
 
         /* If repayAmount == -1, repayAmount = accountBorrows */
         uint repayAmountFinal = repayAmount == type(uint).max ? accountBorrowsPrev : repayAmount;
-    
-        _burn(account, repayAmountFinal);
+        _burn(caller, repayAmountFinal);
 
         uint accountBorrowsNew = accountBorrowsPrev - repayAmountFinal;
         uint totalBorrowsNew = totalBorrowed - repayAmountFinal;
 
         /* We write the previously calculated values into storage */
-        borrowBalances[account].principle = accountBorrowsNew;
-        borrowBalances[account].interestIndex = borrowIndex;
+        borrowBalances[user].principle = accountBorrowsNew;
+        borrowBalances[user].interestIndex = borrowIndex;
         totalBorrowed = totalBorrowsNew;
     }
 

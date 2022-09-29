@@ -20,4 +20,6 @@ interface ISystem {
     function dManager() external view returns (address);
     
     function exchanger() external view returns (address);
+
+    function liquidator() external view returns (address);
 }
