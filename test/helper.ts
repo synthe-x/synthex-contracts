@@ -4,7 +4,7 @@ import { Contract } from 'ethers';
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import _main from "../scripts/test_scripts/filledContracts";
 
-describe("ETH Collateral, 3 Debt Assets, Single User", function () {
+describe("Testing helpers", function () {
   let reserve: Contract, cManager: Contract, dManager: Contract, 
   usdOracle: Contract, ethOracle: Contract, btcOracle: Contract, 
   helper: Contract, fixedIntRate: Contract;

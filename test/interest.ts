@@ -4,6 +4,7 @@ import { Contract } from 'ethers';
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import main from "../scripts/index";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
+import _main from "../scripts/test_scripts/filledContracts";
 
 const ETHUSD = "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e";
 const BTCUSD = "0xA39434A63A52E749F02807ae27335515BA4b07F7";
@@ -27,38 +28,23 @@ describe("Checking InterestRate Models", function () {
 
     ethOracle = await PriceOracle.deploy();
     await ethOracle.setPrice("100000000000")
+    let deployments = await _main();
 
-    const deployments = await main()
     reserve = deployments.reserve
     cManager = deployments.cManager
     dManager = deployments.dManager
     helper = deployments.helper
     fixedIntRate = deployments.fixedIntRate
-    
-    Pool = await ethers.getContractFactory("SynthERC20");
-  })
-  
-  it("should add eth collateral", async function () {
-    await cManager.addCollateralAsset(ethers.constants.AddressZero, ethOracle.address);
+    usdpool = deployments.usdpool
+
     let priceArray = await cManager.get_price(ethers.constants.AddressZero);
     ethPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
-    expect(ethPrice).to.be.greaterThan(0);
-  })
-  
-  it("should create usd pool", async function () {
-    await dManager.create("One USD", "oneUSD");
-    let pool = await dManager.dAssets(0);
-    expect(pool).to.not.equal(ethers.constants.AddressZero);
-    usdpool = Pool.attach(pool);
-    await usdpool.setPriceOracle(usdOracle.address);
-    await usdpool.setInterestRate(fixedIntRate.address);
-    usdPrice = await usdpool.get_price();
-
-    let priceArray = await usdpool.get_price();
+    
+    priceArray = await usdpool.get_price();
     usdPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
 
-    expect(usdPrice).to.equal(1);
-  });
+    Pool = await ethers.getContractFactory("SynthERC20");
+  })
 
   it("should set fixed interest rate", async function () {
     let rate = ethers.utils.parseUnits("0.0000000003171", 36)
@@ -98,12 +84,5 @@ describe("Checking InterestRate Models", function () {
     let borrowBalance = await usdpool.callStatic.getBorrowBalance(accounts[0].address);
     // console.log(borrowBalance.toString());
     expect(borrowBalance).to.be.greaterThanOrEqual(borrowedAmountPlusInterest);
-  })
-
-  it("check all assets", async function () {
-    let cAssets = await helper.getCollateralAssets();
-    let dAssets = await helper.getDebtAssets();
-    expect(cAssets.length).to.be.equal(1);
-    expect(dAssets.length).to.be.equal(1);
   })
 });

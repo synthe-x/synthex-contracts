@@ -14,7 +14,7 @@ export default async function _main () {
     const ethOracle = await PriceOracle.deploy();
     await ethOracle.setPrice("100000000000")
 
-    let deployedContracts = await main()
+    let deployedContracts = await main(false)
     // add collateral assets
     await deployedContracts.cManager.addCollateralAsset(ethers.constants.AddressZero, ethOracle.address);
 

@@ -31,7 +31,7 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     ethOracle = await PriceOracle.deploy();
     await ethOracle.setPrice("100000000000")
 
-    const deployments = await main()
+    const deployments = await main(false)
     reserve = deployments.reserve
     cManager = deployments.cManager
     dManager = deployments.dManager
@@ -146,12 +146,5 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
 
     expect(await usdpool.totalSupply()).to.be.equal(sUSDAmount);
     expect(await ethpool.totalSupply()).to.be.equal(0);
-  })
-
-  it("check all assets", async function () {
-    let cAssets = await helper.getCollateralAssets();
-    let dAssets = await helper.getDebtAssets();
-    expect(cAssets.length).to.be.equal(1);
-    expect(dAssets.length).to.be.equal(3);
   })
 });

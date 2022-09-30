@@ -28,7 +28,7 @@ describe("Checking Liquidations", function () {
     ethOracle = await PriceOracle.deploy();
     await ethOracle.setPrice("100000000000")
 
-    const deployments = await main()
+    const deployments = await main(false)
     reserve = deployments.reserve
     cManager = deployments.cManager
     dManager = deployments.dManager
@@ -113,12 +113,5 @@ describe("Checking Liquidations", function () {
     await reserve.connect(accounts[1]).partialLiquidate(accounts[0].address, usdpool.address, ethers.utils.parseEther("90"));
     let ethBalanceAfter = await ethers.provider.getBalance(accounts[0].address);
     expect(parseFloat(ethers.utils.formatEther(ethBalanceAfter.sub(ethBalanceBefore)))).to.be.closeTo(0.9, 0.00001);
-  })
-
-  it("check all assets", async function () {
-    let cAssets = await helper.getCollateralAssets();
-    let dAssets = await helper.getDebtAssets();
-    expect(cAssets.length).to.be.equal(1);
-    expect(dAssets.length).to.be.equal(1);
   })
 });
