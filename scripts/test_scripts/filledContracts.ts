@@ -16,26 +16,22 @@ export default async function _main () {
 
     let deployedContracts = await main(false)
     // add collateral assets
-    await deployedContracts.cManager.addCollateralAsset(ethers.constants.AddressZero, ethOracle.address);
+    await deployedContracts.cManager.create("Synthex Collateralized Ethereum", "sxcETH", ethers.constants.AddressZero, ethOracle.address, ethers.utils.parseEther("1"));
+    const cPool = await ethers.getContractFactory("CollateralERC20");
+    const ethcPool = cPool.attach(await deployedContracts.cManager.cAssets(0))
 
     const Pool = await ethers.getContractFactory("SynthERC20");
 
     // create dAssets
     // One USD
-    await deployedContracts.dManager.create("One USD", "oneUSD");
+    await deployedContracts.dManager.create("One USD", "oneUSD", usdOracle.address, deployedContracts.fixedIntRate.address);
     let pool = await deployedContracts.dManager.dAssets(0);
-
     let usdpool = Pool.attach(pool);
-    await usdpool.setPriceOracle(usdOracle.address);
-    await usdpool.setInterestRate(deployedContracts.fixedIntRate.address);
 
     // One BTC
-    await deployedContracts.dManager.create("One BTC", "oneBTC");
+    await deployedContracts.dManager.create("One BTC", "oneBTC", btcOracle.address, deployedContracts.fixedIntRate.address);
     pool = await deployedContracts.dManager.dAssets(1);
-
     let btcpool = Pool.attach(pool);
-    await btcpool.setPriceOracle(btcOracle.address);
-    await btcpool.setInterestRate(deployedContracts.fixedIntRate.address);
 
-    return { ...deployedContracts, usdpool, btcpool };
+    return { ...deployedContracts, usdpool, btcpool, ethcPool, ethOracle, usdOracle, btcOracle };
 }

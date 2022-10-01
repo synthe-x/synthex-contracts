@@ -2,7 +2,6 @@
 pragma solidity ^0.8.9;
 
 interface ICollateralManager {
-    function minCRatio() external view returns (uint);
     function cAssetsCount() external view returns (uint);
     function cAssets(uint) external view returns (address);
     function cAssetsOracle(address) external view returns (address);

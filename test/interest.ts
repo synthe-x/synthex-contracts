@@ -37,7 +37,7 @@ describe("Checking InterestRate Models", function () {
     fixedIntRate = deployments.fixedIntRate
     usdpool = deployments.usdpool
 
-    let priceArray = await cManager.get_price(ethers.constants.AddressZero);
+    let priceArray = await deployments.ethcPool.get_price();
     ethPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
     
     priceArray = await usdpool.get_price();

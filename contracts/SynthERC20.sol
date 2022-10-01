@@ -24,19 +24,20 @@ contract SynthERC20 is
     using SignedSafeMath for int256;
 
     ISystem system;
-    IPriceOracle oracle;
+    IPriceOracle public oracle;
 
     struct BorrowBalance {
         uint principle;
         uint interestIndex;
     }
+
     // borrow balance in oneUSD
     mapping(address => BorrowBalance) public borrowBalances;
     uint public borrowIndex;
     uint public totalBorrowed;
     uint public accrualTimestamp;
-    uint borrowRateMax = 1000;
-    IInterestRate interestRateModel;
+    uint public borrowRateMax = 1000;
+    IInterestRate public interestRateModel;
 
     event Borrow(address indexed account, uint amount);
     event Repay(address indexed account, uint amount);
@@ -46,11 +47,15 @@ contract SynthERC20 is
     constructor(
         string memory name, 
         string memory symbol, 
+        IPriceOracle _oracle,
+        IInterestRate _interestRateModel,
         ISystem _system
     ) ERC20(name, symbol) {
         system = _system;
         accrualTimestamp = block.timestamp;
         borrowIndex = 1e18;
+        oracle = _oracle;
+        interestRateModel = _interestRateModel;
     }
 
     function setPriceOracle(IPriceOracle _oracle) external {

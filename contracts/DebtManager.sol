@@ -21,9 +21,9 @@ contract DebtManager {
 
     event NewPool(address asset);
 
-    function create(string memory name, string memory symbol) public {
+    function create(string memory name, string memory symbol, IPriceOracle _oracle, IInterestRate _interestRateModel) public {
         require(msg.sender == system.owner(), "Not owner");
-        SynthERC20 pool = new SynthERC20(name, symbol, system);
+        SynthERC20 pool = new SynthERC20(name, symbol, _oracle, _interestRateModel, system);
         dAssets[dAssetsCount] = address(pool);
         dAssetsCount += 1;
 

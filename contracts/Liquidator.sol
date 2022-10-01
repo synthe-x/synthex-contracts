@@ -5,6 +5,7 @@ import "./interfaces/ISystem.sol";
 import "./interfaces/ISynthERC20.sol";
 import "./interfaces/IReserve.sol";
 import "./interfaces/ICollateralManager.sol";
+import "./interfaces/ICollateralERC20.sol";
 import "./interfaces/IDebtManager.sol";
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
@@ -45,12 +46,12 @@ contract Liquidator {
 
         for(uint i = 0; i < ICollateralManager(system.cManager()).cAssetsCount(); i++){
             address cAsset = ICollateralManager(system.cManager()).cAssets(i);
-            uint cAmount = ICollateralManager(system.cManager()).collateral(user, cAsset).mul(cPercent).div(1e18);
+            uint cAmount = ICollateralERC20(cAsset).balanceOf(user).mul(cPercent).div(1e18);
             if(cAmount > 0){
-                (uint cPrice, uint cDecimals) = ICollateralManager(system.cManager()).get_price(cAsset);
+                (uint cPrice, uint cDecimals) = ICollateralERC20(cAsset).get_price();
                 uint cAmountUSD = cAmount.mul(cPrice).div(10**cDecimals);
-                ICollateralManager(system.cManager())._decreaseCollateral(user, cAsset, cAmount);
-                IReserve(system.reserve()).transferOut(user, cAsset, cAmount);
+                ICollateralManager(system.cManager())._decreaseCollateral(user, ICollateralERC20(cAsset).underlyingToken(), cAmount);
+                IReserve(system.reserve()).transferOut(user, ICollateralERC20(cAsset).underlyingToken(), cAmount);
 
                 // for the last collateral: repayment(borrowed+reward) will be <= cAmountUSD
                 if(cAmountUSD > repayAmountUSD){

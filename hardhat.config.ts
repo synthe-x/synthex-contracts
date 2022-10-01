@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+require("dotenv").config();
 
 const config: HardhatUserConfig = {
   networks: {
@@ -11,6 +12,10 @@ const config: HardhatUserConfig = {
       //   url: "https://goerli.infura.io/v3/bb621c9372d048979f8677ba78fe41d7"
       // },
     },
+    goerli: {
+      url: "https://goerli.infura.io/v3/bb621c9372d048979f8677ba78fe41d7",
+      accounts: ["0x" + process.env.PRIVATE_KEY],
+    }
   },
   solidity: {
     compilers: [

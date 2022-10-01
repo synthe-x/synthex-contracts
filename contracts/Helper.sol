@@ -5,6 +5,8 @@ import "./interfaces/ISystem.sol";
 import "./interfaces/IExchanger.sol";
 import "./interfaces/IDebtManager.sol";
 import "./interfaces/ICollateralManager.sol";
+import "./interfaces/ICollateralERC20.sol";
+
 import "./interfaces/IReserve.sol";
 import "./interfaces/ISynthERC20.sol";
 
@@ -54,7 +56,7 @@ contract Helper {
 
     function getCollateralAsset(uint index) public view returns(AssetInfo memory) {
         AssetInfo memory response;
-        response.id = ICollateralManager(system.cManager()).cAssets(index);
+        response.id =  ICollateralERC20(ICollateralManager(system.cManager()).cAssets(index)).underlyingToken();
         if(response.id == address(0)){
             response.name = "Ethereum";
             response.symbol = "ETH";
@@ -66,7 +68,7 @@ contract Helper {
             response.decimals = IERC20Metadata(response.id).decimals();
             response.totalLiquidity = IERC20Metadata(response.id).balanceOf(system.reserve());
         }
-        (response.price, response.priceDecimals) = ICollateralManager(system.cManager()).get_price(response.id);
+        (response.price, response.priceDecimals) = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(index)).get_price();
         return response;
     }
 

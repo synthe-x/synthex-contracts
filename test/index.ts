@@ -15,9 +15,11 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
   usdOracle: Contract, ethOracle: Contract, btcOracle: Contract, 
   helper: Contract, fixedIntRate: Contract;
   let usdpool: any, btcpool: Contract, ethpool: Contract, linkpool: Contract, forthpool: Contract;
-  let PriceOracle, Pool: any;
+  let PriceOracle, cPool: any, dPool: any;
   let usdPrice = 0, btcPrice = 0, ethPrice = 0;
   let accounts: SignerWithAddress[];
+  
+  const ONE_ETH = ethers.utils.parseEther("1");
 
   before(async() => {
     accounts = await ethers.getSigners();
@@ -38,51 +40,43 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     helper = deployments.helper
     fixedIntRate = deployments.fixedIntRate
     
-    Pool = await ethers.getContractFactory("SynthERC20");
+    dPool = await ethers.getContractFactory("SynthERC20");
+    cPool = await ethers.getContractFactory("CollateralERC20");
   })
   
   it("should add eth collateral", async function () {
-    await cManager.addCollateralAsset(ethers.constants.AddressZero, ethOracle.address);
-    let priceArray = await cManager.get_price(ethers.constants.AddressZero);
+    await cManager.create("Synthex Collateralized Ethereum", "sxcETH", ethers.constants.AddressZero, ethOracle.address, ONE_ETH);
+    let cxeth = await cManager.cAssets(0);
+    cxeth = cPool.attach(cxeth);
+
+    let priceArray = await cxeth.get_price();
     ethPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
     expect(ethPrice).to.be.greaterThan(0);
   })
   
   it("should create usd pool", async function () {
-    await dManager.create("One USD", "oneUSD");
+    await dManager.create("One USD", "oneUSD", usdOracle.address, fixedIntRate.address);
     let pool = await dManager.dAssets(0);
     expect(pool).to.not.equal(ethers.constants.AddressZero);
-    usdpool = Pool.attach(pool);
-    await usdpool.setPriceOracle(usdOracle.address);
-    await usdpool.setInterestRate(fixedIntRate.address);
-
-    usdPrice = await usdpool.get_price();
-
+    usdpool = dPool.attach(pool);
     let priceArray = await usdpool.get_price();
     usdPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
-
     expect(usdPrice).to.equal(1);
   });
 
   it("should create btc and eth pool", async function () {
-    await dManager.create("One BTC", "oneBTC");
+    await dManager.create("One BTC", "oneBTC", btcOracle.address, fixedIntRate.address);
     let pool = await dManager.dAssets(1);
     expect(pool).to.not.equal(ethers.constants.AddressZero);
-    btcpool = Pool.attach(pool);
-    await btcpool.setPriceOracle(btcOracle.address);
-    await btcpool.setInterestRate(fixedIntRate.address);
-
+    btcpool = dPool.attach(pool);
     let priceArray = await btcpool.get_price();
     btcPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
     expect(btcPrice).to.be.greaterThan(0);
 
-    await dManager.create("One ETH", "oneETH");
+    await dManager.create("One ETH", "oneETH", ethOracle.address, fixedIntRate.address);
     pool = await dManager.dAssets(2);
     expect(pool).to.not.equal(ethers.constants.AddressZero);
-    ethpool = Pool.attach(pool);
-    await ethpool.setPriceOracle(ethOracle.address);
-    await ethpool.setInterestRate(fixedIntRate.address);
-
+    ethpool = dPool.attach(pool);
     priceArray = await ethpool.get_price();
     ethPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
     expect(ethPrice).to.be.greaterThan(0);
