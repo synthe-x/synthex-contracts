@@ -1,19 +1,24 @@
 import { ethers } from "hardhat";
-import { Liquidator } from '../typechain-types/contracts/Liquidator';
+import hre from "hardhat";
+
 import fs from "fs";
 import init from "./initiate";
 const FormatTypes = ethers.utils.FormatTypes;
 
-export default async function main(logs: boolean = true) {
+export default async function main(logs: boolean = true, test: boolean = false) {
   let deployments = fs.readFileSync( process.cwd() + "/deployments/goerli/deployments.json", "utf8");
   deployments = JSON.parse(deployments);
   (deployments as any)["contracts"] = {};
   (deployments as any)["sources"] = {};
 
   let allDeployments = await deploy(deployments, logs)
-  await init(allDeployments.dManager, allDeployments.cManager, allDeployments.fixedIntRate, deployments, logs);
+  let synths = {} 
+  if(!test){
+    synths = await init(allDeployments.dManager, allDeployments.cManager, allDeployments.fixedIntRate, deployments, logs);
+  }
   
   fs.writeFileSync(process.cwd() +  "/deployments/goerli/deployments.json", JSON.stringify(deployments, null, 2));
+  return {...allDeployments, ...synths};
 }
 
 // We recommend this pattern to be able to use async/await everywhere
@@ -33,7 +38,9 @@ async function deploy(deployments: any = {}, logs: boolean = false) {
   const helper = await deployContract("Helper", [sys.address], logs, deployments);
   const fixedIntRate = await deployContract("FixedInterestRate", [sys.address], logs, deployments);
   const liq = await deployContract("Liquidator", [sys.address], logs, deployments);
-  
+
+  await reserve.setMinCRatio(ethers.utils.parseEther("1.5"));
+
   await addr.importAddresses(
     ["SYSTEM", "RESERVE", "EXCHANGER", "DEBT_MANAGER", "COLLATERAL_MANAGER", "LIQUIDATOR"].map((x) => ethers.utils.formatBytes32String(x)), 
     [sys.address, reserve.address, exchanger.address, dManager.address, cManager.address, liq.address]
@@ -54,6 +61,9 @@ async function deployContract(name: string, args: string[], logs: boolean = fals
     constructorArguments: args,
     address: contract.address,
   };
-  (deployments as any)["sources"][name] = Contract.interface.format(FormatTypes.json);
+  const dir = fs.readFileSync(process.cwd() + `/artifacts/contracts/${name}.sol/${name}.json`, "utf-8");
+  let abi = JSON.parse(dir)
+  abi = abi.abi;
+  (deployments as any)["sources"][name] = abi;
   return contract;
 }

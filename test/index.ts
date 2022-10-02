@@ -33,7 +33,7 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     ethOracle = await PriceOracle.deploy();
     await ethOracle.setPrice("100000000000")
 
-    const deployments = await main(false)
+    const deployments = await main(false, true)
     reserve = deployments.reserve
     cManager = deployments.cManager
     dManager = deployments.dManager
@@ -140,5 +140,16 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
 
     expect(await usdpool.totalSupply()).to.be.equal(sUSDAmount);
     expect(await ethpool.totalSupply()).to.be.equal(0);
+  })
+
+  it("repay 100 sUSD", async function () {
+    let borrowedAmount = ethers.utils.parseEther("100");
+
+    await reserve.connect(accounts[0]).repay(usdpool.address, borrowedAmount);
+    expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.equal(0);
+    expect(await usdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(0);
+    expect(await usdpool.balanceOf(accounts[0].address)).to.be.equal(0);
+    // expect(await usdpool.totalSupply()).to.be.equal(borrowAmount);
+    // expect(await reserve.callStatic.collateralRatio(accounts[0].address)).to.be.greaterThan(1);
   })
 });

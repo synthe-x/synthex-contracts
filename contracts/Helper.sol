@@ -22,11 +22,15 @@ contract Helper {
         uint price;
         uint priceDecimals;
         uint totalLiquidity;
+        uint interestRate;
+        uint interestRateDecimals;
     }
 
     struct UserPosition {
         address id;
+        uint collateralBalance;
         Position[] collaterals;
+        uint debtBalance;
         Position[] debts;
     }
 
@@ -88,13 +92,16 @@ contract Helper {
         response.decimals = IERC20Metadata(response.id).decimals();
         response.totalLiquidity = IERC20Metadata(response.id).totalSupply();
         (response.price, response.priceDecimals) = ISynthERC20(response.id).get_price();
+        (response.interestRate, response.interestRateDecimals) = ISynthERC20(response.id).get_interest_rate();
         return response;
     }
 
     function getUserPosition(address user) public returns(UserPosition memory){
         UserPosition memory response = UserPosition({
             id: user,
+            collateralBalance: ICollateralManager(system.cManager()).totalCollateral(user),
             collaterals: new Position[](ICollateralManager(system.cManager()).cAssetsCount()),
+            debtBalance: IDebtManager(system.dManager()).totalDebt(user),
             debts: new Position[](IDebtManager(system.dManager()).dAssetsCount())
         });
 

@@ -148,4 +148,8 @@ contract SynthERC20 is
     function get_price() public view returns (uint, uint) {
         return (uint(oracle.latestAnswer()), oracle.decimals());
     }
+
+    function get_interest_rate() public view returns (uint, uint) {
+        return interestRateModel.getInterestRate(0);
+    }
 }

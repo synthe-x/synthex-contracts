@@ -14,7 +14,7 @@ export default async function _main () {
     const ethOracle = await PriceOracle.deploy();
     await ethOracle.setPrice("100000000000")
 
-    let deployedContracts = await main(false)
+    let deployedContracts = await main(false, true)
     // add collateral assets
     await deployedContracts.cManager.create("Synthex Collateralized Ethereum", "sxcETH", ethers.constants.AddressZero, ethOracle.address, ethers.utils.parseEther("1"));
     const cPool = await ethers.getContractFactory("CollateralERC20");

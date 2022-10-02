@@ -19,7 +19,7 @@ describe("Testing helpers", function () {
     let resp = await _main();
     helper = resp.helper;
     reserve = resp.reserve;
-    usdpool = resp.usdpool
+    usdpool = resp.usdpool;
   })
   
   it("check all assets", async function () {
@@ -36,8 +36,8 @@ describe("Testing helpers", function () {
 
   it("check all assets", async function () {
     let cAssets = await helper.callStatic.getUserPosition(accounts[0].address)
-    expect(cAssets[1].length).to.be.equal(1);
-    expect(cAssets[2].length).to.be.equal(2);
-    expect(cAssets[2][0][1]).to.be.greaterThan("0");
+    expect(cAssets['collaterals'].length).to.be.equal(1);
+    expect(cAssets['debts'].length).to.be.equal(2);
+    expect(cAssets['debts'][0]['amount']).to.be.greaterThan("0");
   })
 });

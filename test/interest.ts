@@ -47,6 +47,7 @@ describe("Checking InterestRate Models", function () {
   })
 
   it("should set fixed interest rate", async function () {
+    // 10% interest rate
     let rate = ethers.utils.parseUnits("0.0000000003171", 36)
     await fixedIntRate.setInterestRate(rate, "36");
     let setRate = await fixedIntRate.getInterestRate("0")

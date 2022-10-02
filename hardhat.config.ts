@@ -15,6 +15,9 @@ const config: HardhatUserConfig = {
     goerli: {
       url: "https://goerli.infura.io/v3/bb621c9372d048979f8677ba78fe41d7",
       accounts: ["0x" + process.env.PRIVATE_KEY],
+    },
+    localhost:{
+      url: "http://localhost:8545"
     }
   },
   solidity: {

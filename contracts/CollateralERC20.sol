@@ -33,13 +33,13 @@ contract CollateralERC20 is ERC20 {
     }
 
     function setPriceOracle(IPriceOracle _oracle) external {
-        require(msg.sender == system.owner(), "OneERC20: Only owner can set price oracle");
+        require(msg.sender == system.owner(), "CollateralERC20: Only owner can set price oracle");
         emit OracleUpdated(address(oracle), address(_oracle));
         oracle = _oracle;
     }
 
     function setMinCollateral(uint _newMinCollateral) external {
-        require(msg.sender == system.owner(), "OneERC20: Only owner can set interest rate model");
+        require(msg.sender == system.owner(), "CollateralERC20: Only owner can set interest rate model");
         emit MinCollateralUpdated(minCollateral, _newMinCollateral);
         minCollateral = _newMinCollateral;
     }
