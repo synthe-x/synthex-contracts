@@ -7,6 +7,7 @@ import "./interfaces/IReserve.sol";
 import "./interfaces/ICollateralManager.sol";
 
 import "./interfaces/IPriceOracle.sol";
+import "hardhat/console.sol";
 
 contract CollateralERC20 is ERC20 {
     IPriceOracle public oracle;
@@ -39,12 +40,13 @@ contract CollateralERC20 is ERC20 {
     }
 
     function setMinCollateral(uint _newMinCollateral) external {
-        require(msg.sender == system.owner(), "CollateralERC20: Only owner can set interest rate model");
+        require(msg.sender == system.owner(), "CollateralERC20: Only owner can set minimum collateral");
         emit MinCollateralUpdated(minCollateral, _newMinCollateral);
         minCollateral = _newMinCollateral;
     }
 
     function mint(address account, uint amount) public {
+        require(amount > minCollateral, "CollateralERC20: Amount must be greater than minimum collateral");
         require(msg.sender == system.cManager(), "CollateralERC20: Only Collateral Manager can mint");
         _mint(account, amount);
     }
@@ -58,8 +60,9 @@ contract CollateralERC20 is ERC20 {
         return (uint(oracle.latestAnswer()), oracle.decimals());
     }
 
-    function _afterTokenTransfer(address from, address, uint256) override internal {
-        if(from != address(0)){
+    function _afterTokenTransfer(address from, address to, uint256) override internal {
+        if(from != address(0) && to != address(0)){
+            console.log(IReserve(system.reserve()).collateralRatio(from), from);
             require(IReserve(system.reserve()).collateralRatio(from) > IReserve(system.reserve()).safeCRatio(), "CollateralERC20: Not enough collateral");
         }
     }

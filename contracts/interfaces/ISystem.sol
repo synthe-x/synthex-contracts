@@ -9,6 +9,7 @@ interface ISystem {
     function isExchangePaused() external view returns (bool);
 
     function isIssuancePaused() external view returns (bool);
+    function isReservePool(address) external view returns (bool);
 
     // Addresses
     function owner() external view returns (address);

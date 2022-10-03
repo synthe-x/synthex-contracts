@@ -5,7 +5,7 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./interfaces/IPriceOracle.sol";
 import "./interfaces/ISystem.sol";
-import "./SynthERC20.sol";
+import "./DebtERC20.sol";
 
 contract DebtManager {
     using SafeMath for uint;
@@ -23,7 +23,7 @@ contract DebtManager {
 
     function create(string memory name, string memory symbol, IPriceOracle _oracle, IInterestRate _interestRateModel) public {
         require(msg.sender == system.owner(), "Not owner");
-        SynthERC20 pool = new SynthERC20(name, symbol, _oracle, _interestRateModel, system);
+        DebtERC20 pool = new DebtERC20(name, symbol, _oracle, _interestRateModel, system);
         dAssets[dAssetsCount] = address(pool);
         dAssetsCount += 1;
 
@@ -32,19 +32,19 @@ contract DebtManager {
 
     function _increaseDebt(address user, address asset, uint amount) external {
         require(msg.sender == system.reserve() || msg.sender == system.exchanger(), "DebtManager: Not Reserve or Exchanger");
-        SynthERC20(asset).borrow(user, amount);
+        DebtERC20(asset).borrow(user, amount);
     }
 
     function _decreaseDebt(address user, address asset, uint amount) external {
         require(msg.sender == system.reserve() || msg.sender == system.exchanger(), "DebtManager: Not Reserve or Exchanger");
-        SynthERC20(asset).repay(user, user, amount);
+        DebtERC20(asset).repay(user, user, amount);
     }
 
     function totalDebt(address account) public returns(uint){
         uint total = 0;
         for(uint i = 0; i < dAssetsCount; i++){
-            (uint price, uint decimals) = SynthERC20(dAssets[i]).get_price();
-            total += SynthERC20(dAssets[i]).getBorrowBalance(account).mul(price).div(10**decimals);
+            (uint price, uint decimals) = DebtERC20(dAssets[i]).get_price();
+            total += DebtERC20(dAssets[i]).getBorrowBalance(account).mul(price).div(10**decimals);
         }
         return total;
     }

@@ -13,49 +13,25 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./interfaces/IPriceOracle.sol";
 import "./interfaces/ISystem.sol";
 import "./interfaces/IInterestRate.sol";
-
-
-import "hardhat/console.sol";
+import "./interfaces/IDebtERC20.sol";
 
 contract SynthERC20 is 
     ERC20
 {
-    using SafeMath for uint256;
-    using SignedSafeMath for int256;
-
     ISystem system;
+    IDebtERC20 public debt;
+
     IPriceOracle public oracle;
-
-    struct BorrowBalance {
-        uint principle;
-        uint interestIndex;
-    }
-
-    // borrow balance in oneUSD
-    mapping(address => BorrowBalance) public borrowBalances;
-    uint public borrowIndex;
-    uint public totalBorrowed;
-    uint public accrualTimestamp;
-    uint public borrowRateMax = 1000;
-    IInterestRate public interestRateModel;
-
-    event Borrow(address indexed account, uint amount);
-    event Repay(address indexed account, uint amount);
     event OracleUpdated(address oldOracle, address newOracle);
-    event InterestRateModelUpdated(address oldRate, address newRate);
 
     constructor(
         string memory name, 
-        string memory symbol, 
-        IPriceOracle _oracle,
-        IInterestRate _interestRateModel,
-        ISystem _system
+        string memory symbol,
+        ISystem _system,
+        IPriceOracle _oracle
     ) ERC20(name, symbol) {
         system = _system;
-        accrualTimestamp = block.timestamp;
-        borrowIndex = 1e18;
         oracle = _oracle;
-        interestRateModel = _interestRateModel;
     }
 
     function setPriceOracle(IPriceOracle _oracle) external {
@@ -64,92 +40,17 @@ contract SynthERC20 is
         oracle = _oracle;
     }
 
-    function setInterestRate(IInterestRate _interestRateModel) external {
-        require(msg.sender == system.owner(), "OneERC20: Only owner can set interest rate model");
-        emit InterestRateModelUpdated(address(interestRateModel), address(_interestRateModel));
-        interestRateModel = _interestRateModel;
+    function issue(address account, uint issueAmount) public {
+        require(system.isReservePool(msg.sender) || msg.sender == address(debt), "SynthERC20 Issue: Can reserve pools can issue internally");
+        _mint(account, issueAmount);
     }
 
-    function getBorrowBalance(address account) public returns(uint){
-        accureInterest();
-        return getBorrowBalanceStored(account);
-    }
-
-    function getBorrowBalanceStored(address account) public view returns(uint){
-        uint interestIndex = borrowBalances[account].interestIndex;
-        if(interestIndex == 0){
-            return 0;
-        }
-        return borrowBalances[account].principle.mul(borrowIndex).div(interestIndex);
-    }
-
-    function accureInterest() public {
-        uint currentTimestamp = block.timestamp;
-        uint accrualTimestampPrior = accrualTimestamp;
-
-        // Short-circuit accumulating 0 interest
-        if (accrualTimestampPrior == currentTimestamp) {
-            return;
-        }
-
-        uint borrowIndexPrior = borrowIndex;
-
-        // Calculate the current borrow interest rate
-        (uint borrowRate, uint borrowRateDecimals) = interestRateModel.getInterestRate(0);
-        require(borrowRate.div(10**borrowRateDecimals) <= borrowRateMax, "borrow rate is absurdly high");
-
-        // Calculate the number of blocks elapsed since the last accrual
-        uint timestampDelta = currentTimestamp - accrualTimestampPrior;
-
-        uint simpleInterestFactor = borrowRate * timestampDelta;
-        uint interestAccumulated = (simpleInterestFactor * totalBorrowed) / 10 ** borrowRateDecimals;
-        uint totalBorrowsNew = interestAccumulated + totalBorrowed;
-        uint borrowIndexNew = ((simpleInterestFactor * borrowIndexPrior) / 10 ** borrowRateDecimals) + borrowIndexPrior;
-
-        accrualTimestamp = currentTimestamp;
-        borrowIndex = borrowIndexNew;
-        totalBorrowed = totalBorrowsNew;
-    }
-
-    function borrow(address account, uint borrowAmount) public {
-        accureInterest();
-        require(msg.sender == system.dManager() || msg.sender == system.exchanger(), "OneERC20 Issue: Can only be called internally");
-
-        uint accountBorrowsPrev = getBorrowBalanceStored(account);
-        uint accountBorrowsNew = accountBorrowsPrev + borrowAmount;
-        uint totalBorrowsNew = totalBorrowed + borrowAmount;
-
-        borrowBalances[account].principle = accountBorrowsNew;
-        borrowBalances[account].interestIndex = borrowIndex;
-        totalBorrowed = totalBorrowsNew;
-
-        _mint(account, borrowAmount);
-    }
-
-    function repay(address user, address caller, uint repayAmount) public {
-        accureInterest();
-        require(msg.sender == system.dManager() || msg.sender == system.exchanger() || msg.sender == system.liquidator(), "OneERC20 Issue: Can only be called internally");
-        /* We fetch the amount the borrower owes, with accumulated interest */
-        uint accountBorrowsPrev = getBorrowBalanceStored(user);
-
-        /* If repayAmount == -1, repayAmount = accountBorrows */
-        uint repayAmountFinal = repayAmount == type(uint).max ? accountBorrowsPrev : repayAmount;
-        _burn(caller, repayAmountFinal);
-
-        uint accountBorrowsNew = accountBorrowsPrev - repayAmountFinal;
-        uint totalBorrowsNew = totalBorrowed - repayAmountFinal;
-
-        /* We write the previously calculated values into storage */
-        borrowBalances[user].principle = accountBorrowsNew;
-        borrowBalances[user].interestIndex = borrowIndex;
-        totalBorrowed = totalBorrowsNew;
+    function burn(address account, uint burnAmount) public {
+        require(system.isReservePool(msg.sender) || msg.sender == address(debt), "SynthERC20 Burn: Can reserve pools can burn internally");
+        _burn(account, burnAmount);
     }
 
     function get_price() public view returns (uint, uint) {
         return (uint(oracle.latestAnswer()), oracle.decimals());
-    }
-
-    function get_interest_rate() public view returns (uint, uint) {
-        return interestRateModel.getInterestRate(0);
     }
 }
