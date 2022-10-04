@@ -25,7 +25,7 @@ contract Liquidator {
         uint dAssetsCount = IDebtManager(system.dManager()).dAssetsCount();
         for(uint i = 0; i < dAssetsCount; i++){
             address dAsset = IDebtManager(system.dManager()).dAssets(i);
-            ISynthERC20(dAsset).repay(user, liquidator, type(uint).max);
+            IDebtERC20(dAsset).repay(user, liquidator, type(uint).max);
         }
 
         uint cAssetsCount = ICollateralManager(system.cManager()).cAssetsCount();
@@ -42,7 +42,7 @@ contract Liquidator {
 
         uint repayAmountUSD = multiplyByPrice(repayAmount, borrowedAsset);
         uint cPercent = repayAmountUSD.mul(1e18).div(IDebtManager(system.dManager()).totalDebt(user));
-        ISynthERC20(borrowedAsset).repay(user, liquidator, repayAmount);
+        IDebtERC20(borrowedAsset).repay(user, liquidator, repayAmount);
 
         for(uint i = 0; i < ICollateralManager(system.cManager()).cAssetsCount(); i++){
             address cAsset = ICollateralManager(system.cManager()).cAssets(i);

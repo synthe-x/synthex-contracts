@@ -86,13 +86,14 @@ contract Helper {
 
     function getDebtAsset(uint index) public view returns(AssetInfo memory){
         AssetInfo memory response;
-        response.id = IDebtManager(system.dManager()).dAssets(index);
+        IDebtERC20 debtAsset = IDebtERC20(IDebtManager(system.dManager()).dAssets(index));
+        response.id = debtAsset.synth();
         response.name = IERC20Metadata(response.id).name();
         response.symbol = IERC20Metadata(response.id).symbol();
         response.decimals = IERC20Metadata(response.id).decimals();
         response.totalLiquidity = IERC20Metadata(response.id).totalSupply();
         (response.price, response.priceDecimals) = ISynthERC20(response.id).get_price();
-        (response.interestRate, response.interestRateDecimals) = ISynthERC20(response.id).get_interest_rate();
+        (response.interestRate, response.interestRateDecimals) = debtAsset.get_interest_rate();
         return response;
     }
 
@@ -117,7 +118,7 @@ contract Helper {
 
         for(uint i = 0; i < response.debts.length; i++){
             response.debts[i].asset = getDebtAsset(i);
-            response.debts[i].amount = ISynthERC20(response.debts[i].asset.id).getBorrowBalance(user);
+            response.debts[i].amount = IDebtERC20(IDebtManager(system.dManager()).dAssets(i)).getBorrowBalance(user);
             response.debts[i].walletBalance = IERC20Metadata(response.debts[i].asset.id).balanceOf(user);
         }
 

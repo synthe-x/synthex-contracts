@@ -12,6 +12,8 @@ contract System {
 
     IAddressResolver _addrResolver;
 
+    mapping(address => bool) public isReservePool;
+
     constructor(address addrResolver) {
         _addrResolver = IAddressResolver(addrResolver);
     }
@@ -19,6 +21,10 @@ contract System {
     modifier onlySysAdmin() {
         require(owner() == msg.sender, "System: Only Admin can call this function");
         _;
+    }
+
+    function setReservePool(address pool, bool status) external onlySysAdmin {
+        isReservePool[pool] = status;
     }
 
     function owner() public view returns (address) {

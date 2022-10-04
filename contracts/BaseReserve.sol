@@ -12,6 +12,7 @@ import "./interfaces/ILiquidator.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "./pool/ReservePool.sol";
 import "hardhat/console.sol";
 
 contract BaseReserve {
@@ -21,17 +22,42 @@ contract BaseReserve {
     uint256 public minCRatio;
     uint256 public safeCRatio;
 
+    mapping(uint => ReservePool) public pools;
+    uint public poolCount = 0;
+
+    function createPool() external {
+        require(msg.sender == system.owner(), "BaseReserve: Only owner can create pool");
+        ReservePool pool = new ReservePool(system);
+        poolCount += 1;
+        pools[poolCount] = pool;
+    }
+
+    function enterPool(uint poolIndex, address asset, uint amount) external {
+        IDebtManager(system.dManager())._decreaseDebt(msg.sender, asset, amount);
+        pools[poolIndex].enterPool(msg.sender, asset, amount);
+    }
+
+    function exitPool(uint poolIndex, address asset, uint amount) external {
+        pools[poolIndex].exitPool(msg.sender, asset, amount);
+        IDebtManager(system.dManager())._increaseDebt(msg.sender, asset, amount);
+    }
+
     function _exchangeInternal(
+        uint poolIndex,
         address src,
         uint srcAmount,
         address dst
     ) internal {
-        IExchanger(system.exchanger()).exchange(
-            msg.sender,
-            src,
-            srcAmount,
-            dst
-        );
+        if(poolIndex == 0){
+            IExchanger(system.exchanger()).exchange(
+                msg.sender,
+                src,
+                srcAmount,
+                dst
+            );
+        } else {
+            pools[poolIndex].exchange(msg.sender, src, srcAmount, dst);
+        }
     }
 
     function _increaseCollateralInternal(
@@ -143,6 +169,9 @@ contract BaseReserve {
         uint256 _debt = IDebtManager(system.dManager()).totalDebt(account);
         if (_debt == 0) {
             return 2**256 - 1;
+        }
+        for(uint i = 1; i <= poolCount; i++){
+            _debt = _debt.add(pools[i].getBorrowBalanceUSD(account));
         }
         return
             ICollateralManager(system.cManager())

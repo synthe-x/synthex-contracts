@@ -16,9 +16,9 @@ contract Reserve is BaseReserve, ReentrancyGuard {
         system = _system;
     }
 
-    function exchange(address src, uint srcAmount, address dst) external {
+    function exchange(uint poolIndex, address src, uint srcAmount, address dst) external {
         require(system.isExchangePaused() == false, "Exchange is paused");
-        _exchangeInternal(src, srcAmount, dst);
+        _exchangeInternal(poolIndex, src, srcAmount, dst);
     }
 
     function increaseCollateral(address asset, uint amount) external nonReentrant payable {

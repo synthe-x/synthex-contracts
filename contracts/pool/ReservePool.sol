@@ -5,24 +5,19 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../interfaces/ISynthERC20.sol";
 import "../interfaces/ISystem.sol";
 import "../interfaces/IPriceOracle.sol";
+import "../interfaces/IDebtERC20.sol";
+import "../interfaces/IReserve.sol";
+import "../interfaces/IDebtManager.sol";
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "hardhat/console.sol";
 
 contract ReservePool is ERC20 {
     using SafeMath for uint;
 
-    uint public cAssetsCount = 0;
-    mapping(uint => address) public cAssets;
-    mapping(address => IPriceOracle) public cAssetsOracle;
-
-    uint public dAssetsCount = 0;
-    mapping(uint => address) public dAssets;
-
-    mapping(address => mapping(address => uint)) public globalDebtPool;
-    mapping(address => mapping(address => uint)) public globalCollateralPool;
-    mapping(address => uint) public totalCollateral;
-
-    uint minCRatio = 1.5e18;
+    // account => asset => amount
+    mapping(address => mapping(address => uint)) public debts;
+    mapping(address => uint) public totalDebt;
 
     ISystem system;
 
@@ -30,79 +25,62 @@ contract ReservePool is ERC20 {
         system = _system;
     }
 
-    function setMinCRatio(uint _minCRatio) external {
-        require(msg.sender == system.owner(), "ReservePool: Not owner can set min c-ratio");
-        minCRatio = _minCRatio;
-    }
-
-    function addCollateralAsset(address asset, address oracle) external {
-        require(msg.sender == system.owner(), "ReservePool: Not owner can add collateral");
-        cAssets[cAssetsCount] = asset;
-        cAssetsOracle[asset] = IPriceOracle(oracle);
-        cAssetsCount += 1;
-    }
-
-    function addDebtAsset(address asset) external {
-        require(msg.sender == system.owner(), "ReservePool: Not owner can add debt");
-        dAssets[dAssetsCount] = asset;
-        dAssetsCount += 1;
-    }
-
-    function increaseCollateral(address asset, uint amount) external payable {
-        if(msg.value > 0){
-            globalCollateralPool[msg.sender][address(0)] += msg.value;
-            totalCollateral[address(0)] += msg.value;
+    function enterPool(address user, address asset, uint amount) external {
+        require(system.reserve() == msg.sender, "ReservePool: Only reserve can call enter pool");
+        // mint dept pool shares
+        (uint price, uint priceDecimals) = IDebtERC20(asset).get_price();
+        uint dspAmount = amount.mul(price).div(10**priceDecimals);
+        if(totalSupply() != 0){
+            dspAmount = dspAmount.mul(totalSupply()).div(getTotalDebtUSD());
         }
-        if(asset != address(0)){
-            globalCollateralPool[msg.sender][asset] += amount;
-            totalCollateral[asset] += amount;
-            IERC20(asset).transferFrom(msg.sender, address(this), amount);
-        }
+        _mint(user, dspAmount);
+
+        // add debt to user
+        debts[user][asset] = debts[user][asset].add(amount);
+        totalDebt[asset] = totalDebt[asset].add(amount);
+        // issue tokens
+        ISynthERC20(IDebtERC20(asset).synth()).issue(user, amount);
     }
 
-    function decreaseCollateral(address asset, uint amount) external {
-        globalCollateralPool[msg.sender][asset] -= amount;
-        totalCollateral[asset] -= amount;
+    function exitPool(address user, address asset, uint amount) external {
+        require(system.reserve() == msg.sender, "ReservePool: Only reserve can call exit pool");
+        // burn dept pool shares
+        (uint price, uint priceDecimals) = IDebtERC20(asset).get_price();
+        uint dspAmount = amount.mul(price).div(10**priceDecimals).mul(totalSupply()).div(getTotalDebtUSD());
+        _burn(user, dspAmount);
+
+        debts[user][asset] = debts[user][asset].sub(amount);
+        totalDebt[asset] = totalDebt[asset].sub(amount);
+        ISynthERC20(IDebtERC20(asset).synth()).burn(user, amount);
     }
 
-    function issue(ISynthERC20 asset, uint amount) external {
-        (uint price, uint priceDecimals) = asset.debt().get_price();
-        globalDebtPool[msg.sender][address(asset)] += amount.mul(price).div(10**priceDecimals);
-        asset.issue(msg.sender, amount);
-        require(getCRatio(msg.sender) > minCRatio, "ReservePool: Not enough collateral");
+    function exchange(address user, address fromAsset, uint fromAmount, address toAsset) external {
+        require(system.reserve() == msg.sender, "ReservePool: Only reserve can call exchange");
+        
+        debts[user][fromAsset] = debts[user][fromAsset].sub(fromAmount);
+        ISynthERC20(IDebtERC20(fromAsset).synth()).burn(user, fromAmount);
+
+        (uint fromPrice, uint fromDecimals) = ISynthERC20(fromAsset).get_price();
+        (uint toPrice, uint toDecimals) = ISynthERC20(toAsset).get_price();
+
+        uint toAmount = fromAmount.mul(fromPrice).mul(10**toDecimals).div(fromDecimals).div(toPrice);
+        debts[user][toAsset] = debts[user][toAsset].add(toAmount);
+        ISynthERC20(IDebtERC20(toAsset).synth()).issue(user, toAmount);
     }
 
-    function burn(ISynthERC20 asset, uint amount) external {
-        (uint price, uint priceDecimals) = asset.debt().get_price();
-        globalDebtPool[msg.sender][address(asset)] -= amount.mul(price).div(10**priceDecimals);
-        asset.burn(msg.sender, amount);
-    }
-
-    function getCollateralPrice(address asset) public view returns(uint, uint){
-        return (uint(cAssetsOracle[asset].latestAnswer()), cAssetsOracle[asset].decimals());
-    }
-
-    function getTotalCollateral(address account) public view returns(uint){
+    function getTotalDebtUSD() public view returns(uint){
         uint total = 0;
-        for(uint i = 0; i < cAssetsCount; i++){
-            (uint price, uint priceDecimals) = getCollateralPrice(cAssets[i]);
-            total += globalCollateralPool[account][cAssets[i]].mul(price).div(10**priceDecimals);
+        for(uint i = 0; i < IDebtManager(system.dManager()).dAssetsCount(); i++){
+            (uint price, uint priceDecimals) = IDebtERC20(IDebtManager(system.dManager()).dAssets(i)).get_price();
+            total += totalDebt[IDebtManager(system.dManager()).dAssets(i)].mul(price).div(10**priceDecimals);
         }
         return total;
     }
 
-    function getTotalDebt(address account) public view returns(uint){
-        uint total = 0;
-        for(uint i = 0; i < dAssetsCount; i++){
-            (uint price, uint priceDecimals) = ISynthERC20(dAssets[i]).debt().get_price();
-            total += globalDebtPool[account][dAssets[i]].mul(price).div(10**priceDecimals);
+    function getBorrowBalanceUSD(address account) public view returns (uint) {
+        if(totalSupply() == 0){
+            return 0;
         }
-        return total;
-    }
-
-    function getCRatio(address account) public view returns(uint){
-        uint _totalCollateral = getTotalCollateral(account);
-        uint totalDebt = getTotalDebt(account);
-        return _totalCollateral.mul(1e18).div(totalDebt);
+        return getTotalDebtUSD().mul(balanceOf(account)).div(totalSupply());
     }
 }

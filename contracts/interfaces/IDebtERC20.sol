@@ -15,5 +15,7 @@ interface IDebtERC20 is IERC20 {
     function repay(address account, address caller, uint amount) external;
 
     function get_price() external view returns (uint, uint);
+    function synth() external view returns (address);
+
     function get_interest_rate() external view returns (uint, uint);
 }

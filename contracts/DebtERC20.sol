@@ -140,4 +140,8 @@ contract DebtERC20 {
     function get_interest_rate() public view returns (uint, uint) {
         return interestRateModel.getInterestRate(0);
     }
+
+    function get_price() public view returns (uint, uint) {
+        return synth.get_price();
+    }
 }
