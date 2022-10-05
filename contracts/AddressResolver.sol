@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity ^0.8.9;
+pragma solidity 0.8.6;
 
 import "./interfaces/IAddressResolver.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract AddressResolver is IAddressResolver, Ownable {
+contract AddressResolver is Ownable {
     mapping(bytes32 => address) public repository;
 
     function importAddresses(bytes32[] calldata names, address[] calldata destinations) external onlyOwner {
@@ -31,7 +31,7 @@ contract AddressResolver is IAddressResolver, Ownable {
         return repository[name];
     }
 
-    function owner() public view override(IAddressResolver, Ownable) returns (address) {
+    function owner() public view override(Ownable) returns (address) {
         return super.owner();
     }
 

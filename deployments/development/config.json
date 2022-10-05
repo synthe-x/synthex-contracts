@@ -1,0 +1,19 @@
+{
+    "synths": [
+        {
+            "name": "Bitcoin",
+            "symbol": "BTC",
+            "feed": "TYY5GdNvHN8NVY6MYtgEPwx15pyUmLEw5J"
+        }
+    ],
+    "collaterals": [
+        {
+            "name": "Tron",
+            "symbol": "TRX",
+            "address": "0x0000000000000000000000000000000000000000",
+            "feed": "TAL6RWymPLepKsLGCzWPUTKQQcWFsuHfNE",
+            "minCollateral": "0.1"
+        }
+    ],
+    "reservePools": 1
+}
