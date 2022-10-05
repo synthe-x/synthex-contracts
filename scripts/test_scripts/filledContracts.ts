@@ -20,7 +20,7 @@ export default async function _main () {
     const cPool = await ethers.getContractFactory("CollateralERC20");
     const ethcPool = cPool.attach(await deployedContracts.cManager.cAssets(0))
 
-    const Pool = await ethers.getContractFactory("SynthERC20");
+    const Pool = await ethers.getContractFactory("DebtERC20");
 
     // create dAssets
     // One USD

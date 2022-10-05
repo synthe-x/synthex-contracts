@@ -9,5 +9,8 @@ interface IReserve {
 
     function minCRatio() external view returns (uint);
     function safeCRatio() external view returns (uint);
+    function poolCount() external view returns (uint);
+    function pools(uint) external view returns (address);
 
+    function isReservePool(address) external view returns (bool);
 }

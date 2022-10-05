@@ -8,12 +8,17 @@ import "./interfaces/ICollateralManager.sol";
 import "./interfaces/ICollateralERC20.sol";
 
 import "./interfaces/IReserve.sol";
+import "./interfaces/IReservePool.sol";
+
 import "./interfaces/ISynthERC20.sol";
 
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+
+import "hardhat/console.sol";
 
 contract Helper {
-
+    using SafeMath for uint;
     struct AssetInfo {
         address id;
         string name;
@@ -32,6 +37,8 @@ contract Helper {
         Position[] collaterals;
         uint debtBalance;
         Position[] debts;
+        uint poolBalance;
+        Position[] poolAssets;
     }
 
     struct Position {
@@ -103,7 +110,9 @@ contract Helper {
             collateralBalance: ICollateralManager(system.cManager()).totalCollateral(user),
             collaterals: new Position[](ICollateralManager(system.cManager()).cAssetsCount()),
             debtBalance: IDebtManager(system.dManager()).totalDebt(user),
-            debts: new Position[](IDebtManager(system.dManager()).dAssetsCount())
+            debts: new Position[](IDebtManager(system.dManager()).dAssetsCount()),
+            poolBalance: 0,
+            poolAssets: new Position[](IDebtManager(system.dManager()).dAssetsCount())
         });
 
         for(uint i = 0; i < response.collaterals.length; i++){
@@ -118,8 +127,17 @@ contract Helper {
 
         for(uint i = 0; i < response.debts.length; i++){
             response.debts[i].asset = getDebtAsset(i);
+            response.poolAssets[i].asset = getDebtAsset(i);
             response.debts[i].amount = IDebtERC20(IDebtManager(system.dManager()).dAssets(i)).getBorrowBalance(user);
             response.debts[i].walletBalance = IERC20Metadata(response.debts[i].asset.id).balanceOf(user);
+            response.poolAssets[i].walletBalance = IERC20Metadata(response.debts[i].asset.id).balanceOf(user);
+        }
+
+        for(uint i = 1; i <= IReserve(system.reserve()).poolCount(); i++){
+            IReservePool pool = IReservePool(IReserve(system.reserve()).pools(i));
+            for(uint j = 0; j < response.poolAssets.length; j++){
+                response.poolAssets[j].amount = response.poolAssets[j].amount.add(pool.debts(user, address(ISynthERC20(response.poolAssets[j].asset.id).debt())));   
+            }
         }
 
         return response;

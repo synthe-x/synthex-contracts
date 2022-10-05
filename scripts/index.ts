@@ -6,7 +6,7 @@ import init from "./initiate";
 const FormatTypes = ethers.utils.FormatTypes;
 
 export default async function main(logs: boolean = true, test: boolean = false) {
-  let deployments = fs.readFileSync( process.cwd() + "/deployments/goerli/deployments.json", "utf8");
+  let deployments = fs.readFileSync( process.cwd() +  `/deployments/${hre.network.name}/deployments.json`, "utf8");
   deployments = JSON.parse(deployments);
   (deployments as any)["contracts"] = {};
   (deployments as any)["sources"] = {};
@@ -14,10 +14,10 @@ export default async function main(logs: boolean = true, test: boolean = false) 
   let allDeployments = await deploy(deployments, logs)
   let synths = {} 
   if(!test){
-    synths = await init(allDeployments.dManager, allDeployments.cManager, allDeployments.fixedIntRate, deployments, logs);
+    synths = await init(allDeployments.dManager, allDeployments.cManager, allDeployments.fixedIntRate, allDeployments.reserve, allDeployments.sys, deployments, logs);
   }
   
-  fs.writeFileSync(process.cwd() +  "/deployments/goerli/deployments.json", JSON.stringify(deployments, null, 2));
+  fs.writeFileSync(process.cwd() +  `/deployments/${hre.network.name}/deployments.json`, JSON.stringify(deployments, null, 2));
   return {...allDeployments, ...synths};
 }
 

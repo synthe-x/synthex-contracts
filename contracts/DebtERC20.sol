@@ -126,7 +126,7 @@ contract DebtERC20 {
 
         /* If repayAmount == -1, repayAmount = accountBorrows */
         uint repayAmountFinal = repayAmount == type(uint).max ? accountBorrowsPrev : repayAmount;
-        synth.issue(caller, repayAmountFinal);
+        synth.burn(caller, repayAmountFinal);
 
         uint accountBorrowsNew = accountBorrowsPrev - repayAmountFinal;
         uint totalBorrowsNew = totalBorrowed - repayAmountFinal;

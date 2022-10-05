@@ -13,6 +13,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./pool/ReservePool.sol";
+
 import "hardhat/console.sol";
 
 contract BaseReserve {
@@ -22,24 +23,36 @@ contract BaseReserve {
     uint256 public minCRatio;
     uint256 public safeCRatio;
 
+    mapping(address => bool) public isReservePool;
     mapping(uint => ReservePool) public pools;
     uint public poolCount = 0;
+
+    event ReservePoolCreated(address pool, uint poolId);
+    event PoolEntered(address pool, address account, address asset, uint amount);
+    event PoolExited(address pool, address account, address asset, uint amount);
+    
+    event Liquidate(address pool, address liquidator, address account, address asset, uint amount);
+    event NewMinCRatio(uint256 minCRatio);
 
     function createPool() external {
         require(msg.sender == system.owner(), "BaseReserve: Only owner can create pool");
         ReservePool pool = new ReservePool(system);
         poolCount += 1;
         pools[poolCount] = pool;
+        isReservePool[address(pool)] = true;
+        emit ReservePoolCreated(address(pool), poolCount);
     }
 
     function enterPool(uint poolIndex, address asset, uint amount) external {
         IDebtManager(system.dManager())._decreaseDebt(msg.sender, asset, amount);
         pools[poolIndex].enterPool(msg.sender, asset, amount);
+        emit PoolEntered(address(pools[poolIndex]), msg.sender, asset, amount);
     }
 
     function exitPool(uint poolIndex, address asset, uint amount) external {
         pools[poolIndex].exitPool(msg.sender, asset, amount);
         IDebtManager(system.dManager())._increaseDebt(msg.sender, asset, amount);
+        emit PoolExited(address(pools[poolIndex]), msg.sender, asset, amount);
     }
 
     function _exchangeInternal(
@@ -81,6 +94,7 @@ contract BaseReserve {
         require(msg.sender == system.owner(), "Not owner");
         minCRatio = _minCRatio;
         safeCRatio = _minCRatio.mul(125).div(100);
+        emit NewMinCRatio(_minCRatio);
     }
 
     function _decreaseCollateralInternal(
@@ -145,6 +159,7 @@ contract BaseReserve {
             "Reserve: Cannot be liquidated, cRation is above MinCRatio"
         );
         ILiquidator(system.liquidator()).liquidate(liquidator, user);
+        emit Liquidate(address(pools[0]), liquidator, user, address(0), 0);
     }
 
     function _partialLiquidateInternal(

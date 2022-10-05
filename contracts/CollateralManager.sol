@@ -20,6 +20,10 @@ contract CollateralManager {
 
     mapping(address => address) public assetToCAsset;
 
+    event NewCollateralPool(address indexed collateral, address indexed pool);
+    event IncreaseCollateral(address pool, address account, address asset, uint amount);
+    event DecreaseCollateral(address pool, address account, address asset, uint amount);
+    
     constructor(ISystem _system){
         system = _system;
     }
@@ -29,16 +33,19 @@ contract CollateralManager {
         cAssets[cAssetsCount] = address(cAsset);
         assetToCAsset[asset] = address(cAsset);
         cAssetsCount += 1;
+        emit NewCollateralPool(asset, address(cAsset));
     }
 
     function _increaseCollateral(address user, address asset, uint amount) external {
         require(msg.sender == system.reserve(), "CollateralManager: Not reserve");
         ICollateralERC20(assetToCAsset[asset]).mint(user, amount);
+        emit IncreaseCollateral(assetToCAsset[asset], user, asset, amount);
     }
 
     function _decreaseCollateral(address user, address asset, uint amount) external {
         require(msg.sender == system.reserve() || msg.sender == system.liquidator(), "CollateralManager: Not reserve or liquidator");
         ICollateralERC20(assetToCAsset[asset]).burn(user, amount);
+        emit DecreaseCollateral(assetToCAsset[asset], user, asset, amount);
     }
 
     function collateral(address user, address asset) public view returns(uint){

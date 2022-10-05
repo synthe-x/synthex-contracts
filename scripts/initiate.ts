@@ -1,9 +1,10 @@
 import { ethers } from "hardhat";
 import fs from "fs";
 import { Contract } from "ethers";
+import hre from "hardhat";
 
-export default async function init(dManager: Contract, cManager: Contract, fixedIntRate: Contract, deployments: any = {}, logs: boolean = true) {
-    let config = fs.readFileSync( process.cwd() + "/deployments/goerli/config.json", "utf8");
+export default async function init(dManager: Contract, cManager: Contract, fixedIntRate: Contract, reserve: Contract, sys: Contract, deployments: any = {}, logs: boolean = true) {
+    let config = fs.readFileSync( process.cwd() + `/deployments/${hre.network.name}/config.json`, "utf8");
     config = JSON.parse(config);
 
     const CollateralERC20 = await ethers.getContractFactory("CollateralERC20");
@@ -33,18 +34,42 @@ export default async function init(dManager: Contract, cManager: Contract, fixed
     (deployments as any)["sources"]["SynthERC20"] = abi;
     for(let i = 0; i < (config as any)["synths"].length; i++) {
         let synth = (config as any)["synths"][i];
-        await dManager.create("Synthex " + synth.name, "sx" + synth.symbol, synth.feed, fixedIntRate.address);
+        await dManager.create("SyntheX " + synth.name, "X" + synth.symbol, synth.feed, fixedIntRate.address);
         let synthAddress = await dManager.dAssets(i);
         (deployments as any)["contracts"]["Synthex" + synth.name] = {
             source: "SynthERC20",
             constructorArguments: ["Synthex " + synth.name, "sx" + synth.symbol, synth.feed, fixedIntRate.address],
             address: synthAddress,
         }
-        console.log("Deployed synth", synth.name, "at", synthAddress);
+        console.log("Deployed x", synth.name, "at", synthAddress);
         (synths as any)[synth.symbol.toLowerCase() + "pool"] = SynthERC20.attach(synthAddress);
     }
 
+    const USDPriceOracle = await ethers.getContractFactory("MockPriceOracle");
+    let oracle = await USDPriceOracle.deploy();
+    await oracle.deployed();
+    console.log("Deployed XUSD oracle at", oracle.address);
+    await dManager.create("SyntheX USD", "xUSD", oracle.address, fixedIntRate.address);
+
     let rate = ethers.utils.parseUnits("0.0000000003171", 36)
     await fixedIntRate.setInterestRate(rate, "36");
-    return {...synths, ...collaterals};
+
+    const ReservePool = await ethers.getContractFactory("ReservePool");
+    dir = fs.readFileSync(process.cwd() + `/artifacts/contracts/pool/ReservePool.sol/ReservePool.json`, "utf-8");
+    abi = JSON.parse(dir);
+    abi = abi.abi;
+    let pools = {};
+    (deployments as any)["sources"]["ReservePool"] = abi;
+    for(let i = 0; i < (config as any)["reservePools"]; i++) {
+        await reserve.createPool();
+        let poolAddress = await reserve.pools(i+1);
+        (deployments as any)["contracts"]["ReservePool" + i] = {
+            source: "ReservePool",
+            constructorArguments: [sys.address],
+            address: poolAddress,
+        };
+        (pools as any)["reservepool" + i] = ReservePool.attach(poolAddress);
+    }
+
+    return {...synths, ...collaterals, ...pools};
 }

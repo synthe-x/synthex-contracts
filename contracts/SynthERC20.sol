@@ -12,8 +12,10 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 import "./interfaces/IPriceOracle.sol";
 import "./interfaces/ISystem.sol";
+import "./interfaces/IReserve.sol";
 import "./interfaces/IInterestRate.sol";
 import "./interfaces/IDebtERC20.sol";
+import "hardhat/console.sol";
 
 contract SynthERC20 is 
     ERC20
@@ -42,12 +44,12 @@ contract SynthERC20 is
     }
 
     function issue(address account, uint issueAmount) public {
-        require(system.isReservePool(msg.sender) || msg.sender == address(debt), "SynthERC20 Issue: Only reserve pools can issue internally");
+        require(IReserve(system.reserve()).isReservePool(msg.sender) || msg.sender == address(debt), "SynthERC20 Issue: Only reserve pools can issue internally");
         _mint(account, issueAmount);
     }
 
     function burn(address account, uint burnAmount) public {
-        require(system.isReservePool(msg.sender) || msg.sender == address(debt), "SynthERC20 Burn: Only reserve pools can burn internally");
+        require(IReserve(system.reserve()).isReservePool(msg.sender) || msg.sender == address(debt), "SynthERC20 Burn: Only reserve pools can burn internally");
         _burn(account, burnAmount);
     }
 

@@ -16,6 +16,8 @@ contract Exchanger {
     
     ISystem system;
 
+    event Exchange(address account, address fromAsset, uint fromAmount, address toAsset);
+
     constructor(ISystem _system){
         system = _system;
     }
@@ -29,5 +31,7 @@ contract Exchanger {
         IDebtManager(system.dManager())._decreaseDebt(user, src, srcAmount);
         uint dstAmt = srcAmount.mul(srcPrice).div(price).mul(decimals).div(srcDecimals);
         IDebtManager(system.dManager())._increaseDebt(user, dst, dstAmt);
+
+        emit Exchange(user, src, srcAmount, dst);
     }
 }

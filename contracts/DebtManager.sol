@@ -19,7 +19,9 @@ contract DebtManager {
         system = _system;
     }
 
-    event NewPool(address asset);
+    event NewDebtAsset(address asset);
+    event IncreaseDebt(address account, address asset, uint amount);
+    event DecreaseDebt(address account, address asset, uint amount);
 
     function create(string memory name, string memory symbol, IPriceOracle _oracle, IInterestRate _interestRateModel) public {
         require(msg.sender == system.owner(), "Not owner");
@@ -27,17 +29,19 @@ contract DebtManager {
         dAssets[dAssetsCount] = address(pool);
         dAssetsCount += 1;
 
-        emit NewPool(address(pool));
+        emit NewDebtAsset(address(pool));
     }
 
     function _increaseDebt(address user, address asset, uint amount) external {
         require(msg.sender == system.reserve() || msg.sender == system.exchanger(), "DebtManager: Not Reserve or Exchanger");
         DebtERC20(asset).borrow(user, amount);
+        emit IncreaseDebt(user, asset, amount);
     }
 
     function _decreaseDebt(address user, address asset, uint amount) external {
         require(msg.sender == system.reserve() || msg.sender == system.exchanger(), "DebtManager: Not Reserve or Exchanger");
         DebtERC20(asset).repay(user, user, amount);
+        emit DecreaseDebt(user, asset, amount);
     }
 
     function totalDebt(address account) public returns(uint){
