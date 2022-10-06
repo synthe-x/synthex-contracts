@@ -4,6 +4,16 @@
             "name": "Bitcoin",
             "symbol": "BTC",
             "feed": "TYY5GdNvHN8NVY6MYtgEPwx15pyUmLEw5J"
+        },
+        {
+            "name": "Just",
+            "symbol": "JST",
+            "feed": "TYr8nvS9BUbi9eLXNQpUMbxdvwYpoWn3ho"
+        },
+        {
+            "name": "Dice",
+            "symbol": "DICE",
+            "feed": "TS8fAMLNnbWgNyXz6queFHR7HfZkhAeppK"
         }
     ],
     "collaterals": [

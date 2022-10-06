@@ -3,63 +3,63 @@
     "AddressResolver": {
       "source": "AddressResolver",
       "constructorArguments": [],
-      "address": "TYvCLRpb9c9xG1WXJDaztYEsC9k4JpSjX3"
+      "address": "TNGLdeD8BH4P2nw8u7HMTkERbgj4dAjGPz"
     },
     "System": {
       "source": "System",
       "constructorArguments": [
-        "41fbb916d337cd1e42ef39f78aacc0285bac4f8b9b"
+        "TNGLdeD8BH4P2nw8u7HMTkERbgj4dAjGPz"
       ],
-      "address": "TELyD9MFukUzSjQpmSLyFVm4MGoHdHCqdy"
+      "address": "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
     },
     "Reserve": {
       "source": "Reserve",
       "constructorArguments": [
-        "412ffe244199c3ca10acf147642927b58f4d22eb0a"
+        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
       ],
-      "address": "TU7SuWFJQqR1P3kc5xW8tDGST9iohKnxao"
+      "address": "TSs1zNingCpFeUroWabJ2qaijCRu7B952j"
     },
     "Exchanger": {
       "source": "Exchanger",
       "constructorArguments": [
-        "412ffe244199c3ca10acf147642927b58f4d22eb0a"
+        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
       ],
-      "address": "THJkfDqcnQ916ffyQsa1nuEr6ULfmQDHps"
+      "address": "TSrRuwzWeSzBfodvKjbNn9uEeAJH7CYJga"
     },
     "DebtManager": {
       "source": "DebtManager",
       "constructorArguments": [
-        "412ffe244199c3ca10acf147642927b58f4d22eb0a"
+        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
       ],
-      "address": "TTsn2rC4h5fS3dBHsVTBv8qYcYcrFyPK3c"
+      "address": "TXeSpGNPtWcwShMyANpNSSLdoKf1GxaiSY"
     },
     "CollateralManager": {
       "source": "CollateralManager",
       "constructorArguments": [
-        "412ffe244199c3ca10acf147642927b58f4d22eb0a"
+        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
       ],
-      "address": "TYfJoXjCTDBo1SZZCSn3KrEYurjnFMSt7C"
+      "address": "TWUkMH78nbFvZWgrmh3Y8ceTwJfp6Qxokc"
     },
     "Helper": {
       "source": "Helper",
       "constructorArguments": [
-        "412ffe244199c3ca10acf147642927b58f4d22eb0a"
+        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
       ],
-      "address": "TAEtuNrsKr7VALAsGtLxWo9636mTTkGwRd"
+      "address": "TSLeiyz7f1wpFQkKKQHgNRF66RpEnDCZmw"
     },
     "FixedInterestRate": {
       "source": "FixedInterestRate",
       "constructorArguments": [
-        "412ffe244199c3ca10acf147642927b58f4d22eb0a"
+        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
       ],
-      "address": "TChC5YZkVvBWhSeazVFhSjYU5tZbf4Ed8k"
+      "address": "TVS586dJfTWxADBpSUHcYphGcr4R8Pd5gk"
     },
     "Liquidator": {
       "source": "Liquidator",
       "constructorArguments": [
-        "412ffe244199c3ca10acf147642927b58f4d22eb0a"
+        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
       ],
-      "address": "TEZXTPoDCyGde75AEagwgzFX7t6u8SK5yP"
+      "address": "TYkyh6ozk8KFSJdsrg3JYbnRz9jDsvWaRU"
     },
     "SynthexCollateralizedTron": {
       "source": "CollateralERC20",
@@ -73,7 +73,7 @@
           "hex": "0x016345785d8a0000"
         }
       ],
-      "address": "4144ef64de691a6a67fc2942aea2d7038a60aec929"
+      "address": "TTAfUbuZmGSL4wREiTMr8964giSRXGqt4c"
     },
     "SynthexBitcoin": {
       "source": "SynthERC20",
@@ -81,16 +81,36 @@
         "Synthex Bitcoin",
         "sxBTC",
         "TYY5GdNvHN8NVY6MYtgEPwx15pyUmLEw5J",
-        "411de0f3a729deecaedfec1426c6eb35bbb42a19ca"
+        "41d57f0b4a3fb87b1f84be0f8da68d4925849099bb"
       ],
-      "address": "413046884a7b7a553126cd03b1d84a6e0b911f1a48"
+      "address": "TMtR8s3J84cF9sWbCDTvzTDP8S8VHHy1jf"
+    },
+    "SynthexJust": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Just",
+        "sxJST",
+        "TYr8nvS9BUbi9eLXNQpUMbxdvwYpoWn3ho",
+        "41d57f0b4a3fb87b1f84be0f8da68d4925849099bb"
+      ],
+      "address": "TQBYDJ5DWJTFiUAteZHyc4HK5wggGvLpAb"
+    },
+    "SynthexDice": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Dice",
+        "sxDICE",
+        "TS8fAMLNnbWgNyXz6queFHR7HfZkhAeppK",
+        "41d57f0b4a3fb87b1f84be0f8da68d4925849099bb"
+      ],
+      "address": "TDp9Vux5BgvikU68LqWttTGpHQp7b5T5HP"
     },
     "ReservePool0": {
       "source": "ReservePool",
       "constructorArguments": [
-        "412ffe244199c3ca10acf147642927b58f4d22eb0a"
+        "41257821d5befb9d9c1e8859f8bb63c74cb1aa3502"
       ],
-      "address": "417dd389709963d2ebe97794496749901173e7991c"
+      "address": "TTTVzf16aTZxBkUwXvBQ1LT28f3odMzd6x"
     }
   },
   "sources": {

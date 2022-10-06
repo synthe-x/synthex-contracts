@@ -26,21 +26,21 @@ module.exports = async function(deployer, network) {
     
     await deployContract(deployer, AddressResolver, [], deployments);
     let addr = await AddressResolver.deployed();
-    await deployContract(deployer, System, [AddressResolver.address], deployments);
+    await deployContract(deployer, System, [tronWeb.address.fromHex(AddressResolver.address)], deployments);
     let sys = await System.deployed();
-    await deployContract(deployer, Reserve, [System.address], deployments);
+    await deployContract(deployer, Reserve, [tronWeb.address.fromHex(System.address)], deployments);
     let reserve = await Reserve.deployed();
-    await deployContract(deployer, Exchanger, [System.address], deployments);
+    await deployContract(deployer, Exchanger, [tronWeb.address.fromHex(System.address)], deployments);
     let exchanger = await Exchanger.deployed();
-    await deployContract(deployer, DebtManager, [System.address], deployments);
+    await deployContract(deployer, DebtManager, [tronWeb.address.fromHex(System.address)], deployments);
     let dManager = await DebtManager.deployed();
-    await deployContract(deployer, CollateralManager, [System.address], deployments)
+    await deployContract(deployer, CollateralManager, [tronWeb.address.fromHex(System.address)], deployments)
     let cManager = await CollateralManager.deployed();
-    await deployContract(deployer, Helper, [System.address], deployments);
+    await deployContract(deployer, Helper, [tronWeb.address.fromHex(System.address)], deployments);
     let helper = await Helper.deployed();
-    await deployContract(deployer, FixedInterestRate, [System.address], deployments);
+    await deployContract(deployer, FixedInterestRate, [tronWeb.address.fromHex(System.address)], deployments);
     let fixedIntRate = await FixedInterestRate.deployed();
-    await deployContract(deployer, Liquidator, [System.address], deployments);
+    await deployContract(deployer, Liquidator, [tronWeb.address.fromHex(System.address)], deployments);
     let liq = await Liquidator.deployed();
 
     await reserve.setMinCRatio(ethers.utils.parseEther("1.5").toString());
@@ -59,34 +59,40 @@ module.exports = async function(deployer, network) {
     for(let i = 0; i < config["collaterals"].length; i++) {
         let collateral = config["collaterals"][i];
         await cManager.create("Synthex Collateralized " + collateral.name, "sxc" + collateral.symbol, collateral.address, collateral.feed, ethers.utils.parseEther(collateral.minCollateral).toString());
+        await delay(1000);
         let collateralAddress = await cManager.cAssets.call(i);
         deployments["contracts"]["SynthexCollateralized" + collateral.name] = {
             source: "CollateralERC20",
             constructorArguments: ["Synthex Collateralized" + collateral.name, "sxc" + collateral.symbol, collateral.address, collateral.feed, ethers.utils.parseEther(collateral.minCollateral)],
-            address: collateralAddress,
+            address: tronWeb.address.fromHex(collateralAddress),
         }
-        console.log("collateralAddress: ", collateralAddress);
+        console.log(`c${collateral.symbol}:`, tronWeb.address.fromHex(collateralAddress));
     }
 
     dir = fs.readFileSync(process.cwd() + `/build/contracts/SynthERC20.json`, "utf-8");
     abi = JSON.parse(dir);
     abi = abi.abi;
     deployments["sources"]["SynthERC20"] = abi;
+
+    await deployer.deploy(MockPriceOracle);
+    await dManager.create("SyntheX USD", "xUSD", MockPriceOracle.address, fixedIntRate.address);
+    await delay(1000);
+    let xUSDAddress = await dManager.dAssets.call(0);
+    console.log("xUSD: ", tronWeb.address.fromHex(xUSDAddress));
+
     for(let i = 0; i < config["synths"].length; i++) {
         let synth = config["synths"][i];
         await dManager.create("SyntheX " + synth.name, "X" + synth.symbol, synth.feed, fixedIntRate.address);
-        let synthAddress = await dManager.dAssets.call(i);
+        await delay(1000);
+        let synthAddress = await dManager.dAssets.call(i+1);
         deployments["contracts"]["Synthex" + synth.name] = {
             source: "SynthERC20",
             constructorArguments: ["Synthex " + synth.name, "sx" + synth.symbol, synth.feed, fixedIntRate.address],
-            address: synthAddress,
+            address: tronWeb.address.fromHex(synthAddress),
         }
-        console.log("synthAddress: ", synthAddress);
+        console.log(`x${synth.symbol}: ${tronWeb.address.fromHex(synthAddress)}`);
     }
 
-    await deployer.deploy(MockPriceOracle);
-    console.log("Deployed XUSD oracle at", MockPriceOracle.address);
-    await dManager.create("SyntheX USD", "xUSD", MockPriceOracle.address, fixedIntRate.address);
 
     let rate = ethers.utils.parseUnits("0.0000000003171", 36).toString()
     await fixedIntRate.setInterestRate(rate, "36");
@@ -101,9 +107,9 @@ module.exports = async function(deployer, network) {
         deployments["contracts"]["ReservePool" + i] = {
             source: "ReservePool",
             constructorArguments: [sys.address],
-            address: poolAddress,
+            address: tronWeb.address.fromHex(poolAddress),
         };
-        console.log("poolAddress: ", poolAddress);
+        console.log(`PoolAddress${i}: ${tronWeb.address.fromHex(poolAddress)}`);
     }
 
     fs.writeFileSync(process.cwd() +  `/deployments/${network}/deployments.json`, JSON.stringify(deployments, null, 2));
@@ -121,3 +127,7 @@ async function deployContract(deployer, artifacts, args, deployments) {
     abi = abi.abi;
     deployments["sources"][artifacts._json.contractName] = abi;
 }
+
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}  
