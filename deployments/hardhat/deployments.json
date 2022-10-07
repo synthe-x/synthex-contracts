@@ -10,56 +10,56 @@
       "constructorArguments": [
         "0x5FbDB2315678afecb367f032d93F642f64180aa3"
       ],
-      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
     },
     "Reserve": {
       "source": "Reserve",
       "constructorArguments": [
-        "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+        "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
       ],
-      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+      "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F"
     },
     "Exchanger": {
       "source": "Exchanger",
       "constructorArguments": [
-        "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+        "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
       ],
-      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82"
     },
     "DebtManager": {
       "source": "DebtManager",
       "constructorArguments": [
-        "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+        "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
       ],
-      "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
+      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016"
     },
     "CollateralManager": {
       "source": "CollateralManager",
       "constructorArguments": [
-        "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+        "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
       ],
-      "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
+      "address": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE"
     },
     "Helper": {
       "source": "Helper",
       "constructorArguments": [
-        "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+        "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
       ],
-      "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F"
+      "address": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c"
     },
     "FixedInterestRate": {
       "source": "FixedInterestRate",
       "constructorArguments": [
-        "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+        "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
       ],
-      "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
+      "address": "0x59b670e9fA9D0A427751Af201D676719a970857b"
     },
     "Liquidator": {
       "source": "Liquidator",
       "constructorArguments": [
-        "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+        "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
       ],
-      "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6"
+      "address": "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44"
     },
     "SynthexCollateralizedEthereum": {
       "source": "CollateralERC20",
@@ -73,7 +73,7 @@
           "hex": "0x016345785d8a0000"
         }
       ],
-      "address": "0x61c36a8d610163660E21a8b7359e1Cac0C9133e1"
+      "address": "0x2b961E3959b79326A8e7F64Ef0d2d825707669b5"
     },
     "SynthexBTC": {
       "source": "SynthERC20",
@@ -81,9 +81,9 @@
         "Synthex BTC",
         "sxBTC",
         "0xA39434A63A52E749F02807ae27335515BA4b07F7",
-        "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
+        "0x59b670e9fA9D0A427751Af201D676719a970857b"
       ],
-      "address": "0x856e4424f806D16E8CBC702B3c0F2ede5468eae5"
+      "address": "0x524F04724632eED237cbA3c37272e018b3A7967e"
     },
     "SynthexETH": {
       "source": "SynthERC20",
@@ -91,9 +91,9 @@
         "Synthex ETH",
         "sxETH",
         "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e",
-        "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
+        "0x59b670e9fA9D0A427751Af201D676719a970857b"
       ],
-      "address": "0xb0279Db6a2F1E01fbC8483FCCef0Be2bC6299cC3"
+      "address": "0x16eBC21B3d38Db5e3EE1a022bEBA8Ec87D4CDbe6"
     },
     "SynthexFORTH": {
       "source": "SynthERC20",
@@ -101,9 +101,9 @@
         "Synthex FORTH",
         "sxFORTH",
         "0x7A65Cf6C2ACE993f09231EC1Ea7363fb29C13f2F",
-        "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
+        "0x59b670e9fA9D0A427751Af201D676719a970857b"
       ],
-      "address": "0x3dE2Da43d4c1B137E385F36b400507c1A24401f8"
+      "address": "0xde46dABb403Afc77DD67B6C69Bbd44B9347AE0e7"
     },
     "SynthexLINK": {
       "source": "SynthERC20",
@@ -111,9 +111,9 @@
         "Synthex LINK",
         "sxLINK",
         "0x48731cF7e84dc94C5f84577882c14Be11a5B7456",
-        "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
+        "0x59b670e9fA9D0A427751Af201D676719a970857b"
       ],
-      "address": "0xddEA3d67503164326F90F53CFD1705b90Ed1312D"
+      "address": "0xd1c0400E4D1cb3E9B5b8b7571814729E72BF7061"
     },
     "SynthexDAI": {
       "source": "SynthERC20",
@@ -121,16 +121,16 @@
         "Synthex DAI",
         "sxDAI",
         "0x0d79df66BE487753B02D015Fb622DED7f0E9798d",
-        "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
+        "0x59b670e9fA9D0A427751Af201D676719a970857b"
       ],
-      "address": "0xAbB608121Fd652F112827724B28a61e09f2dcDf4"
+      "address": "0xA22B911699001c83EF590D86a54E8DCe4A5b6BB4"
     },
     "ReservePool0": {
       "source": "ReservePool",
       "constructorArguments": [
-        "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+        "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
       ],
-      "address": "0x75537828f2ce51be7289709686A69CbFDbB714F1"
+      "address": "0x3B02fF1e626Ed7a8fd6eC5299e2C54e1421B626B"
     }
   },
   "sources": {
@@ -443,6 +443,137 @@
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "liquidator",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Liquidate",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "minCRatio",
+            "type": "uint256"
+          }
+        ],
+        "name": "NewMinCRatio",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "PoolEntered",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "PoolExited",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "poolId",
+            "type": "uint256"
+          }
+        ],
+        "name": "ReservePoolCreated",
+        "type": "event"
       },
       {
         "inputs": [
@@ -779,6 +910,37 @@
         "type": "constructor"
       },
       {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "fromAsset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "fromAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "toAsset",
+            "type": "address"
+          }
+        ],
+        "name": "Exchange",
+        "type": "event"
+      },
+      {
         "inputs": [
           {
             "internalType": "address",
@@ -825,11 +987,61 @@
           {
             "indexed": false,
             "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "DecreaseDebt",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "IncreaseDebt",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
             "name": "asset",
             "type": "address"
           }
         ],
-        "name": "NewPool",
+        "name": "NewDebtAsset",
         "type": "event"
       },
       {
@@ -982,6 +1194,87 @@
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "DecreaseCollateral",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "IncreaseCollateral",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "collateral",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          }
+        ],
+        "name": "NewCollateralPool",
+        "type": "event"
       },
       {
         "inputs": [

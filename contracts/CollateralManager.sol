@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./interfaces/IPriceOracle.sol";
@@ -17,18 +17,16 @@ contract CollateralManager {
 
     uint public cAssetsCount = 0;
     mapping (uint => address) public cAssets;
-
     mapping(address => address) public assetToCAsset;
 
     event NewCollateralPool(address indexed collateral, address indexed pool);
-    event IncreaseCollateral(address pool, address account, address asset, uint amount);
-    event DecreaseCollateral(address pool, address account, address asset, uint amount);
     
     constructor(ISystem _system){
         system = _system;
     }
 
     function create(string memory name, string memory symbol, address asset, IPriceOracle oracle, uint minCollateral) public {
+        require(msg.sender == address(system), "Only system can create");
         CollateralERC20 cAsset = new CollateralERC20(name, symbol, asset, oracle, minCollateral, system);
         cAssets[cAssetsCount] = address(cAsset);
         assetToCAsset[asset] = address(cAsset);
@@ -39,13 +37,11 @@ contract CollateralManager {
     function _increaseCollateral(address user, address asset, uint amount) external {
         require(msg.sender == system.reserve(), "CollateralManager: Not reserve");
         ICollateralERC20(assetToCAsset[asset]).mint(user, amount);
-        emit IncreaseCollateral(assetToCAsset[asset], user, asset, amount);
     }
 
     function _decreaseCollateral(address user, address asset, uint amount) external {
         require(msg.sender == system.reserve() || msg.sender == system.liquidator(), "CollateralManager: Not reserve or liquidator");
         ICollateralERC20(assetToCAsset[asset]).burn(user, amount);
-        emit DecreaseCollateral(assetToCAsset[asset], user, asset, amount);
     }
 
     function collateral(address user, address asset) public view returns(uint){

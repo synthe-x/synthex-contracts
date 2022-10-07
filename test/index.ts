@@ -14,8 +14,10 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
   let reserve: Contract, cManager: Contract, dManager: Contract, 
   usdOracle: Contract, ethOracle: Contract, btcOracle: Contract, 
   helper: Contract, fixedIntRate: Contract;
-  let usdpool: any, btcpool: Contract, ethpool: Contract, linkpool: Contract, forthpool: Contract;
-  let PriceOracle, cPool: any, dPool: any;
+  let usdpool: Contract, dusdpool: Contract, 
+  btcpool: Contract, dbtcpool: Contract, 
+  ethpool: Contract, dethpool: Contract;
+  let PriceOracle, cPool: any, dPool: any, sPool: any;
   let usdPrice = 0, btcPrice = 0, ethPrice = 0;
   let accounts: SignerWithAddress[];
   
@@ -40,7 +42,8 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     helper = deployments.helper
     fixedIntRate = deployments.fixedIntRate
     
-    dPool = await ethers.getContractFactory("SynthERC20");
+    sPool = await ethers.getContractFactory("SynthERC20");
+    dPool = await ethers.getContractFactory("DebtTracker");
     cPool = await ethers.getContractFactory("CollateralERC20");
   })
   
@@ -58,7 +61,8 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     await dManager.create("One USD", "oneUSD", usdOracle.address, fixedIntRate.address);
     let pool = await dManager.dAssets(0);
     expect(pool).to.not.equal(ethers.constants.AddressZero);
-    usdpool = dPool.attach(pool);
+    dusdpool = dPool.attach(pool);
+    usdpool = sPool.attach(await dusdpool.synth());
     let priceArray = await usdpool.get_price();
     usdPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
     expect(usdPrice).to.equal(1);
@@ -68,7 +72,8 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     await dManager.create("One BTC", "oneBTC", btcOracle.address, fixedIntRate.address);
     let pool = await dManager.dAssets(1);
     expect(pool).to.not.equal(ethers.constants.AddressZero);
-    btcpool = dPool.attach(pool);
+    dbtcpool = dPool.attach(pool);
+    btcpool = sPool.attach(await dbtcpool.synth());
     let priceArray = await btcpool.get_price();
     btcPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
     expect(btcPrice).to.be.greaterThan(0);
@@ -76,7 +81,9 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     await dManager.create("One ETH", "oneETH", ethOracle.address, fixedIntRate.address);
     pool = await dManager.dAssets(2);
     expect(pool).to.not.equal(ethers.constants.AddressZero);
-    ethpool = dPool.attach(pool);
+    dethpool = dPool.attach(pool);
+    ethpool = sPool.attach(await dethpool.synth());
+    
     priceArray = await ethpool.get_price();
     ethPrice = priceArray[0].div(ethers.BigNumber.from("10").pow(priceArray[1])).toNumber();
     expect(ethPrice).to.be.greaterThan(0);
@@ -100,9 +107,9 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
   it("should borrow 100 sUSD", async function () {
     let borrowAmount = ethers.utils.parseEther("100");
 
-    await reserve.connect(accounts[0]).borrow(usdpool.address, borrowAmount);
+    await reserve.connect(accounts[0]).borrow(dusdpool.address, borrowAmount);
     expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.equal(borrowAmount.mul(usdPrice));
-    expect(await usdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(borrowAmount);
+    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(borrowAmount);
     expect(await usdpool.balanceOf(accounts[0].address)).to.be.equal(borrowAmount);
     expect(await usdpool.totalSupply()).to.be.equal(borrowAmount);
     expect(await reserve.callStatic.collateralRatio(accounts[0].address)).to.be.greaterThan(1);
@@ -112,11 +119,11 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     let sUSDAmount = ethers.utils.parseEther("100");
     let sETHAmount = ethers.utils.parseEther("0.1");
 
-    await reserve.connect(accounts[0]).exchange(usdpool.address, sUSDAmount, ethpool.address);
+    await reserve.connect(accounts[0]).exchange(0, dusdpool.address, sUSDAmount, dethpool.address);
 
     expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.equal(sETHAmount.mul(ethPrice));
-    expect(await usdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(0);
-    expect(await ethpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(sETHAmount);
+    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(0);
+    expect(await dethpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(sETHAmount);
 
     expect(await usdpool.balanceOf(accounts[0].address)).to.be.equal(0);
     expect(await ethpool.balanceOf(accounts[0].address)).to.be.equal(sETHAmount);
@@ -129,11 +136,11 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     let sUSDAmount = ethers.utils.parseEther("100");
     let sETHAmount = ethers.utils.parseEther("0.1");
 
-    await reserve.connect(accounts[0]).exchange(ethpool.address, sETHAmount, usdpool.address);
+    await reserve.connect(accounts[0]).exchange(0, dethpool.address, sETHAmount, dusdpool.address);
 
     expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.equal(sUSDAmount.mul(usdPrice));
-    expect(await usdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(sUSDAmount);
-    expect(await ethpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(0);
+    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(sUSDAmount);
+    expect(await dethpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(0);
 
     expect(await usdpool.balanceOf(accounts[0].address)).to.be.equal(sUSDAmount);
     expect(await ethpool.balanceOf(accounts[0].address)).to.be.equal(0);
@@ -145,9 +152,9 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
   it("repay 100 sUSD", async function () {
     let borrowedAmount = ethers.utils.parseEther("100");
 
-    await reserve.connect(accounts[0]).repay(usdpool.address, borrowedAmount);
+    await reserve.connect(accounts[0]).repay(dusdpool.address, borrowedAmount);
     expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.equal(0);
-    expect(await usdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(0);
+    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(0);
     expect(await usdpool.balanceOf(accounts[0].address)).to.be.equal(0);
     // expect(await usdpool.totalSupply()).to.be.equal(borrowAmount);
     // expect(await reserve.callStatic.collateralRatio(accounts[0].address)).to.be.greaterThan(1);

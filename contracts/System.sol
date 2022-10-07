@@ -1,72 +1,224 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 import "./interfaces/IRoleManager.sol";
 import "./interfaces/IAddressResolver.sol";
+import "./interfaces/IReserve.sol";
+import "./interfaces/ILiquidator.sol";
+import "./interfaces/ICollateralManager.sol";
+import "./interfaces/IDebtManager.sol";
+import "./interfaces/IInterestRate.sol";
+import "./interfaces/IPool.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./pool/TradingPool.sol";
 
 contract System {
-    bool private ExchangePaused = false;
-    bool private IssuancePaused = false;
+    using SafeMath for uint;
+    bool private isExchangePaused = false;
+    bool private isIssuancePaused = false;
 
     IAddressResolver _addrResolver;
+    uint256 public minCRatio;
+    uint256 public safeCRatio;
 
+    uint public tradingPoolsCount = 0;
+    mapping(uint => IPool) public tradingPools;
+    mapping(address => bool) public isTradingPool;
 
+    event NewTradingPool(address pool, uint poolId);
+    event NewCollateralAsset(address asset, address priceOracle, uint minCollateral);
+    event NewSynthAsset(address asset, address priceOracle, address interestRateModel);
+
+    event NewMinCRatio(uint256 minCRatio);
+    event NewSafeCRatio(uint256 minCRatio);
+
+    event PoolEntered(address pool, address account, address asset, uint amount);
+    event PoolExited(address pool, address account, address asset, uint amount);
+    event Liquidate(address pool, address liquidator, address account, address asset, uint amount);
+    event IncreaseDebt(address account, address asset, uint amount);
+    event DecreaseDebt(address account, address asset, uint amount);
+    event IncreaseCollateral(address account, address asset, uint amount);
+    event DecreaseCollateral(address account, address asset, uint amount);
+    event Exchange(uint pool, address account, address src, uint srcAmount, address dst);
+    
     constructor(address addrResolver) {
         _addrResolver = IAddressResolver(addrResolver);
     }
 
-    modifier onlySysAdmin() {
-        require(owner() == msg.sender, "System: Only Admin can call this function");
-        _;
+    /* -------------------------------------------------------------------------- */
+    /*                              Public Functions                              */
+    /* -------------------------------------------------------------------------- */
+
+    function deposit(address asset, uint amount) external {
+        IReserve(reserve()).increaseCollateral(msg.sender, asset, amount);
+        emit IncreaseCollateral(msg.sender, asset, amount);
+    }
+
+    function withdraw(address asset, uint amount) external {
+        IReserve(reserve()).decreaseCollateral(msg.sender, asset, amount);
+        emit DecreaseCollateral(msg.sender, asset, amount);
+    }
+
+    function borrow(address asset, uint amount) external {
+        require(isIssuancePaused == false, "SYSTEM: Issuance is paused");
+        IReserve(reserve()).increaseDebt(msg.sender, asset, amount);
+        require(collateralRatio(msg.sender) > safeCRatio, "SYSTEM: cRatio is below safety threshold");
+        emit IncreaseDebt(msg.sender, asset, amount);
+    }
+
+    function repay(address asset, uint amount) external {
+        require(isIssuancePaused == false, "SYSTEM: Issuance is paused");
+        IReserve(reserve()).decreaseDebt(msg.sender, asset, amount);
+        emit DecreaseDebt(msg.sender, asset, amount);
+    }
+
+    function exchange(uint poolIndex, address src, uint srcAmount, address dst) external {
+        if(poolIndex == 0){
+            IReserve(reserve()).exchange(msg.sender, src, srcAmount, dst);
+            emit Exchange(poolIndex, msg.sender, src, srcAmount, dst);
+        } else {
+            tradingPools[poolIndex].exchange(msg.sender, src, srcAmount, dst);
+            emit Exchange(poolIndex, msg.sender, src, srcAmount, dst);
+        }
+    }
+
+    function enterPool(uint poolIndex, address asset, uint amount) external {
+        IReserve(reserve()).decreaseDebt(msg.sender, asset, amount);
+        tradingPools[poolIndex].increaseDebt(msg.sender, asset, amount);
+        emit PoolEntered(address(tradingPools[poolIndex]), msg.sender, asset, amount);
+    }
+
+    function exitPool(uint poolIndex, address asset, uint amount) external {
+        tradingPools[poolIndex].decreaseDebt(msg.sender, asset, amount);
+        IReserve(reserve()).increaseDebt(msg.sender, asset, amount);
+        emit PoolExited(address(tradingPools[poolIndex]), msg.sender, asset, amount);
+    }
+
+    function liquidate(address user) external {
+        require(
+            collateralRatio(user) < minCRatio,
+            "Reserve: Cannot be liquidated, cRation is above MinCRatio"
+        );
+        ILiquidator(liquidator()).liquidate(msg.sender, user);
+    }
+
+    function partialLiquidate(address user, address borrowedAsset, uint borrowedAmount) external {
+        require(
+            collateralRatio(user) < minCRatio,
+            "Reserve: Cannot be liquidated, cRation is above MinCRatio"
+        );
+        ILiquidator(liquidator()).partialLiquidate(
+            msg.sender,
+            user,
+            borrowedAsset,
+            borrowedAmount
+        );
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                               Admin Functions                              */
+    /* -------------------------------------------------------------------------- */
+
+    function newTradingPool(string memory name, string memory symbol) external onlySysAdmin {
+        TradingPool pool = new TradingPool(name, symbol);
+        tradingPoolsCount += 1;
+        tradingPools[tradingPoolsCount] = IPool(address(pool));
+        isTradingPool[address(pool)] = true;
+        emit NewTradingPool(address(pool), tradingPoolsCount);
+    }
+    
+    function newCollateralAsset(string memory name, string memory symbol, address asset, address oracle, uint minCollateral) external onlySysAdmin {
+        ICollateralManager(cManager()).create(name, symbol, asset, oracle, minCollateral);
+        emit NewCollateralAsset(asset, address(oracle), minCollateral);
+    }
+
+    function newSynthAsset(string memory name, string memory symbol, address _oracle, address _interestRateModel) external onlySysAdmin {
+        address synth = IDebtManager(dManager()).create(name, symbol, _oracle, _interestRateModel);
+        emit NewSynthAsset(synth, address(_oracle), address(_interestRateModel)); 
+    }
+
+    function setMinCRatio(uint _minCRatio) external onlySysAdmin {
+        minCRatio = _minCRatio;
+        emit NewMinCRatio(_minCRatio);
+    }
+
+    function setSafeCRatio(uint _safeCRatio) external onlySysAdmin {
+        safeCRatio = _safeCRatio;
+        emit NewSafeCRatio(_safeCRatio);
+    }
+
+    
+    /* -------------------------------------------------------------------------- */
+    /*                               View Functions                               */
+    /* -------------------------------------------------------------------------- */
+
+    function collateralRatio(address account) public returns (uint) {
+        uint256 _debt = reservePoolDebt(account).add(tradingPoolDebt(account));
+        if (_debt == 0) {
+            return 2**256 - 1;
+        }
+        return totalCollateral(account).mul(1e18).div(_debt);
+    }
+
+    function totalCollateral(address account) public returns (uint) {
+        return ICollateralManager(cManager()).totalCollateral(account);
+    }
+
+    function reservePoolDebt(address account) public returns (uint) {
+        return IDebtManager(dManager()).totalDebt(account);
+    }
+    
+    function tradingPoolDebt(address account) public view returns (uint) {
+        uint _debt = 0;
+        for (uint i = 1; i <= tradingPoolsCount; i++) {
+            _debt = _debt.add(tradingPools[i].getBorrowBalanceUSD(account));
+        }
+        return _debt;
     }
 
     function owner() public view returns (address) {
         return _addrResolver.owner();
     }
 
-    function isExchangePaused() external view returns (bool) {
-        return ExchangePaused;
-    }
-
-    function isIssuancePaused() external view returns (bool) {
-        return IssuancePaused;
-    }
-
     function pauseExchange() external onlySysAdmin {
-        ExchangePaused = true;
+        isExchangePaused = true;
     }
 
     function resumeExchange() external onlySysAdmin {
-        ExchangePaused = false;
+        isExchangePaused = false;
     }
 
     function pauseIssuance() external onlySysAdmin {
-        IssuancePaused = true;
+        isIssuancePaused = true;
     }
 
     function resumeIssuance() external onlySysAdmin {
-        IssuancePaused = false;
+        isIssuancePaused = false;
     }
 
-    function reserve() external view returns (address){
+    function reserve() public view returns (address){
         return _addrResolver.getAddress("RESERVE");
     }
     
-    function cManager() external view returns (address){
+    function cManager() public view returns (address){
         return _addrResolver.getAddress("COLLATERAL_MANAGER");
     }
     
-    function dManager() external view returns (address){
+    function dManager() public view returns (address){
         return _addrResolver.getAddress("DEBT_MANAGER");
     }
-    
-    function exchanger() external view returns (address){
-        return _addrResolver.getAddress("EXCHANGER");
+
+    function liquidator() public view returns (address){
+        return _addrResolver.getAddress("LIQUIDATOR");
     }
 
-    function liquidator() external view returns (address){
-        return _addrResolver.getAddress("LIQUIDATOR");
+    /* -------------------------------------------------------------------------- */
+    /*                                  Modifiers                                 */
+    /* -------------------------------------------------------------------------- */
+
+    modifier onlySysAdmin() {
+        require(owner() == msg.sender, "System: Only Admin can call this function");
+        _;
     }
 }

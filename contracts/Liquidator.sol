@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 import "./interfaces/ISystem.sol";
-import "./interfaces/ISynthERC20.sol";
+import "contracts/interfaces/ISynthERC20.sol";
 import "./interfaces/IReserve.sol";
 import "./interfaces/ICollateralManager.sol";
 import "./interfaces/ICollateralERC20.sol";
 import "./interfaces/IDebtManager.sol";
+import "./interfaces/IDebtTracker.sol";
+
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "hardhat/console.sol";
@@ -16,7 +18,7 @@ contract Liquidator {
     ISystem system;
     uint reward;
     uint rewardDecimals = 1e8;
-    
+        
     constructor(ISystem _system){
         system = _system;
     }
@@ -25,7 +27,7 @@ contract Liquidator {
         uint dAssetsCount = IDebtManager(system.dManager()).dAssetsCount();
         for(uint i = 0; i < dAssetsCount; i++){
             address dAsset = IDebtManager(system.dManager()).dAssets(i);
-            IDebtERC20(dAsset).repay(user, liquidator, type(uint).max);
+            IDebtTracker(dAsset).repay(user, liquidator, type(uint).max);
         }
 
         uint cAssetsCount = ICollateralManager(system.cManager()).cAssetsCount();
@@ -42,7 +44,7 @@ contract Liquidator {
 
         uint repayAmountUSD = multiplyByPrice(repayAmount, borrowedAsset);
         uint cPercent = repayAmountUSD.mul(1e18).div(IDebtManager(system.dManager()).totalDebt(user));
-        IDebtERC20(borrowedAsset).repay(user, liquidator, repayAmount);
+        IDebtTracker(borrowedAsset).repay(user, liquidator, repayAmount);
 
         for(uint i = 0; i < ICollateralManager(system.cManager()).cAssetsCount(); i++){
             address cAsset = ICollateralManager(system.cManager()).cAssets(i);

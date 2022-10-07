@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -14,7 +14,7 @@ import "./interfaces/IPriceOracle.sol";
 import "./interfaces/ISystem.sol";
 import "./interfaces/IReserve.sol";
 import "./interfaces/IInterestRate.sol";
-import "./interfaces/IDebtERC20.sol";
+import "./interfaces/IDebtTracker.sol";
 import "hardhat/console.sol";
 
 contract SynthERC20 is 
@@ -44,12 +44,12 @@ contract SynthERC20 is
     }
 
     function issue(address account, uint issueAmount) public {
-        require(IReserve(system.reserve()).isReservePool(msg.sender) || msg.sender == address(debt), "SynthERC20 Issue: Only reserve pools can issue internally");
+        require(system.isTradingPool(msg.sender) || system.baseReserve() == msg.sender, "SynthERC20 Issue: Only reserve pools can issue internally");
         _mint(account, issueAmount);
     }
 
     function burn(address account, uint burnAmount) public {
-        require(IReserve(system.reserve()).isReservePool(msg.sender) || msg.sender == address(debt), "SynthERC20 Burn: Only reserve pools can burn internally");
+        require(IReserve(system.reserve()).isReservePool(msg.sender), "SynthERC20 Burn: Only reserve pools can burn internally");
         _burn(account, burnAmount);
     }
 

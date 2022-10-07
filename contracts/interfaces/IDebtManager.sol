@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 interface IDebtManager {
+    function create(string memory name, string memory symbol, address oracle, address interestRateModel) external returns(address);
+
     function dAssetsCount() external view returns (uint);
     function dAssets(uint) external view returns (address);
     function debt(address, address) external view returns (uint);

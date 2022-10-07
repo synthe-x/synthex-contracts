@@ -30,7 +30,7 @@ describe("Testing helpers", function () {
   })
 
   it("user adds collateral and issues assets", async function () {
-    await reserve.connect(accounts[0]).increaseCollateral(ethers.constants.AddressZero, ethers.utils.parseEther("1"), {value: ethers.utils.parseEther("1")});
+    await reserve.connect(accounts[0]).increaseCollateral(ethers.constants.AddressZero, ethers.utils.parseEther("10"), {value: ethers.utils.parseEther("10")});
     await reserve.connect(accounts[0]).borrow(usdpool.address, ethers.utils.parseEther("100"));
   })
 

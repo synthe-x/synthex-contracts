@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 interface IAddressResolver {
     function repository(bytes32) external view returns (address);

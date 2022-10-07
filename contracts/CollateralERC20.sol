@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./interfaces/ISystem.sol";
-import "./interfaces/IReserve.sol";
+import "contracts/interfaces/IReserve.sol";
 import "./interfaces/ICollateralManager.sol";
 
 import "./interfaces/IPriceOracle.sol";
@@ -62,8 +62,7 @@ contract CollateralERC20 is ERC20 {
 
     function _afterTokenTransfer(address from, address to, uint256) override internal {
         if(from != address(0) && to != address(0)){
-            console.log(IReserve(system.reserve()).collateralRatio(from), from);
-            require(IReserve(system.reserve()).collateralRatio(from) > IReserve(system.reserve()).safeCRatio(), "CollateralERC20: Not enough collateral");
+            require(system.collateralRatio(from) > system.safeCRatio(), "CollateralERC20: Not enough collateral");
         }
     }
 }

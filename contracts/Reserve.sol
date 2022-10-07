@@ -1,48 +1,103 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 import "./interfaces/IReserve.sol";
 import "./interfaces/ISystem.sol";
+import "./interfaces/IDebtManager.sol";
+import "./interfaces/ICollateralManager.sol";
+import "./interfaces/ISynthERC20.sol";
+
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-import "./BaseReserve.sol";
-
-contract Reserve is BaseReserve, ReentrancyGuard {
+contract Reserve is ReentrancyGuard {
+    using SafeMath for uint;
+    ISystem system;
 
     constructor(ISystem _system){
         system = _system;
     }
 
-    function exchange(uint poolIndex, address src, uint srcAmount, address dst) external {
+    function exchange(address user, address src, uint srcAmount, address dst) external {
         require(system.isExchangePaused() == false, "Exchange is paused");
-        _exchangeInternal(poolIndex, src, srcAmount, dst);
+        require(msg.sender == address(system), "BaseReserve: Only system can call exchange");
+        
+        (uint price, uint decimals) = ISynthERC20(dst).get_price();
+        (uint srcPrice, uint srcDecimals) = ISynthERC20(src).get_price();
+
+        IDebtManager(system.dManager())._decreaseDebt(user, src, srcAmount);
+        uint dstAmt = srcAmount.mul(srcPrice).div(price).mul(decimals).div(srcDecimals);
+        IDebtManager(system.dManager())._increaseDebt(user, dst, dstAmt);
     }
 
-    function increaseCollateral(address asset, uint amount) external nonReentrant payable {
-        _increaseCollateralInternal(msg.sender, asset, amount);
+    function increaseCollateral(address user, address asset, uint amount) external nonReentrant payable {
+        require(msg.sender == address(system), "BaseReserve: Only system can call exchange");
+        if (asset != address(0)) {
+            IERC20(asset).transferFrom(user, address(this), amount);
+        } else {
+            amount = msg.value;
+        }
+        ICollateralManager(system.cManager())._increaseCollateral(
+            user,
+            asset,
+            amount
+        );
     }
 
-    function decreaseCollateral(address asset, uint amount) external nonReentrant {
-        _decreaseCollateralInternal(msg.sender, asset, amount);
+    function decreaseCollateral(address user, address asset, uint amount) external nonReentrant {
+        require(msg.sender == address(system), "BaseReserve: Only system can call exchange");
+        ICollateralManager(system.cManager())._decreaseCollateral(
+            user,
+            asset,
+            amount
+        );
+        require(system.collateralRatio(user) > system.safeCRatio(), "Reserve: cRatio is below safeCRatio");
+        transferOutInternal(user, asset, amount);
     }
 
-    function borrow(address asset, uint amount) external {
-        require(system.isIssuancePaused() == false, "Issuance paused");
-        _borrowInternal(asset, amount);
+    function transferOut(
+        address user,
+        address asset,
+        uint amount
+    ) external {
+        require(
+            msg.sender == system.liquidator(),
+            "Only liquidator can transfer out externally"
+        );
+
+        transferOutInternal(user, asset, amount);
     }
 
-    function repay(address asset, uint amount) external {
-        _repayInternal(asset, amount);
+    function transferOutInternal(
+        address user,
+        address asset,
+        uint amount
+    ) internal {
+        if (asset == address(0)) {
+            payable(user).transfer(amount);
+        } else {
+            IERC20(asset).transfer(user, amount);
+        }
     }
 
-    function liquidate(address user) external {
-        _liquidateInternal(msg.sender, user);
+    function increaseDebt(address user, address asset, uint amount) internal {
+        require(msg.sender == address(system), "BaseReserve: Only system can call increase debt");
+        IDebtManager(system.dManager())._increaseDebt(
+            user,
+            asset,
+            amount
+        );
     }
 
-    function partialLiquidate(address user, address borrowedAsset, uint borrowedAmount) external {
-        _partialLiquidateInternal(msg.sender, user, borrowedAsset, borrowedAmount);
+    function decreaseDebt(address user, address token, uint amount) internal {
+        require(msg.sender == address(system), "BaseReserve: Only system can call decrease debt");
+        IDebtManager(system.dManager())._decreaseDebt(
+            user,
+            token,
+            amount
+        );
     }
 }

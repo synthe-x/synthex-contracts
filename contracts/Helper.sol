@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 import "./interfaces/ISystem.sol";
 import "./interfaces/IExchanger.sol";
@@ -7,10 +7,10 @@ import "./interfaces/IDebtManager.sol";
 import "./interfaces/ICollateralManager.sol";
 import "./interfaces/ICollateralERC20.sol";
 
-import "./interfaces/IReserve.sol";
+import "contracts/interfaces/IReserve.sol";
 import "./interfaces/IReservePool.sol";
 
-import "./interfaces/ISynthERC20.sol";
+import "contracts/interfaces/ISynthERC20.sol";
 
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
@@ -93,7 +93,7 @@ contract Helper {
 
     function getDebtAsset(uint index) public view returns(AssetInfo memory){
         AssetInfo memory response;
-        IDebtERC20 debtAsset = IDebtERC20(IDebtManager(system.dManager()).dAssets(index));
+        IDebtTracker debtAsset = IDebtTracker(IDebtManager(system.dManager()).dAssets(index));
         response.id = debtAsset.synth();
         response.name = IERC20Metadata(response.id).name();
         response.symbol = IERC20Metadata(response.id).symbol();

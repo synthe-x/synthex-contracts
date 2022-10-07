@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "../interfaces/ISynthERC20.sol";
+import "contracts/interfaces/ISynthERC20.sol";
 import "../interfaces/ISystem.sol";
 import "../interfaces/IPriceOracle.sol";
-import "../interfaces/IDebtERC20.sol";
+import "../interfaces/IDebtTracker.sol";
 import "../interfaces/IReserve.sol";
 import "../interfaces/IDebtManager.sol";
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "hardhat/console.sol";
 
-contract ReservePool is ERC20 {
+contract TradingPool is ERC20 {
     using SafeMath for uint;
 
     // account => dAsset => amount
@@ -21,14 +21,14 @@ contract ReservePool is ERC20 {
 
     ISystem system;
 
-    constructor(ISystem _system) ERC20("Synthex Pool Debt", "SPD") {
-        system = _system;
+    constructor(string memory name, string memory symbol) ERC20(name, symbol) {
+        system = ISystem(msg.sender);
     }
 
-    function enterPool(address user, address dAsset, uint amount) external {
-        require(system.reserve() == msg.sender, "ReservePool: Only reserve can call enter pool");
+    function increaseDebt(address user, address asset, uint amount) external {
+        require(address(system) == msg.sender, "TradingPool: Only reserve can call enter pool");
         // mint dept pool shares
-        (uint price, uint priceDecimals) = IDebtERC20(dAsset).get_price();
+        (uint price, uint priceDecimals) = ISynthERC20(asset).get_price();
         uint dspAmount = amount.mul(price).div(10**priceDecimals);
         if(totalSupply() != 0){
             dspAmount = dspAmount.mul(totalSupply()).div(getTotalDebtUSD());
@@ -36,30 +36,30 @@ contract ReservePool is ERC20 {
         _mint(user, dspAmount);
 
         // add debt to user
-        debts[user][dAsset] = debts[user][dAsset].add(amount);
-        totalDebt[dAsset] = totalDebt[dAsset].add(amount);
+        debts[user][asset] = debts[user][asset].add(amount);
+        totalDebt[asset] = totalDebt[asset].add(amount);
         // issue tokens
-        ISynthERC20(IDebtERC20(dAsset).synth()).issue(user, amount);
+        ISynthERC20(asset).issue(user, amount);
     }
 
-    function exitPool(address user, address asset, uint amount) external {
-        require(system.reserve() == msg.sender, "ReservePool: Only reserve can call exit pool");
+    function decreaseDebt(address user, address asset, uint amount) external {
+        require(address(system) == msg.sender, "TradingPool: Only reserve can call exit pool");
         // burn dept pool shares
-        (uint price, uint priceDecimals) = IDebtERC20(asset).get_price();
+        (uint price, uint priceDecimals) = ISynthERC20(asset).get_price();
         uint dspAmount = amount.mul(price).div(10**priceDecimals).mul(totalSupply()).div(getTotalDebtUSD());
         _burn(user, dspAmount);
 
         debts[user][asset] = debts[user][asset].sub(amount);
         totalDebt[asset] = totalDebt[asset].sub(amount);
-        ISynthERC20(IDebtERC20(asset).synth()).burn(user, amount);
+        ISynthERC20(asset).burn(user, amount);
     }
 
     function exchange(address user, address fromAsset, uint fromAmount, address toAsset) external {
-        require(system.reserve() == msg.sender, "ReservePool: Only reserve can call exchange");
+        require(address(system) == msg.sender, "TradingPool: Only reserve can call exchange");
         
         debts[user][fromAsset] = debts[user][fromAsset].sub(fromAmount);
         totalDebt[fromAsset] = totalDebt[fromAsset].sub(fromAmount);
-        ISynthERC20(IDebtERC20(fromAsset).synth()).burn(user, fromAmount);
+        ISynthERC20(fromAsset).burn(user, fromAmount);
 
         (uint fromPrice, uint fromDecimals) = ISynthERC20(fromAsset).get_price();
         (uint toPrice, uint toDecimals) = ISynthERC20(toAsset).get_price();
@@ -67,13 +67,13 @@ contract ReservePool is ERC20 {
         uint toAmount = fromAmount.mul(fromPrice).mul(10**toDecimals).div(toPrice).div(10**fromDecimals);
         debts[user][toAsset] = debts[user][toAsset].add(toAmount);
         totalDebt[toAsset] = totalDebt[toAsset].add(toAmount);
-        ISynthERC20(IDebtERC20(toAsset).synth()).issue(user, toAmount);
+        ISynthERC20(toAsset).issue(user, toAmount);
     }
 
     function getTotalDebtUSD() public view returns(uint){
         uint total = 0;
         for(uint i = 0; i < IDebtManager(system.dManager()).dAssetsCount(); i++){
-            IDebtERC20 debtAsset = IDebtERC20(IDebtManager(system.dManager()).dAssets(i));
+            ISynthERC20 debtAsset = ISynthERC20(IDebtTracker(IDebtManager(system.dManager()).dAssets(i)).synth());
             (uint price, uint priceDecimals) = debtAsset.get_price();
             total += totalDebt[address(debtAsset)].mul(price).div(10**priceDecimals);
         }

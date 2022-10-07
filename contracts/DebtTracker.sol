@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -17,7 +17,7 @@ import "./SynthERC20.sol";
 
 import "hardhat/console.sol";
 
-contract DebtERC20 {
+contract DebtTracker {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
 
@@ -88,7 +88,7 @@ contract DebtERC20 {
 
         // Calculate the current borrow interest rate
         (uint borrowRate, uint borrowRateDecimals) = interestRateModel.getInterestRate(0);
-        require(borrowRate.div(10**borrowRateDecimals) <= borrowRateMax, "SynthERC20: Borrow rate is absurdly high");
+        require(borrowRate.div(10**borrowRateDecimals) <= borrowRateMax, "DebtTracker: Borrow rate is absurdly high");
 
         // Calculate the number of blocks elapsed since the last accrual
         uint timestampDelta = currentTimestamp - accrualTimestampPrior;
@@ -105,7 +105,7 @@ contract DebtERC20 {
 
     function borrow(address account, uint borrowAmount) public {
         accureInterest();
-        require(msg.sender == system.dManager() || msg.sender == system.exchanger(), "SynthERC20 Issue: Can only be called internally");
+        require(msg.sender == system.dManager(), "DebtTracker: Issue can only be called internally");
 
         uint accountBorrowsPrev = getBorrowBalanceStored(account);
         uint accountBorrowsNew = accountBorrowsPrev + borrowAmount;
@@ -120,7 +120,7 @@ contract DebtERC20 {
 
     function repay(address user, address caller, uint repayAmount) public {
         accureInterest();
-        require(msg.sender == system.dManager() || msg.sender == system.exchanger() || msg.sender == system.liquidator(), "OneERC20 Issue: Can only be called internally");
+        require(msg.sender == system.dManager() || msg.sender == system.liquidator(), "OneERC20 Issue: Can only be called internally");
         /* We fetch the amount the borrower owes, with accumulated interest */
         uint accountBorrowsPrev = getBorrowBalanceStored(user);
 
@@ -138,7 +138,7 @@ contract DebtERC20 {
     }
 
     function get_interest_rate() public view returns (uint, uint) {
-        return interestRateModel.getInterestRate(0);
+        return interestRateModel.getInterestRate(get_price());
     }
 
     function get_price() public view returns (uint, uint) {
