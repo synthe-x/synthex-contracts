@@ -24,7 +24,7 @@ contract FixedInterestRate {
         interestRateDecimals = _interestRateDecimals;
     }
 
-    function getInterestRate(uint price, uint priceDecimals) external view returns(uint, uint){
+    function getInterestRate(uint, uint) external view returns(uint, uint){
         return (interestRate, interestRateDecimals);
     }
 }
