@@ -21,7 +21,7 @@ contract SynthERC20 is
     ERC20
 {
     ISystem system;
-    IDebtERC20 public debt;
+    IDebtTracker public debt;
 
     IPriceOracle public oracle;
     event OracleUpdated(address oldOracle, address newOracle);
@@ -32,7 +32,7 @@ contract SynthERC20 is
         ISystem _system,
         IPriceOracle _oracle
     ) ERC20(name, symbol) {
-        debt = IDebtERC20(msg.sender);
+        debt = IDebtTracker(msg.sender);
         system = _system;
         oracle = _oracle;
     }
@@ -44,12 +44,12 @@ contract SynthERC20 is
     }
 
     function issue(address account, uint issueAmount) public {
-        require(system.isTradingPool(msg.sender) || system.baseReserve() == msg.sender, "SynthERC20 Issue: Only reserve pools can issue internally");
+        require(system.isTradingPool(msg.sender) || system.reserve() == msg.sender || address(debt) == msg.sender, "SynthERC20 Issue: Only reserve pools can issue internally");
         _mint(account, issueAmount);
     }
 
     function burn(address account, uint burnAmount) public {
-        require(IReserve(system.reserve()).isReservePool(msg.sender), "SynthERC20 Burn: Only reserve pools can burn internally");
+        require(system.isTradingPool(msg.sender) || system.reserve() == msg.sender || address(debt) == msg.sender, "SynthERC20 Burn: Only reserve pools can burn internally");
         _burn(account, burnAmount);
     }
 

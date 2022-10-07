@@ -62,7 +62,7 @@ contract CollateralERC20 is ERC20 {
 
     function _afterTokenTransfer(address from, address to, uint256) override internal {
         if(from != address(0) && to != address(0)){
-            require(system.collateralRatio(from) > system.safeCRatio(), "CollateralERC20: Not enough collateral");
+            require(system.collateralRatioStored(from) > system.safeCRatio(), "CollateralERC20: Not enough collateral");
         }
     }
 }

@@ -13,6 +13,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
+import "hardhat/console.sol";
+
 contract Reserve is ReentrancyGuard {
     using SafeMath for uint;
     ISystem system;
@@ -22,7 +24,6 @@ contract Reserve is ReentrancyGuard {
     }
 
     function exchange(address user, address src, uint srcAmount, address dst) external {
-        require(system.isExchangePaused() == false, "Exchange is paused");
         require(msg.sender == address(system), "BaseReserve: Only system can call exchange");
         
         (uint price, uint decimals) = ISynthERC20(dst).get_price();
@@ -54,7 +55,7 @@ contract Reserve is ReentrancyGuard {
             asset,
             amount
         );
-        require(system.collateralRatio(user) > system.safeCRatio(), "Reserve: cRatio is below safeCRatio");
+        require(system.collateralRatioStored(user) > system.safeCRatio(), "Reserve: cRatio is below safeCRatio");        
         transferOutInternal(user, asset, amount);
     }
 
@@ -83,7 +84,7 @@ contract Reserve is ReentrancyGuard {
         }
     }
 
-    function increaseDebt(address user, address asset, uint amount) internal {
+    function increaseDebt(address user, address asset, uint amount) external {
         require(msg.sender == address(system), "BaseReserve: Only system can call increase debt");
         IDebtManager(system.dManager())._increaseDebt(
             user,
@@ -92,7 +93,7 @@ contract Reserve is ReentrancyGuard {
         );
     }
 
-    function decreaseDebt(address user, address token, uint amount) internal {
+    function decreaseDebt(address user, address token, uint amount) external {
         require(msg.sender == address(system), "BaseReserve: Only system can call decrease debt");
         IDebtManager(system.dManager())._decreaseDebt(
             user,

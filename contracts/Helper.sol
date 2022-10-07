@@ -19,6 +19,7 @@ import "hardhat/console.sol";
 
 contract Helper {
     using SafeMath for uint;
+    
     struct AssetInfo {
         address id;
         string name;
@@ -128,17 +129,17 @@ contract Helper {
         for(uint i = 0; i < response.debts.length; i++){
             response.debts[i].asset = getDebtAsset(i);
             response.poolAssets[i].asset = getDebtAsset(i);
-            response.debts[i].amount = IDebtERC20(IDebtManager(system.dManager()).dAssets(i)).getBorrowBalance(user);
+            response.debts[i].amount = IDebtTracker(IDebtManager(system.dManager()).dAssets(i)).getBorrowBalance(user);
             response.debts[i].walletBalance = IERC20Metadata(response.debts[i].asset.id).balanceOf(user);
             response.poolAssets[i].walletBalance = IERC20Metadata(response.debts[i].asset.id).balanceOf(user);
         }
 
-        for(uint i = 1; i <= IReserve(system.reserve()).poolCount(); i++){
-            IReservePool pool = IReservePool(IReserve(system.reserve()).pools(i));
-            for(uint j = 0; j < response.poolAssets.length; j++){
-                response.poolAssets[j].amount = response.poolAssets[j].amount.add(pool.debts(user, address(ISynthERC20(response.poolAssets[j].asset.id).debt())));   
-            }
-        }
+        // for(uint i = 1; i <= IReserve(system.reserve()).poolCount(); i++){
+        //     IReservePool pool = IReservePool(IReserve(system.reserve()).pools(i));
+        //     for(uint j = 0; j < response.poolAssets.length; j++){
+        //         response.poolAssets[j].amount = response.poolAssets[j].amount.add(pool.debts(user, address(ISynthERC20(response.poolAssets[j].asset.id).debt())));   
+        //     }
+        // }
 
         return response;
     }

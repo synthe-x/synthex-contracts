@@ -2,8 +2,20 @@ import { ethers } from "hardhat";
 import hre from "hardhat";
 
 import fs from "fs";
-import init from "./initiate";
+import initiate from "./initiate";
+import { Contract } from 'ethers';
 const FormatTypes = ethers.utils.FormatTypes;
+
+export interface Deployments {
+  addr: Contract;
+  sys: Contract;
+  reserve: Contract;
+  dManager: Contract;
+  cManager: Contract;
+  helper: Contract;
+  fixedIntRate: Contract;
+  liq: Contract;
+}
 
 export default async function main(logs: boolean = true, test: boolean = false) {
   let deployments = fs.readFileSync( process.cwd() +  `/deployments/${hre.network.name}/deployments.json`, "utf8");
@@ -12,10 +24,8 @@ export default async function main(logs: boolean = true, test: boolean = false) 
   (deployments as any)["sources"] = {};
 
   let allDeployments = await deploy(deployments, logs)
-  let synths = {} 
-  if(!test){
-    synths = await init(allDeployments.dManager, allDeployments.cManager, allDeployments.fixedIntRate, allDeployments.reserve, allDeployments.sys, deployments, logs);
-  }
+  let synths = {}
+  synths = await initiate(allDeployments, deployments, logs);
   
   fs.writeFileSync(process.cwd() +  `/deployments/${hre.network.name}/deployments.json`, JSON.stringify(deployments, null, 2));
   return {...allDeployments, ...synths};
@@ -23,30 +33,27 @@ export default async function main(logs: boolean = true, test: boolean = false) 
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// main().catch((error) => {
+//   console.error(error);
+//   process.exitCode = 1;
+// });
 
-async function deploy(deployments: any = {}, logs: boolean = false) {
+async function deploy(deployments: any = {}, logs: boolean = false): Promise<Deployments> {
   const addr = await deployContract("AddressResolver", [], logs, deployments);
-  const sys = await deployContract("System", [addr.address], logs, deployments);
+  const sys = await deployContract("System", [addr.address, ethers.utils.parseEther("1.3").toString(), ethers.utils.parseEther("2.0").toString()], logs, deployments);
   const reserve = await deployContract("Reserve", [sys.address], logs, deployments);
-  const exchanger = await deployContract("Exchanger", [sys.address], logs, deployments);
   const dManager = await deployContract("DebtManager", [sys.address], logs, deployments);
   const cManager = await deployContract("CollateralManager", [sys.address], logs, deployments);
   const helper = await deployContract("Helper", [sys.address], logs, deployments);
   const fixedIntRate = await deployContract("FixedInterestRate", [sys.address], logs, deployments);
   const liq = await deployContract("Liquidator", [sys.address], logs, deployments);
 
-  await reserve.setMinCRatio(ethers.utils.parseEther("1.5"));
-
   await addr.importAddresses(
-    ["SYSTEM", "RESERVE", "EXCHANGER", "DEBT_MANAGER", "COLLATERAL_MANAGER", "LIQUIDATOR"].map((x) => ethers.utils.formatBytes32String(x)), 
-    [sys.address, reserve.address, exchanger.address, dManager.address, cManager.address, liq.address]
+    ["SYSTEM", "RESERVE", "DEBT_MANAGER", "COLLATERAL_MANAGER", "LIQUIDATOR"].map((x) => ethers.utils.formatBytes32String(x)), 
+    [sys.address, reserve.address, dManager.address, cManager.address, liq.address]
   )
 
-  return { addr, sys, reserve, exchanger, dManager, cManager, helper, fixedIntRate, liq };
+  return { addr, sys, reserve, dManager, cManager, helper, fixedIntRate, liq };
 }
 
 async function deployContract(name: string, args: string[], logs: boolean = false, deployments: any = {}) {

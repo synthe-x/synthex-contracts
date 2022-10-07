@@ -39,19 +39,19 @@ contract Liquidator {
     }
 
     function partialLiquidate(address liquidator, address user, address borrowedAsset, uint repayAmount) external {
-        require(msg.sender == system.reserve(), "Liquidator: Only reserve can liquidate");
+        require(msg.sender == address(system), "Liquidator: Only reserve can liquidate");
         
-
-        uint repayAmountUSD = multiplyByPrice(repayAmount, borrowedAsset);
+        uint repayAmountUSD = toUSD(borrowedAsset, repayAmount);
         uint cPercent = repayAmountUSD.mul(1e18).div(IDebtManager(system.dManager()).totalDebt(user));
-        IDebtTracker(borrowedAsset).repay(user, liquidator, repayAmount);
-
-        for(uint i = 0; i < ICollateralManager(system.cManager()).cAssetsCount(); i++){
+        
+        IDebtTracker(system.getDebtTracker(borrowedAsset)).repay(user, liquidator, repayAmount);
+        
+        uint cAssetsCount = ICollateralManager(system.cManager()).cAssetsCount();
+        for(uint i = 0; i < cAssetsCount; i++){
             address cAsset = ICollateralManager(system.cManager()).cAssets(i);
             uint cAmount = ICollateralERC20(cAsset).balanceOf(user).mul(cPercent).div(1e18);
             if(cAmount > 0){
-                (uint cPrice, uint cDecimals) = ICollateralERC20(cAsset).get_price();
-                uint cAmountUSD = cAmount.mul(cPrice).div(10**cDecimals);
+                uint cAmountUSD = toUSD(cAsset, cAmount);
                 ICollateralManager(system.cManager())._decreaseCollateral(user, ICollateralERC20(cAsset).underlyingToken(), cAmount);
                 IReserve(system.reserve()).transferOut(user, ICollateralERC20(cAsset).underlyingToken(), cAmount);
 
@@ -66,8 +66,8 @@ contract Liquidator {
         require(repayAmountUSD == 0, "Liquidator: Not enough collateral");
     }
 
-    function multiplyByPrice(uint amount, address asset) internal view returns(uint){
-        (uint price, uint decimals) = ISynthERC20(asset).get_price();
-        return amount.mul(price).div(10**decimals);
+    function toUSD(address asset, uint amount) public view returns(uint){
+        (uint price, uint pricedecimals) = ISynthERC20(asset).get_price();
+        return amount.mul(price).div(10**pricedecimals);
     }
 }

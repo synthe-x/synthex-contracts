@@ -9,21 +9,6 @@
             "name": "ETH",
             "symbol": "ETH",
             "feed": "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e"
-        },
-        {
-            "name": "FORTH",
-            "symbol": "FORTH",
-            "feed": "0x7A65Cf6C2ACE993f09231EC1Ea7363fb29C13f2F"
-        },
-        {
-            "name": "LINK",
-            "symbol": "LINK",
-            "feed": "0x48731cF7e84dc94C5f84577882c14Be11a5B7456"
-        },
-        {
-            "name": "DAI",
-            "symbol": "DAI",
-            "feed": "0x0d79df66BE487753B02D015Fb622DED7f0E9798d"
         }
     ],
     "collaterals": [

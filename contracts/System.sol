@@ -42,7 +42,9 @@ contract System {
     event DecreaseCollateral(address account, address asset, uint amount);
     event Exchange(uint pool, address account, address src, uint srcAmount, address dst);
     
-    constructor(address addrResolver) {
+    constructor(address addrResolver, uint minCRatio_, uint safeCRatio_) {
+        minCRatio = minCRatio_;
+        safeCRatio = safeCRatio_;
         _addrResolver = IAddressResolver(addrResolver);
     }
 
@@ -50,8 +52,8 @@ contract System {
     /*                              Public Functions                              */
     /* -------------------------------------------------------------------------- */
 
-    function deposit(address asset, uint amount) external {
-        IReserve(reserve()).increaseCollateral(msg.sender, asset, amount);
+    function deposit(address asset, uint amount) external payable {
+        IReserve(reserve()).increaseCollateral{value: msg.value}(msg.sender, asset, amount);
         emit IncreaseCollateral(msg.sender, asset, amount);
     }
 
@@ -74,6 +76,7 @@ contract System {
     }
 
     function exchange(uint poolIndex, address src, uint srcAmount, address dst) external {
+        require(!isExchangePaused, "SYSTEM: Exchange is paused");
         if(poolIndex == 0){
             IReserve(reserve()).exchange(msg.sender, src, srcAmount, dst);
             emit Exchange(poolIndex, msg.sender, src, srcAmount, dst);
@@ -153,6 +156,10 @@ contract System {
     /*                               View Functions                               */
     /* -------------------------------------------------------------------------- */
 
+    function getDebtTracker(address asset) public view returns (address) {
+        return IDebtManager(dManager()).assetToDAsset(asset);
+    }
+
     function collateralRatio(address account) public returns (uint) {
         uint256 _debt = reservePoolDebt(account).add(tradingPoolDebt(account));
         if (_debt == 0) {
@@ -161,12 +168,24 @@ contract System {
         return totalCollateral(account).mul(1e18).div(_debt);
     }
 
-    function totalCollateral(address account) public returns (uint) {
+    function collateralRatioStored(address account) public view returns (uint) {
+        uint256 _debt = reservePoolDebtStored(account).add(tradingPoolDebt(account));
+        if (_debt == 0) {
+            return 2**256 - 1;
+        }
+        return totalCollateral(account).mul(1e18).div(_debt);
+    }
+
+    function totalCollateral(address account) public view returns (uint) {
         return ICollateralManager(cManager()).totalCollateral(account);
     }
 
     function reservePoolDebt(address account) public returns (uint) {
         return IDebtManager(dManager()).totalDebt(account);
+    }
+
+    function reservePoolDebtStored(address account) public view returns (uint) {
+        return IDebtManager(dManager()).totalDebtStored(account);
     }
     
     function tradingPoolDebt(address account) public view returns (uint) {
