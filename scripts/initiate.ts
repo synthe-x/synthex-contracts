@@ -54,7 +54,7 @@ export default async function initiate(contracts: Deployments, deployments: any 
     let oracle = await USDPriceOracle.deploy();
     await oracle.deployed();
     console.log("xUSD oracle", oracle.address);
-    await contracts.sys.newSynthAsset("SyntheX USD", "xUSD", oracle.address, contracts.fixedIntRate.address);
+    await contracts.sys.newSynthAsset("SyntheX USD", "USDX", oracle.address, contracts.fixedIntRate.address);
     let xUSDDebt = DebtTracker.attach(await contracts.dManager.dAssets((config as any)["synths"].length));
     (synths as any)["usdpool"] = SynthERC20.attach(await xUSDDebt.synth());
     (synths as any)["usddebt"] = xUSDDebt;

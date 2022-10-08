@@ -33,10 +33,10 @@ export default async function main(logs: boolean = true, test: boolean = false) 
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-// main().catch((error) => {
-//   console.error(error);
-//   process.exitCode = 1;
-// });
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
 
 async function deploy(deployments: any = {}, logs: boolean = false): Promise<Deployments> {
   const addr = await deployContract("AddressResolver", [], logs, deployments);

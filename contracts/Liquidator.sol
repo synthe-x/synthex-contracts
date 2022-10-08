@@ -7,8 +7,6 @@ import "./interfaces/IReserve.sol";
 import "./interfaces/ICollateralManager.sol";
 import "./interfaces/ICollateralERC20.sol";
 import "./interfaces/IDebtManager.sol";
-import "./interfaces/IDebtTracker.sol";
-
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "hardhat/console.sol";

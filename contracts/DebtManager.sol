@@ -13,7 +13,7 @@ contract DebtManager {
     ISystem public system;
 
     uint public dAssetsCount = 0;
-    mapping (uint => address) public dAssets;
+    mapping(uint => address) public dAssets;
     mapping(address => address) public assetToDAsset;
     
     constructor(ISystem _system){

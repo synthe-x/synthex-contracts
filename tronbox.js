@@ -21,7 +21,7 @@ module.exports = {
     nile: {
       privateKey: process.env.PRIVATE_KEY_NILE,
       userFeePercentage: 100,
-      feeLimit: 1000000000,
+      feeLimit: 10000 * 1e6,
       fullHost: 'https://api.nileex.io',
       network_id: '3'
     },
@@ -31,7 +31,7 @@ module.exports = {
       userFeePercentage: 100,
       feeLimit: 1000000000,
       fullHost: 'http://127.0.0.1:9090',
-      network_id: '9'
+      network_id: '9',
     },
     compilers: {
       solc: {

@@ -7,7 +7,6 @@ import "./interfaces/ISystem.sol";
 import "./interfaces/ICollateralERC20.sol";
 import "./CollateralERC20.sol";
 
-
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 
 contract CollateralManager {

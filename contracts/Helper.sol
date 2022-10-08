@@ -58,10 +58,79 @@ contract Helper {
         return (getCollateralAssets(), getDebtAssets());
     }
 
+    function dAssetToAsset(address dAsset) public view returns(address){
+        return IDebtTracker(dAsset).synth();
+    }
+
+    
+
+    /* -------------------------------------------------------------------------- */
+    /*                               Debt Assets                                  */
+    /* -------------------------------------------------------------------------- */
+
+    function getDebtAssets() public view returns(AssetInfo[] memory){
+        AssetInfo[] memory response = new AssetInfo[](IDebtManager(system.dManager()).dAssetsCount());
+        for(uint i = 0; i < response.length; i++){
+            response[i] = getDebtAsset(i);
+        }
+        return response;
+    }
+    
+    function getDebtAsset(uint index) public view returns(AssetInfo memory){
+        AssetInfo memory response;
+        IDebtTracker debtAsset = IDebtTracker(IDebtManager(system.dManager()).dAssets(index));
+        response.id = debtAsset.synth();
+        response.name = IERC20Metadata(response.id).name();
+        response.symbol = IERC20Metadata(response.id).symbol();
+        response.decimals = IERC20Metadata(response.id).decimals();
+        response.totalLiquidity = IERC20Metadata(response.id).totalSupply();
+        (response.price, response.priceDecimals) = ISynthERC20(response.id).get_price();
+        (response.interestRate, response.interestRateDecimals) = debtAsset.get_interest_rate();
+        return response;
+    }
+
+    function getDebtAssetPrices() public view returns(uint[] memory){
+        uint[] memory response = new uint[](IDebtManager(system.dManager()).dAssetsCount());
+        for(uint i = 0; i < response.length; i++){
+            IDebtTracker asset = IDebtTracker(IDebtManager(system.dManager()).dAssets(i));
+            (uint price, uint decimals) = asset.get_price();
+            response[i] = price;
+        }
+        return response;
+    }
+
+    function getDebtAssetAddresses() public view returns(address[] memory){
+        address[] memory response = new address[](IDebtManager(system.dManager()).dAssetsCount());
+        for(uint i = 0; i < response.length; i++){
+            response[i] = IDebtTracker(IDebtManager(system.dManager()).dAssets(i)).synth();
+        }
+        return response;
+    }
+
+    function getDebtPositionArray(address user) public view returns(uint[] memory){
+        uint[] memory response = new uint[](IDebtManager(system.dManager()).dAssetsCount());
+        for(uint i = 0; i < response.length; i++){
+            response[i] = IDebtTracker(IDebtManager(system.dManager()).dAssets(i)).getBorrowBalanceStored(user);
+        }
+        return response;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                              Collateral Assets                             */
+    /* -------------------------------------------------------------------------- */
+
     function getCollateralAssets() public view returns(AssetInfo[] memory){
         AssetInfo[] memory response = new AssetInfo[](ICollateralManager(system.cManager()).cAssetsCount());
         for(uint i = 0; i < response.length; i++){
             response[i] = getCollateralAsset(i);
+        }
+        return response;
+    }
+
+    function getCollateralAssetAddresses() public view returns(address[] memory){
+        address[] memory response = new address[](ICollateralManager(system.cManager()).cAssetsCount());
+        for(uint i = 0; i < response.length; i++){
+            response[i] = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(i)).underlyingToken();
         }
         return response;
     }
@@ -84,27 +153,29 @@ contract Helper {
         return response;
     }
 
-    function getDebtAssets() public view returns(AssetInfo[] memory){
-        AssetInfo[] memory response = new AssetInfo[](IDebtManager(system.dManager()).dAssetsCount());
+    function getCollateralAssetPrices(address user) public view returns(uint[] memory){
+        uint[] memory response = new uint[](ICollateralManager(system.cManager()).cAssetsCount());
         for(uint i = 0; i < response.length; i++){
-            response[i] = getDebtAsset(i);
+            ICollateralERC20 asset = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(i));
+            (uint price, uint priceDecimals) = asset.get_price();
+            response[i] = price;
         }
         return response;
     }
 
-    function getDebtAsset(uint index) public view returns(AssetInfo memory){
-        AssetInfo memory response;
-        IDebtTracker debtAsset = IDebtTracker(IDebtManager(system.dManager()).dAssets(index));
-        response.id = debtAsset.synth();
-        response.name = IERC20Metadata(response.id).name();
-        response.symbol = IERC20Metadata(response.id).symbol();
-        response.decimals = IERC20Metadata(response.id).decimals();
-        response.totalLiquidity = IERC20Metadata(response.id).totalSupply();
-        (response.price, response.priceDecimals) = ISynthERC20(response.id).get_price();
-        (response.interestRate, response.interestRateDecimals) = debtAsset.get_interest_rate();
+    // [[amount, price, priceDecimals], ...]
+    function getCollateralPositionArray(address user) public view returns(uint[] memory){
+        uint[] memory response = new uint[](ICollateralManager(system.cManager()).cAssetsCount());
+        for(uint i = 0; i < response.length; i++){
+            ICollateralERC20 asset = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(i));
+            response[i] = ICollateralManager(system.cManager()).collateral(user, asset.underlyingToken());
+        }
         return response;
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                                User Position                               */
+    /* -------------------------------------------------------------------------- */
     function getUserPosition(address user) public returns(UserPosition memory){
         UserPosition memory response = UserPosition({
             id: user,

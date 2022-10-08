@@ -3,114 +3,149 @@
     "AddressResolver": {
       "source": "AddressResolver",
       "constructorArguments": [],
-      "address": "TNGLdeD8BH4P2nw8u7HMTkERbgj4dAjGPz"
+      "address": "THieUJ8jBnBtVpCh7gH3WWWh2cKucZx34b"
     },
     "System": {
       "source": "System",
       "constructorArguments": [
-        "TNGLdeD8BH4P2nw8u7HMTkERbgj4dAjGPz"
+        "THieUJ8jBnBtVpCh7gH3WWWh2cKucZx34b",
+        "1300000000000000000",
+        "2000000000000000000"
       ],
-      "address": "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
+      "address": "TNBqqKgGxTZmryNmuajfJknZdmyi9ebotg"
     },
     "Reserve": {
       "source": "Reserve",
       "constructorArguments": [
-        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
+        "TNBqqKgGxTZmryNmuajfJknZdmyi9ebotg"
       ],
-      "address": "TSs1zNingCpFeUroWabJ2qaijCRu7B952j"
-    },
-    "Exchanger": {
-      "source": "Exchanger",
-      "constructorArguments": [
-        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
-      ],
-      "address": "TSrRuwzWeSzBfodvKjbNn9uEeAJH7CYJga"
+      "address": "TEHFHCyHxT9hdYk8z6TpqZF5WEr4WnER7N"
     },
     "DebtManager": {
       "source": "DebtManager",
       "constructorArguments": [
-        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
+        "TNBqqKgGxTZmryNmuajfJknZdmyi9ebotg"
       ],
-      "address": "TXeSpGNPtWcwShMyANpNSSLdoKf1GxaiSY"
+      "address": "TBs1utiWVvVw5Vdx2ERtJ5zqGCy9pVqg9q"
     },
     "CollateralManager": {
       "source": "CollateralManager",
       "constructorArguments": [
-        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
+        "TNBqqKgGxTZmryNmuajfJknZdmyi9ebotg"
       ],
-      "address": "TWUkMH78nbFvZWgrmh3Y8ceTwJfp6Qxokc"
-    },
-    "Helper": {
-      "source": "Helper",
-      "constructorArguments": [
-        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
-      ],
-      "address": "TSLeiyz7f1wpFQkKKQHgNRF66RpEnDCZmw"
+      "address": "TAxGjSbtMLcHAzjLgMCpVHGYwYdC6MKuAX"
     },
     "FixedInterestRate": {
       "source": "FixedInterestRate",
       "constructorArguments": [
-        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
+        "TNBqqKgGxTZmryNmuajfJknZdmyi9ebotg"
       ],
-      "address": "TVS586dJfTWxADBpSUHcYphGcr4R8Pd5gk"
+      "address": "TB1idJwE7wtf6R5KXQ7bzpynHsv9fuJNMR"
     },
     "Liquidator": {
       "source": "Liquidator",
       "constructorArguments": [
-        "TDPKv5woMdPJKyz9KXGBPaKgUdmUh3sjNC"
+        "TNBqqKgGxTZmryNmuajfJknZdmyi9ebotg"
       ],
-      "address": "TYkyh6ozk8KFSJdsrg3JYbnRz9jDsvWaRU"
+      "address": "TKCsDaMjnb7D3Dw6yL34pXs7CgoC6SUbnp"
     },
-    "SynthexCollateralizedTron": {
+    "cTRX": {
       "source": "CollateralERC20",
       "constructorArguments": [
-        "Synthex CollateralizedTron",
-        "sxcTRX",
+        "Synthex Collateralized Tron",
+        "cTRX",
         "0x0000000000000000000000000000000000000000",
         "TAL6RWymPLepKsLGCzWPUTKQQcWFsuHfNE",
-        {
-          "type": "BigNumber",
-          "hex": "0x016345785d8a0000"
-        }
+        "100000000000000000"
       ],
-      "address": "TTAfUbuZmGSL4wREiTMr8964giSRXGqt4c"
+      "address": "TQF9e6j6eK8oqQABWaMT2nyPQbPJBEdhg2"
     },
-    "SynthexBitcoin": {
+    "BTCX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex Bitcoin",
-        "sxBTC",
-        "TYY5GdNvHN8NVY6MYtgEPwx15pyUmLEw5J",
-        "41d57f0b4a3fb87b1f84be0f8da68d4925849099bb"
+        "BTCX",
+        null,
+        "410b71affb366816ddeea3cbdd6f3d1016bb4bb958"
       ],
-      "address": "TMtR8s3J84cF9sWbCDTvzTDP8S8VHHy1jf"
+      "address": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
     },
-    "SynthexJust": {
+    "XRPX": {
       "source": "SynthERC20",
       "constructorArguments": [
-        "Synthex Just",
-        "sxJST",
-        "TYr8nvS9BUbi9eLXNQpUMbxdvwYpoWn3ho",
-        "41d57f0b4a3fb87b1f84be0f8da68d4925849099bb"
+        "Synthex Ripple",
+        "XRPX",
+        null,
+        "410b71affb366816ddeea3cbdd6f3d1016bb4bb958"
       ],
-      "address": "TQBYDJ5DWJTFiUAteZHyc4HK5wggGvLpAb"
+      "address": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
     },
-    "SynthexDice": {
+    "ADAX": {
       "source": "SynthERC20",
       "constructorArguments": [
-        "Synthex Dice",
-        "sxDICE",
-        "TS8fAMLNnbWgNyXz6queFHR7HfZkhAeppK",
-        "41d57f0b4a3fb87b1f84be0f8da68d4925849099bb"
+        "Synthex Cardano",
+        "ADAX",
+        null,
+        "410b71affb366816ddeea3cbdd6f3d1016bb4bb958"
       ],
-      "address": "TDp9Vux5BgvikU68LqWttTGpHQp7b5T5HP"
+      "address": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
     },
-    "ReservePool0": {
-      "source": "ReservePool",
+    "AAPLX": {
+      "source": "SynthERC20",
       "constructorArguments": [
-        "41257821d5befb9d9c1e8859f8bb63c74cb1aa3502"
+        "Synthex Apple",
+        "AAPLX",
+        null,
+        "410b71affb366816ddeea3cbdd6f3d1016bb4bb958"
       ],
-      "address": "TTTVzf16aTZxBkUwXvBQ1LT28f3odMzd6x"
+      "address": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
+    },
+    "MSFTX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Microsoft",
+        "MSFTX",
+        null,
+        "410b71affb366816ddeea3cbdd6f3d1016bb4bb958"
+      ],
+      "address": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
+    },
+    "EURX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Euro Dollar",
+        "EURX",
+        null,
+        "410b71affb366816ddeea3cbdd6f3d1016bb4bb958"
+      ],
+      "address": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
+    },
+    "YENX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Japanese Yen",
+        "YENX",
+        null,
+        "410b71affb366816ddeea3cbdd6f3d1016bb4bb958"
+      ],
+      "address": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
+    },
+    "INRX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Indian Rupee",
+        "INRX",
+        "TAL6RWymPLepKsLGCzWPUTKQQcWFsuHfNE",
+        "410b71affb366816ddeea3cbdd6f3d1016bb4bb958"
+      ],
+      "address": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
+    },
+    "SXP0": {
+      "source": "TradingPool",
+      "constructorArguments": [
+        "4186053f3288ecfcb66d5cd7240b909859a71c63b4"
+      ],
+      "address": "TRCnW6GmVrprS2owZuiPJNedNfNyANupUB"
     }
   },
   "sources": {
@@ -274,155 +309,107 @@
             "internalType": "address",
             "name": "addrResolver",
             "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minCRatio_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "safeCRatio_",
+            "type": "uint256"
           }
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
       },
       {
-        "inputs": [],
-        "name": "cManager",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "dManager",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "exchanger",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "isExchangePaused",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "isIssuancePaused",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "liquidator",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "pauseExchange",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "pauseIssuance",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "reserve",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "resumeExchange",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "resumeIssuance",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }
-    ],
-    "Reserve": [
-      {
+        "anonymous": false,
         "inputs": [
           {
-            "internalType": "contract ISystem",
-            "name": "_system",
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Borrow",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Deposit",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "pool",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "src",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "srcAmount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "dst",
             "type": "address"
           }
         ],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
+        "name": "Exchange",
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -466,12 +453,94 @@
         "inputs": [
           {
             "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "priceOracle",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "minCollateral",
+            "type": "uint256"
+          }
+        ],
+        "name": "NewCollateralAsset",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
             "internalType": "uint256",
             "name": "minCRatio",
             "type": "uint256"
           }
         ],
         "name": "NewMinCRatio",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "minCRatio",
+            "type": "uint256"
+          }
+        ],
+        "name": "NewSafeCRatio",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "priceOracle",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "interestRateModel",
+            "type": "address"
+          }
+        ],
+        "name": "NewSynthAsset",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "poolId",
+            "type": "uint256"
+          }
+        ],
+        "name": "NewTradingPool",
         "type": "event"
       },
       {
@@ -542,17 +611,48 @@
           {
             "indexed": false,
             "internalType": "address",
-            "name": "pool",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
             "type": "address"
           },
           {
             "indexed": false,
             "internalType": "uint256",
-            "name": "poolId",
+            "name": "amount",
             "type": "uint256"
           }
         ],
-        "name": "ReservePoolCreated",
+        "name": "Repay",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Withdraw",
         "type": "event"
       },
       {
@@ -571,6 +671,19 @@
         "name": "borrow",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "cManager",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
         "type": "function"
       },
       {
@@ -593,10 +706,35 @@
         "type": "function"
       },
       {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "collateralRatioStored",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
         "inputs": [],
-        "name": "createPool",
-        "outputs": [],
-        "stateMutability": "nonpayable",
+        "name": "dManager",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
         "type": "function"
       },
       {
@@ -612,9 +750,9 @@
             "type": "uint256"
           }
         ],
-        "name": "decreaseCollateral",
+        "name": "deposit",
         "outputs": [],
-        "stateMutability": "nonpayable",
+        "stateMutability": "payable",
         "type": "function"
       },
       {
@@ -697,16 +835,17 @@
             "internalType": "address",
             "name": "asset",
             "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
           }
         ],
-        "name": "increaseCollateral",
-        "outputs": [],
-        "stateMutability": "payable",
+        "name": "getDebtTracker",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
         "type": "function"
       },
       {
@@ -717,7 +856,7 @@
             "type": "address"
           }
         ],
-        "name": "isReservePool",
+        "name": "isTradingPool",
         "outputs": [
           {
             "internalType": "bool",
@@ -743,12 +882,117 @@
       },
       {
         "inputs": [],
+        "name": "liquidator",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
         "name": "minCRatio",
         "outputs": [
           {
             "internalType": "uint256",
             "name": "",
             "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "oracle",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minCollateral",
+            "type": "uint256"
+          }
+        ],
+        "name": "newCollateralAsset",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "_oracle",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_interestRateModel",
+            "type": "address"
+          }
+        ],
+        "name": "newSynthAsset",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "name": "newTradingPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
           }
         ],
         "stateMutability": "view",
@@ -779,34 +1023,16 @@
       },
       {
         "inputs": [],
-        "name": "poolCount",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
+        "name": "pauseExchange",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "name": "pools",
-        "outputs": [
-          {
-            "internalType": "contract ReservePool",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
+        "inputs": [],
+        "name": "pauseIssuance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -823,6 +1049,71 @@
           }
         ],
         "name": "repay",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "reserve",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "reservePoolDebt",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "reservePoolDebtStored",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "resumeExchange",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "resumeIssuance",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -856,6 +1147,120 @@
       {
         "inputs": [
           {
+            "internalType": "uint256",
+            "name": "_safeCRatio",
+            "type": "uint256"
+          }
+        ],
+        "name": "setSafeCRatio",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "totalCollateral",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "tradingPoolDebt",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "tradingPools",
+        "outputs": [
+          {
+            "internalType": "contract IPool",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "tradingPoolsCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "Reserve": [
+      {
+        "inputs": [
+          {
+            "internalType": "contract ISystem",
+            "name": "_system",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
             "internalType": "address",
             "name": "user",
             "type": "address"
@@ -871,54 +1276,33 @@
             "type": "uint256"
           }
         ],
-        "name": "transferOut",
+        "name": "decreaseCollateral",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
-      }
-    ],
-    "Exchanger": [
-      {
-        "inputs": [
-          {
-            "internalType": "contract ISystem",
-            "name": "_system",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
       },
       {
-        "anonymous": false,
         "inputs": [
           {
-            "indexed": false,
             "internalType": "address",
-            "name": "account",
+            "name": "user",
             "type": "address"
           },
           {
-            "indexed": false,
             "internalType": "address",
-            "name": "fromAsset",
+            "name": "token",
             "type": "address"
           },
           {
-            "indexed": false,
             "internalType": "uint256",
-            "name": "fromAmount",
+            "name": "amount",
             "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "toAsset",
-            "type": "address"
           }
         ],
-        "name": "Exchange",
-        "type": "event"
+        "name": "decreaseDebt",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
       },
       {
         "inputs": [
@@ -947,6 +1331,75 @@
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "increaseCollateral",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "increaseDebt",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferOut",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
       }
     ],
     "DebtManager": [
@@ -960,69 +1413,6 @@
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "asset",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "DecreaseDebt",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "asset",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "IncreaseDebt",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "asset",
-            "type": "address"
-          }
-        ],
-        "name": "NewDebtAsset",
-        "type": "event"
       },
       {
         "inputs": [
@@ -1073,6 +1463,25 @@
       {
         "inputs": [
           {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "assetToDAsset",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
             "internalType": "string",
             "name": "name",
             "type": "string"
@@ -1094,7 +1503,13 @@
           }
         ],
         "name": "create",
-        "outputs": [],
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
       },
@@ -1161,6 +1576,25 @@
         ],
         "stateMutability": "nonpayable",
         "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "totalDebtStored",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
       }
     ],
     "CollateralManager": [
@@ -1174,68 +1608,6 @@
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "pool",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "asset",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "DecreaseCollateral",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "pool",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "asset",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "IncreaseCollateral",
-        "type": "event"
       },
       {
         "anonymous": false,
@@ -1443,644 +1815,6 @@
         "type": "function"
       }
     ],
-    "Helper": [
-      {
-        "inputs": [
-          {
-            "internalType": "contract ISystem",
-            "name": "_system",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "inputs": [],
-        "name": "getAllAssets",
-        "outputs": [
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "id",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "symbol",
-                "type": "string"
-              },
-              {
-                "internalType": "uint256",
-                "name": "decimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "priceDecimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "totalLiquidity",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRate",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRateDecimals",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct Helper.AssetInfo[]",
-            "name": "",
-            "type": "tuple[]"
-          },
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "id",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "symbol",
-                "type": "string"
-              },
-              {
-                "internalType": "uint256",
-                "name": "decimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "priceDecimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "totalLiquidity",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRate",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRateDecimals",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct Helper.AssetInfo[]",
-            "name": "",
-            "type": "tuple[]"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "index",
-            "type": "uint256"
-          }
-        ],
-        "name": "getCollateralAsset",
-        "outputs": [
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "id",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "symbol",
-                "type": "string"
-              },
-              {
-                "internalType": "uint256",
-                "name": "decimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "priceDecimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "totalLiquidity",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRate",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRateDecimals",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct Helper.AssetInfo",
-            "name": "",
-            "type": "tuple"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "getCollateralAssets",
-        "outputs": [
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "id",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "symbol",
-                "type": "string"
-              },
-              {
-                "internalType": "uint256",
-                "name": "decimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "priceDecimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "totalLiquidity",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRate",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRateDecimals",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct Helper.AssetInfo[]",
-            "name": "",
-            "type": "tuple[]"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "index",
-            "type": "uint256"
-          }
-        ],
-        "name": "getDebtAsset",
-        "outputs": [
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "id",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "symbol",
-                "type": "string"
-              },
-              {
-                "internalType": "uint256",
-                "name": "decimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "priceDecimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "totalLiquidity",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRate",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRateDecimals",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct Helper.AssetInfo",
-            "name": "",
-            "type": "tuple"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "getDebtAssets",
-        "outputs": [
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "id",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "symbol",
-                "type": "string"
-              },
-              {
-                "internalType": "uint256",
-                "name": "decimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "price",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "priceDecimals",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "totalLiquidity",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRate",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "interestRateDecimals",
-                "type": "uint256"
-              }
-            ],
-            "internalType": "struct Helper.AssetInfo[]",
-            "name": "",
-            "type": "tuple[]"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-          }
-        ],
-        "name": "getUserPosition",
-        "outputs": [
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "id",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "collateralBalance",
-                "type": "uint256"
-              },
-              {
-                "components": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "address",
-                        "name": "id",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "symbol",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "decimals",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "price",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "priceDecimals",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "totalLiquidity",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "interestRate",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "interestRateDecimals",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct Helper.AssetInfo",
-                    "name": "asset",
-                    "type": "tuple"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "amount",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "walletBalance",
-                    "type": "uint256"
-                  }
-                ],
-                "internalType": "struct Helper.Position[]",
-                "name": "collaterals",
-                "type": "tuple[]"
-              },
-              {
-                "internalType": "uint256",
-                "name": "debtBalance",
-                "type": "uint256"
-              },
-              {
-                "components": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "address",
-                        "name": "id",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "symbol",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "decimals",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "price",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "priceDecimals",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "totalLiquidity",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "interestRate",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "interestRateDecimals",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct Helper.AssetInfo",
-                    "name": "asset",
-                    "type": "tuple"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "amount",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "walletBalance",
-                    "type": "uint256"
-                  }
-                ],
-                "internalType": "struct Helper.Position[]",
-                "name": "debts",
-                "type": "tuple[]"
-              },
-              {
-                "internalType": "uint256",
-                "name": "poolBalance",
-                "type": "uint256"
-              },
-              {
-                "components": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "address",
-                        "name": "id",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "symbol",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "decimals",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "price",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "priceDecimals",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "totalLiquidity",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "interestRate",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "interestRateDecimals",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct Helper.AssetInfo",
-                    "name": "asset",
-                    "type": "tuple"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "amount",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "walletBalance",
-                    "type": "uint256"
-                  }
-                ],
-                "internalType": "struct Helper.Position[]",
-                "name": "poolAssets",
-                "type": "tuple[]"
-              }
-            ],
-            "internalType": "struct Helper.UserPosition",
-            "name": "",
-            "type": "tuple"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "system",
-        "outputs": [
-          {
-            "internalType": "contract ISystem",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      }
-    ],
     "FixedInterestRate": [
       {
         "inputs": [
@@ -2095,6 +1829,11 @@
       },
       {
         "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "",
@@ -2192,6 +1931,30 @@
         "name": "partialLiquidate",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "toUSD",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
         "type": "function"
       }
     ],
@@ -2859,7 +2622,7 @@
         "name": "debt",
         "outputs": [
           {
-            "internalType": "contract IDebtERC20",
+            "internalType": "contract IDebtTracker",
             "name": "",
             "type": "address"
           }
@@ -3083,13 +2846,18 @@
         "type": "function"
       }
     ],
-    "ReservePool": [
+    "TradingPool": [
       {
         "inputs": [
           {
-            "internalType": "contract ISystem",
-            "name": "_system",
-            "type": "address"
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
           }
         ],
         "stateMutability": "nonpayable",
@@ -3282,7 +3050,7 @@
           },
           {
             "internalType": "address",
-            "name": "dAsset",
+            "name": "asset",
             "type": "address"
           },
           {
@@ -3291,7 +3059,7 @@
             "type": "uint256"
           }
         ],
-        "name": "enterPool",
+        "name": "decreaseDebt",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -3320,29 +3088,6 @@
           }
         ],
         "name": "exchange",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "asset",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "exitPool",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -3400,6 +3145,29 @@
             "type": "bool"
           }
         ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "asset",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "increaseDebt",
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
       },

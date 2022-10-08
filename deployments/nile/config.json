@@ -14,6 +14,34 @@
             "name": "Dice",
             "symbol": "DICE",
             "feed": "TS8fAMLNnbWgNyXz6queFHR7HfZkhAeppK"
+        },
+        {
+            "name": "Ripple",
+            "symbol": "XRP"
+        },
+        {
+            "name": "Cardano",
+            "symbol": "ADA"
+        },
+        {
+            "name": "Apple",
+            "symbol": "AAPL"
+        },
+        {
+            "name": "Microsoft",
+            "symbol": "MSFT"
+        },
+        {
+            "name": "Euro Dollar",
+            "symbol": "EUR"
+        },
+        {
+            "name": "Japanese Yen",
+            "symbol": "YEN"
+        },
+        {
+            "name": "Indian Rupee",
+            "symbol": "INR"
         }
     ],
     "collaterals": [

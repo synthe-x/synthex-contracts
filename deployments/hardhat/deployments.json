@@ -3,58 +3,58 @@
     "AddressResolver": {
       "source": "AddressResolver",
       "constructorArguments": [],
-      "address": "0x525C7063E7C20997BaaE9bDa922159152D0e8417"
+      "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6"
     },
     "System": {
       "source": "System",
       "constructorArguments": [
-        "0x525C7063E7C20997BaaE9bDa922159152D0e8417",
+        "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
         "1300000000000000000",
         "2000000000000000000"
       ],
-      "address": "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4"
+      "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
     },
     "Reserve": {
       "source": "Reserve",
       "constructorArguments": [
-        "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4"
+        "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
       ],
-      "address": "0x5fc748f1FEb28d7b76fa1c6B07D8ba2d5535177c"
+      "address": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e"
     },
     "DebtManager": {
       "source": "DebtManager",
       "constructorArguments": [
-        "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4"
+        "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
       ],
-      "address": "0xB82008565FdC7e44609fA118A4a681E92581e680"
+      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82"
     },
     "CollateralManager": {
       "source": "CollateralManager",
       "constructorArguments": [
-        "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4"
+        "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
       ],
-      "address": "0x2a810409872AfC346F9B5b26571Fd6eC42EA4849"
+      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016"
     },
     "Helper": {
       "source": "Helper",
       "constructorArguments": [
-        "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4"
+        "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
       ],
-      "address": "0xb9bEECD1A582768711dE1EE7B0A1d582D9d72a6C"
+      "address": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE"
     },
     "FixedInterestRate": {
       "source": "FixedInterestRate",
       "constructorArguments": [
-        "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4"
+        "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
       ],
-      "address": "0x8A93d247134d91e0de6f96547cB0204e5BE8e5D8"
+      "address": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c"
     },
     "Liquidator": {
       "source": "Liquidator",
       "constructorArguments": [
-        "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4"
+        "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
       ],
-      "address": "0x40918Ba7f132E0aCba2CE4de4c4baF9BD2D7D849"
+      "address": "0x59b670e9fA9D0A427751Af201D676719a970857b"
     },
     "SynthexCollateralizedEthereum": {
       "source": "CollateralERC20",
@@ -68,7 +68,7 @@
           "hex": "0x016345785d8a0000"
         }
       ],
-      "address": "0xF8ADc47E258b9a56a8E0A717572dB3F1Cb1b4cc4"
+      "address": "0x524F04724632eED237cbA3c37272e018b3A7967e"
     },
     "SynthexBTC": {
       "source": "SynthERC20",
@@ -76,9 +76,9 @@
         "Synthex BTC",
         "sxBTC",
         "0xA39434A63A52E749F02807ae27335515BA4b07F7",
-        "0x8A93d247134d91e0de6f96547cB0204e5BE8e5D8"
+        "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c"
       ],
-      "address": "0x52493BF2880Da7c8759cF0169CecB15DaAE1cfa8"
+      "address": "0xD158d7C952F929598B4991970F6BfB4f95536F01"
     },
     "SynthexETH": {
       "source": "SynthERC20",
@@ -86,16 +86,16 @@
         "Synthex ETH",
         "sxETH",
         "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e",
-        "0x8A93d247134d91e0de6f96547cB0204e5BE8e5D8"
+        "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c"
       ],
-      "address": "0x78ef41c818c290Bc9b11A65Ac41CaEe621Fd0a37"
+      "address": "0xEE472dF1E99f927FE857f15299Ed48786e0A11a6"
     },
     "TradingPool0": {
       "source": "TradingPool",
       "constructorArguments": [
-        "0x38a024C0b412B9d1db8BC398140D00F5Af3093D4"
+        "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
       ],
-      "address": "0x32e0cbE412b5bF260A6337395CBB9AC7a1a3ccA0"
+      "address": "0x6F1216D1BFe15c98520CA1434FC1d9D57AC95321"
     }
   },
   "sources": {
@@ -2419,12 +2419,12 @@
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "price",
+            "name": "",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "priceDecimals",
+            "name": "",
             "type": "uint256"
           }
         ],

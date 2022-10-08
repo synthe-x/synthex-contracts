@@ -2,7 +2,7 @@
 pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./IDebtTracker.sol";
+import "contracts/interfaces/IDebtTracker.sol";
 
 interface ISynthERC20 is IERC20 {
     function issue(address account, uint amount) external;

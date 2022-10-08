@@ -8,7 +8,6 @@ import "./interfaces/ILiquidator.sol";
 import "./interfaces/ICollateralManager.sol";
 import "./interfaces/IDebtManager.sol";
 import "./interfaces/IInterestRate.sol";
-import "./interfaces/IPool.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./pool/TradingPool.sol";
@@ -36,10 +35,10 @@ contract System {
     event PoolEntered(address pool, address account, address asset, uint amount);
     event PoolExited(address pool, address account, address asset, uint amount);
     event Liquidate(address pool, address liquidator, address account, address asset, uint amount);
-    event IncreaseDebt(address account, address asset, uint amount);
-    event DecreaseDebt(address account, address asset, uint amount);
-    event IncreaseCollateral(address account, address asset, uint amount);
-    event DecreaseCollateral(address account, address asset, uint amount);
+    event Borrow(address account, address asset, uint amount);
+    event Repay(address account, address asset, uint amount);
+    event Deposit(address account, address asset, uint amount);
+    event Withdraw(address account, address asset, uint amount);
     event Exchange(uint pool, address account, address src, uint srcAmount, address dst);
     
     constructor(address addrResolver, uint minCRatio_, uint safeCRatio_) {
@@ -54,25 +53,25 @@ contract System {
 
     function deposit(address asset, uint amount) external payable {
         IReserve(reserve()).increaseCollateral{value: msg.value}(msg.sender, asset, amount);
-        emit IncreaseCollateral(msg.sender, asset, amount);
+        emit Deposit(msg.sender, asset, amount);
     }
 
     function withdraw(address asset, uint amount) external {
         IReserve(reserve()).decreaseCollateral(msg.sender, asset, amount);
-        emit DecreaseCollateral(msg.sender, asset, amount);
+        emit Withdraw(msg.sender, asset, amount);
     }
 
     function borrow(address asset, uint amount) external {
         require(isIssuancePaused == false, "SYSTEM: Issuance is paused");
         IReserve(reserve()).increaseDebt(msg.sender, asset, amount);
         require(collateralRatio(msg.sender) > safeCRatio, "SYSTEM: cRatio is below safety threshold");
-        emit IncreaseDebt(msg.sender, asset, amount);
+        emit Borrow(msg.sender, asset, amount);
     }
 
     function repay(address asset, uint amount) external {
         require(isIssuancePaused == false, "SYSTEM: Issuance is paused");
         IReserve(reserve()).decreaseDebt(msg.sender, asset, amount);
-        emit DecreaseDebt(msg.sender, asset, amount);
+        emit Repay(msg.sender, asset, amount);
     }
 
     function exchange(uint poolIndex, address src, uint srcAmount, address dst) external {

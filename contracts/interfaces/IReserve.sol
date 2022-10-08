@@ -1,6 +1,6 @@
     // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import "./IPool.sol";
+import "contracts/interfaces/IPool.sol";
 
 interface IReserve is IPool {
     function increaseCollateral(address user, address asset, uint amount) external payable;

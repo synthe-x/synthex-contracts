@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "contracts/interfaces/ISynthERC20.sol";
 import "../interfaces/ISystem.sol";
 import "../interfaces/IPriceOracle.sol";
-import "../interfaces/IDebtTracker.sol";
 import "../interfaces/IReserve.sol";
 import "../interfaces/IDebtManager.sol";
 

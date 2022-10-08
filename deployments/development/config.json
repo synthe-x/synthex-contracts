@@ -2,18 +2,35 @@
     "synths": [
         {
             "name": "Bitcoin",
-            "symbol": "BTC",
-            "feed": "TYY5GdNvHN8NVY6MYtgEPwx15pyUmLEw5J"
+            "symbol": "BTC"
         },
         {
-            "name": "Just",
-            "symbol": "JST",
-            "feed": "TYr8nvS9BUbi9eLXNQpUMbxdvwYpoWn3ho"
+            "name": "Ripple",
+            "symbol": "XRP"
         },
         {
-            "name": "Dice",
-            "symbol": "DICE",
-            "feed": "TS8fAMLNnbWgNyXz6queFHR7HfZkhAeppK"
+            "name": "Cardano",
+            "symbol": "ADA"
+        },
+        {
+            "name": "Apple",
+            "symbol": "AAPL"
+        },
+        {
+            "name": "Microsoft",
+            "symbol": "MSFT"
+        },
+        {
+            "name": "Euro Dollar",
+            "symbol": "EUR"
+        },
+        {
+            "name": "Japanese Yen",
+            "symbol": "YEN"
+        },
+        {
+            "name": "Indian Rupee",
+            "symbol": "INR"
         }
     ],
     "collaterals": [
