@@ -63,7 +63,6 @@ contract Helper {
     }
 
     
-
     /* -------------------------------------------------------------------------- */
     /*                               Debt Assets                                  */
     /* -------------------------------------------------------------------------- */
@@ -84,7 +83,7 @@ contract Helper {
         response.symbol = IERC20Metadata(response.id).symbol();
         response.decimals = IERC20Metadata(response.id).decimals();
         response.totalLiquidity = IERC20Metadata(response.id).totalSupply();
-        (response.price, response.priceDecimals) = ISynthERC20(response.id).get_price();
+        response.price = ISynthERC20(response.id).get_price();
         (response.interestRate, response.interestRateDecimals) = debtAsset.get_interest_rate();
         return response;
     }
@@ -93,8 +92,7 @@ contract Helper {
         uint[] memory response = new uint[](IDebtManager(system.dManager()).dAssetsCount());
         for(uint i = 0; i < response.length; i++){
             IDebtTracker asset = IDebtTracker(IDebtManager(system.dManager()).dAssets(i));
-            (uint price, uint decimals) = asset.get_price();
-            response[i] = price;
+            response[i] = asset.get_price();
         }
         return response;
     }
@@ -149,16 +147,15 @@ contract Helper {
             response.decimals = IERC20Metadata(response.id).decimals();
             response.totalLiquidity = IERC20Metadata(response.id).balanceOf(system.reserve());
         }
-        (response.price, response.priceDecimals) = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(index)).get_price();
+        response.price = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(index)).get_price();
         return response;
     }
 
-    function getCollateralAssetPrices(address user) public view returns(uint[] memory){
+    function getCollateralAssetPrices() public view returns(uint[] memory){
         uint[] memory response = new uint[](ICollateralManager(system.cManager()).cAssetsCount());
         for(uint i = 0; i < response.length; i++){
             ICollateralERC20 asset = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(i));
-            (uint price, uint priceDecimals) = asset.get_price();
-            response[i] = price;
+            response[i] = asset.get_price();
         }
         return response;
     }

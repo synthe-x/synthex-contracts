@@ -6,51 +6,27 @@
             "feed": "TYY5GdNvHN8NVY6MYtgEPwx15pyUmLEw5J"
         },
         {
-            "name": "Just",
-            "symbol": "JST",
-            "feed": "TYr8nvS9BUbi9eLXNQpUMbxdvwYpoWn3ho"
-        },
-        {
-            "name": "Dice",
-            "symbol": "DICE",
-            "feed": "TS8fAMLNnbWgNyXz6queFHR7HfZkhAeppK"
-        },
-        {
-            "name": "Ripple",
-            "symbol": "XRP"
-        },
-        {
-            "name": "Cardano",
-            "symbol": "ADA"
-        },
-        {
-            "name": "Apple",
-            "symbol": "AAPL"
-        },
-        {
-            "name": "Microsoft",
-            "symbol": "MSFT"
-        },
-        {
-            "name": "Euro Dollar",
-            "symbol": "EUR"
-        },
-        {
-            "name": "Japanese Yen",
-            "symbol": "YEN"
-        },
-        {
             "name": "Indian Rupee",
-            "symbol": "INR"
+            "symbol": "INR",
+            "price": "0.0122"
         }
     ],
     "collaterals": [
         {
             "name": "Tron",
             "symbol": "TRX",
-            "address": "0x0000000000000000000000000000000000000000",
+            "decimals": "18",
+            "address": "TVp83gJ95LZ6DHBLbVyL8KuMFajZhCVDZo",
             "feed": "TAL6RWymPLepKsLGCzWPUTKQQcWFsuHfNE",
-            "minCollateral": "0.1"
+            "minCollateral": "0"
+        },
+        {
+            "name": "Decentralized USD",
+            "symbol": "USDD",
+            "decimals": "18",
+            "address": "TFT7sNiNDGZcqL7z7dwXUPpxrx1Ewk8iGL",
+            "price": "0.998",
+            "minCollateral": "0"
         }
     ],
     "reservePools": 1

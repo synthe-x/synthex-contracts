@@ -26,12 +26,9 @@ module.exports = {
       network_id: '3'
     },
     development: {
-      // For trontools/quickstart docker image
-      privateKey: 'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0',
-      userFeePercentage: 100,
-      feeLimit: 1000000000,
-      fullHost: 'http://127.0.0.1:9090',
-      network_id: '9',
+      privateKey: '52641f54dc5e1951657523c8e7a1c44ac76229a4b14db076dce6a6ce9ae9293d',
+      fullHost: "http://127.0.0.1:9090",
+      network_id: "*"
     },
     compilers: {
       solc: {

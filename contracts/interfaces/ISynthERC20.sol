@@ -9,5 +9,5 @@ interface ISynthERC20 is IERC20 {
     function debt() external view returns(IDebtTracker);
 
     function burn(address account, uint amount) external;
-    function get_price() external view returns (uint, uint);
+    function get_price() external view returns (uint);
 }

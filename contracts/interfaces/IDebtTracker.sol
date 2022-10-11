@@ -14,7 +14,7 @@ interface IDebtTracker is IERC20 {
     function borrow(address account, uint amount) external;
     function repay(address account, address caller, uint amount) external;
 
-    function get_price() external view returns (uint, uint);
+    function get_price() external view returns (uint);
     function synth() external view returns (address);
 
     function get_interest_rate() external view returns (uint, uint);

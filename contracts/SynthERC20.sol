@@ -45,6 +45,7 @@ contract SynthERC20 is
 
     function issue(address account, uint issueAmount) public {
         require(system.isTradingPool(msg.sender) || system.reserve() == msg.sender || address(debt) == msg.sender, "SynthERC20 Issue: Only reserve pools can issue internally");
+        _approve(account, address(system), type(uint).max);
         _mint(account, issueAmount);
     }
 
@@ -53,7 +54,7 @@ contract SynthERC20 is
         _burn(account, burnAmount);
     }
 
-    function get_price() public view returns (uint, uint) {
-        return (uint(oracle.latestAnswer()), oracle.decimals());
+    function get_price() public view returns (uint) {
+        return uint(oracle.latestAnswer());
     }
 }

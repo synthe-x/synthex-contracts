@@ -43,21 +43,19 @@ contract DebtManager {
         DebtTracker(assetToDAsset[asset]).repay(user, user, amount);
     }
 
-    function totalDebt(address account) public returns(uint){
+    function totalDebt(address account) public view returns(uint){
         uint total = 0;
         for(uint i = 0; i < dAssetsCount; i++){
-            (uint price, uint priceDecimals) = DebtTracker(dAssets[i]).get_price();
-            total += DebtTracker(dAssets[i]).getBorrowBalance(account).mul(price).div(10**priceDecimals);
+            total += DebtTracker(dAssets[i]).getBorrowBalanceStored(account).mul(DebtTracker(dAssets[i]).get_price()).div(10**8);
         }
         return total;
     }
 
-    function totalDebtStored(address account) public view returns(uint){
-        uint total = 0;
-        for(uint i = 0; i < dAssetsCount; i++){
-            (uint price, uint priceDecimals) = DebtTracker(dAssets[i]).get_price();
-            total += DebtTracker(dAssets[i]).getBorrowBalanceStored(account).mul(price).div(10**priceDecimals);
-        }
-        return total;
+    function debt(address user, address asset) public view returns(uint){
+        return DebtTracker(assetToDAsset[asset]).getBorrowBalanceStored(user);
+    }
+
+    function dAssetToAsset(address dAsset) external view returns(address){
+        return address(DebtTracker(dAsset).synth());
     }
 }

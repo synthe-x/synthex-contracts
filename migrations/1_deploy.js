@@ -8,6 +8,8 @@ var Helper = artifacts.require("Helper")
 var FixedInterestRate = artifacts.require("FixedInterestRate")
 var Liquidator = artifacts.require("Liquidator")
 var MockPriceOracle = artifacts.require("MockPriceOracle")
+var WTRX = artifacts.require("WTRX")
+
 const ethers = require("ethers");
 const fs = require("fs");
 const TronWeb = require('tronweb')
@@ -15,10 +17,11 @@ const HttpProvider = TronWeb.providers.HttpProvider;
 const fullNode = new HttpProvider("https://api.trongrid.io");
 const solidityNode = new HttpProvider("https://api.trongrid.io");
 const eventServer = new HttpProvider("https://api.trongrid.io");
-const privateKey = "da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0";
+const privateKey = "e58a6e240a4d5a32fe8ec34509cb0f7d631a8ea73771f09073c76213b64eb74a";
 const tronWeb = new TronWeb(fullNode,solidityNode,eventServer,privateKey);
 
 module.exports = async function(deployer, network) {
+    deployer.then(async () => {
     let deployments = fs.readFileSync(process.cwd() + `/deployments/${network}/deployments.json`, "utf8");
     deployments = JSON.parse(deployments);
     deployments["contracts"] = {};
@@ -41,6 +44,7 @@ module.exports = async function(deployer, network) {
     await deployContract(deployer, Liquidator, [tronWeb.address.fromHex(System.address)], deployments);
     let liq = await Liquidator.deployed();
 
+    await fixedIntRate.setInterestRate("21979553066", "18");
     await addr.importAddresses(
         ["SYSTEM", "RESERVE", "DEBT_MANAGER", "COLLATERAL_MANAGER", "LIQUIDATOR"].map((x) => ethers.utils.formatBytes32String(x)), 
         [System.address, Reserve.address, DebtManager.address, CollateralManager.address, Liquidator.address]
@@ -56,14 +60,40 @@ module.exports = async function(deployer, network) {
     let abi = JSON.parse(dir)
     abi = abi.abi;
     deployments["sources"]["CollateralERC20"] = abi;
+    dir = fs.readFileSync(process.cwd() + `/build/contracts/MockPriceOracle.json`, "utf-8");
+    abi = JSON.parse(dir)
+    abi = abi.abi;
+    deployments["sources"]["PriceOracle"] = abi;
     for(let i = 0; i < config["collaterals"].length; i++) {
         let collateral = config["collaterals"][i];
-        await sys.newCollateralAsset("Synthex Collateralized " + collateral.name, "c" + collateral.symbol, collateral.address, collateral.feed, ethers.utils.parseEther(collateral.minCollateral).toString());
+        let feed = collateral.feed;
+        if(!feed){
+            await deployer.deploy(MockPriceOracle);
+            let oracle = await MockPriceOracle.deployed();
+            await oracle.setPrice(ethers.utils.parseUnits(collateral.price, 8).toString());
+            feed = oracle.address;
+            deployments["contracts"]["c"+collateral.symbol+"_Oracle"] = {
+                source: "PriceOracle",
+                constructorArguments: [],
+                address: tronWeb.address.fromHex(oracle.address),
+            }
+        }
+        let address = collateral.address;
+        if(address == "0x0000000000000000000000000000000000000000"){
+            await deployContract(deployer, WTRX, [], deployments);
+            address = (await WTRX.deployed()).address;
+        }
+        await sys.newCollateralAsset(
+            "Synthex Collateralized " + collateral.name, 
+            "c" + collateral.symbol, collateral.decimals, address, feed, 
+            ethers.utils.parseUnits(collateral.minCollateral, 6).toString()
+        );
+
         // await delay(10000);
         let collateralAddress = tronWeb.address.fromHex(await cManager.cAssets.call(i));
         deployments["contracts"]["c" + collateral.symbol] = {
             source: "CollateralERC20",
-            constructorArguments: ["Synthex Collateralized " + collateral.name, "c" + collateral.symbol, collateral.address, collateral.feed, ethers.utils.parseEther(collateral.minCollateral).toString()],
+            constructorArguments: ["Synthex Collateralized " + collateral.name, "c" + collateral.symbol, address, feed, ethers.utils.parseEther(collateral.minCollateral).toString()],
             address: collateralAddress,
         }
         console.log(`c${collateral.symbol}:`, collateralAddress);
@@ -76,6 +106,10 @@ module.exports = async function(deployer, network) {
     abi = JSON.parse(dir);
     abi = abi.abi;
     deployments["sources"]["SynthERC20"] = abi;
+    dir = fs.readFileSync(process.cwd() + `/build/contracts/DebtTracker.json`, "utf-8");
+    abi = JSON.parse(dir);
+    abi = abi.abi;
+    deployments["sources"]["DebtTracker"] = abi;
 
     // Others
     for(let i = 0; i < config["synths"].length; i++) {
@@ -84,17 +118,23 @@ module.exports = async function(deployer, network) {
         if(!feed){
             await deployer.deploy(MockPriceOracle);
             let oracle = await MockPriceOracle.deployed();
-            await oracle.setPrice(ethers.utils.parseEther("1").toString());
+            await oracle.setPrice(ethers.utils.parseUnits(synth.price, 8).toString());
             feed = oracle.address;
+            deployments["contracts"][synth.symbol+"X"+"_Oracle"] = {
+                source: "PriceOracle",
+                constructorArguments: [],
+                address: tronWeb.address.fromHex(oracle.address),
+            }
         }
         await sys.newSynthAsset("SyntheX " + synth.name, synth.symbol+"X", feed, fixedIntRate.address);
-        let synthAddress =tronWeb.address.fromHex(await dManager.dAssets(i+1));
-        deployments["contracts"][synth.symbol+"X"] = {
-            source: "SynthERC20",
-            constructorArguments: ["Synthex " + synth.name, synth.symbol+"X", synth.feed, fixedIntRate.address],
+
+        let synthAddress =tronWeb.address.fromHex(await dManager.dAssets(i));
+        deployments["contracts"]["DebtTracker"+synth.symbol+"X"] = {
+            source: "DebtTracker",
+            constructorArguments: ["Synthex " + synth.name, synth.symbol+"X", feed, fixedIntRate.address],
             address: synthAddress,
         }
-        console.log(`${synth.symbol}X: ${synthAddress}`);
+        console.log(`DebtTracker${synth.symbol}X: ${synthAddress}`);
     }
 
     // Set Interest Rate
@@ -118,6 +158,7 @@ module.exports = async function(deployer, network) {
     }
 
     fs.writeFileSync(process.cwd() + `/deployments/${network}/deployments.json`, JSON.stringify(deployments, null, 2));
+})
 };
 
 async function deployContract(deployer, artifacts, args, deployments) {

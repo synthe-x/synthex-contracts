@@ -1,45 +1,32 @@
 {
     "synths": [
         {
-            "name": "Bitcoin",
-            "symbol": "BTC"
-        },
-        {
-            "name": "Ripple",
-            "symbol": "XRP"
-        },
-        {
-            "name": "Cardano",
-            "symbol": "ADA"
-        },
-        {
-            "name": "Apple",
-            "symbol": "AAPL"
-        },
-        {
-            "name": "Microsoft",
-            "symbol": "MSFT"
-        },
-        {
-            "name": "Euro Dollar",
-            "symbol": "EUR"
-        },
-        {
             "name": "Japanese Yen",
-            "symbol": "YEN"
+            "symbol": "YEN",
+            "price": "0.0069"
         },
         {
             "name": "Indian Rupee",
-            "symbol": "INR"
+            "symbol": "INR",
+            "price": "0.0122"
         }
     ],
     "collaterals": [
         {
             "name": "Tron",
             "symbol": "TRX",
+            "decimals": "6",
             "address": "0x0000000000000000000000000000000000000000",
-            "feed": "TAL6RWymPLepKsLGCzWPUTKQQcWFsuHfNE",
-            "minCollateral": "0.1"
+            "price": "0.06",
+            "minCollateral": "0"
+        },
+        {
+            "name": "Prasad",
+            "symbol": "PK",
+            "decimals": "18",
+            "address": "41797a77a34072e019a93422a96f8237278384a4ed",
+            "price": "1",
+            "minCollateral": "0"
         }
     ],
     "reservePools": 1

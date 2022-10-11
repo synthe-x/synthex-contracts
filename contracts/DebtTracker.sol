@@ -36,8 +36,7 @@ contract DebtTracker {
     uint public borrowRateMax = 1000;
     IInterestRate public interestRateModel;
 
-    event Borrow(address indexed account, uint amount);
-    event Repay(address indexed account, uint amount);
+    event AccureInterest(uint accrualTimestamp, uint totalBorrowed, uint borrowIndex);
     event InterestRateModelUpdated(address oldRate, address newRate);
     
     SynthERC20 public synth;
@@ -58,8 +57,8 @@ contract DebtTracker {
 
     function setInterestRate(IInterestRate _interestRateModel) external {
         require(msg.sender == system.owner(), "OneERC20: Only owner can set interest rate model");
-        emit InterestRateModelUpdated(address(interestRateModel), address(_interestRateModel));
         interestRateModel = _interestRateModel;
+        emit InterestRateModelUpdated(address(interestRateModel), address(_interestRateModel));
     }
 
     function getBorrowBalance(address account) public returns(uint){
@@ -101,6 +100,8 @@ contract DebtTracker {
         accrualTimestamp = currentTimestamp;
         borrowIndex = borrowIndexNew;
         totalBorrowed = totalBorrowsNew;
+
+        emit AccureInterest(accrualTimestamp, totalBorrowed, borrowIndex);
     }
 
     function borrow(address account, uint borrowAmount) public {
@@ -138,11 +139,10 @@ contract DebtTracker {
     }
 
     function get_interest_rate() public view returns (uint, uint) {
-        (uint price, uint priceDecimals) = get_price();
-        return interestRateModel.getInterestRate(price, priceDecimals);
+        return interestRateModel.getInterestRate(get_price(), 8);
     }
 
-    function get_price() public view returns (uint, uint) {
+    function get_price() public view returns (uint) {
         return synth.get_price();
     }
 }

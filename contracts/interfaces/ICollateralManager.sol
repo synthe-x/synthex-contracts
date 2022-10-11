@@ -2,8 +2,8 @@
 pragma solidity ^0.8.6;
 
 interface ICollateralManager {
-    function create(string memory name, string memory symbol, address asset, address oracle, uint minCollateral) external;
-
+    function create(string memory name, string memory symbol, uint decimals, address asset, address oracle, uint minCollateral) external;
+    
     function cAssetsCount() external view returns (uint);
     function cAssets(uint) external view returns (address);
     function cAssetsOracle(address) external view returns (address);

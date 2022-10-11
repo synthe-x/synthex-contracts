@@ -11,6 +11,7 @@ import "./interfaces/IInterestRate.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./pool/TradingPool.sol";
+import "hardhat/console.sol";
 
 contract System {
     using SafeMath for uint;
@@ -30,7 +31,7 @@ contract System {
     event NewSynthAsset(address asset, address priceOracle, address interestRateModel);
 
     event NewMinCRatio(uint256 minCRatio);
-    event NewSafeCRatio(uint256 minCRatio);
+    event NewSafeCRatio(uint256 safeCRatio);
 
     event PoolEntered(address pool, address account, address asset, uint amount);
     event PoolExited(address pool, address account, address asset, uint amount);
@@ -51,8 +52,10 @@ contract System {
     /*                              Public Functions                              */
     /* -------------------------------------------------------------------------- */
 
-    function deposit(address asset, uint amount) external payable {
-        IReserve(reserve()).increaseCollateral{value: msg.value}(msg.sender, asset, amount);
+    function deposit(address asset, uint amount) external {
+        require(asset != address(0), "System: asset cannot be 0x0");
+        IERC20(asset).transferFrom(msg.sender, reserve(), amount);
+        IReserve(reserve()).increaseCollateral(msg.sender, asset, amount);
         emit Deposit(msg.sender, asset, amount);
     }
 
@@ -130,8 +133,8 @@ contract System {
         emit NewTradingPool(address(pool), tradingPoolsCount);
     }
     
-    function newCollateralAsset(string memory name, string memory symbol, address asset, address oracle, uint minCollateral) external onlySysAdmin {
-        ICollateralManager(cManager()).create(name, symbol, asset, oracle, minCollateral);
+    function newCollateralAsset(string memory name, string memory symbol, uint decimals, address asset, address oracle, uint minCollateral) external onlySysAdmin {
+        ICollateralManager(cManager()).create(name, symbol, decimals, asset, oracle, minCollateral);
         emit NewCollateralAsset(asset, address(oracle), minCollateral);
     }
 
@@ -150,7 +153,6 @@ contract System {
         emit NewSafeCRatio(_safeCRatio);
     }
 
-    
     /* -------------------------------------------------------------------------- */
     /*                               View Functions                               */
     /* -------------------------------------------------------------------------- */
@@ -159,16 +161,8 @@ contract System {
         return IDebtManager(dManager()).assetToDAsset(asset);
     }
 
-    function collateralRatio(address account) public returns (uint) {
+    function collateralRatio(address account) public view returns (uint) {
         uint256 _debt = reservePoolDebt(account).add(tradingPoolDebt(account));
-        if (_debt == 0) {
-            return 2**256 - 1;
-        }
-        return totalCollateral(account).mul(1e18).div(_debt);
-    }
-
-    function collateralRatioStored(address account) public view returns (uint) {
-        uint256 _debt = reservePoolDebtStored(account).add(tradingPoolDebt(account));
         if (_debt == 0) {
             return 2**256 - 1;
         }
@@ -179,14 +173,10 @@ contract System {
         return ICollateralManager(cManager()).totalCollateral(account);
     }
 
-    function reservePoolDebt(address account) public returns (uint) {
+    function reservePoolDebt(address account) public view returns (uint) {
         return IDebtManager(dManager()).totalDebt(account);
     }
 
-    function reservePoolDebtStored(address account) public view returns (uint) {
-        return IDebtManager(dManager()).totalDebtStored(account);
-    }
-    
     function tradingPoolDebt(address account) public view returns (uint) {
         uint _debt = 0;
         for (uint i = 1; i <= tradingPoolsCount; i++) {

@@ -24,22 +24,14 @@ contract Reserve is ReentrancyGuard {
 
     function exchange(address user, address src, uint srcAmount, address dst) external {
         require(msg.sender == address(system), "BaseReserve: Only system can call exchange");
-        
-        (uint price, uint decimals) = ISynthERC20(dst).get_price();
-        (uint srcPrice, uint srcDecimals) = ISynthERC20(src).get_price();
 
         IDebtManager(system.dManager())._decreaseDebt(user, src, srcAmount);
-        uint dstAmt = srcAmount.mul(srcPrice).div(price).mul(decimals).div(srcDecimals);
+        uint dstAmt = srcAmount.mul(ISynthERC20(src).get_price()).div(ISynthERC20(dst).get_price());
         IDebtManager(system.dManager())._increaseDebt(user, dst, dstAmt);
     }
 
     function increaseCollateral(address user, address asset, uint amount) external nonReentrant payable {
         require(msg.sender == address(system), "BaseReserve: Only system can call exchange");
-        if (asset != address(0)) {
-            IERC20(asset).transferFrom(user, address(this), amount);
-        } else {
-            amount = msg.value;
-        }
         ICollateralManager(system.cManager())._increaseCollateral(
             user,
             asset,

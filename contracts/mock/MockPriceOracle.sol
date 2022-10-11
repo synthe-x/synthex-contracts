@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract MockPriceOracle is Ownable {
 
     int price = 0;
-    uint private _decimals = 8;
 
     function setPrice(int _price) external onlyOwner {
         price = _price;
@@ -14,9 +13,5 @@ contract MockPriceOracle is Ownable {
 
     function latestAnswer() external view returns (int256) {
         return price;
-    }
-
-    function decimals() external view returns (uint256) {
-        return _decimals;
     }
 }

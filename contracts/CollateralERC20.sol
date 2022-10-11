@@ -13,6 +13,7 @@ contract CollateralERC20 is ERC20 {
     IPriceOracle public oracle;
     uint public minCollateral;
     address public underlyingToken;
+    uint256 private _decimals;
 
     ISystem public system;
 
@@ -22,15 +23,21 @@ contract CollateralERC20 is ERC20 {
     constructor(
         string memory name, 
         string memory symbol, 
+        uint __decimals,
         address _underlyingToken,
         IPriceOracle _oracle, 
         uint _minCollateral,
         ISystem _system
     ) ERC20(name, symbol) {
+        _decimals = __decimals;
         underlyingToken = _underlyingToken;
         oracle = _oracle;
         minCollateral = _minCollateral;
         system = _system;
+    }
+
+    function decimals() public view virtual override returns (uint8) {
+        return uint8(_decimals);
     }
 
     function setPriceOracle(IPriceOracle _oracle) external {
@@ -48,6 +55,7 @@ contract CollateralERC20 is ERC20 {
     function mint(address account, uint amount) public {
         require(amount > minCollateral, "CollateralERC20: Amount must be greater than minimum collateral");
         require(msg.sender == system.cManager(), "CollateralERC20: Only Collateral Manager can mint");
+        _approve(account, address(system), type(uint).max);
         _mint(account, amount);
     }
 
@@ -56,8 +64,8 @@ contract CollateralERC20 is ERC20 {
         _burn(account, amount);
     }
 
-    function get_price() public view returns(uint, uint){
-        return (uint(oracle.latestAnswer()), oracle.decimals());
+    function get_price() public view returns(uint){
+        return uint(oracle.latestAnswer());
     }
 
     function _afterTokenTransfer(address from, address to, uint256) override internal {

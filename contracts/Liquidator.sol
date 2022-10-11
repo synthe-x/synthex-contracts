@@ -65,7 +65,6 @@ contract Liquidator {
     }
 
     function toUSD(address asset, uint amount) public view returns(uint){
-        (uint price, uint pricedecimals) = ISynthERC20(asset).get_price();
-        return amount.mul(price).div(10**pricedecimals);
+        return amount.mul(ISynthERC20(asset).get_price()).div(10**8);
     }
 }

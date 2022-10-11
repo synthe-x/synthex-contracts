@@ -17,20 +17,17 @@ contract CollateralManager {
     uint public cAssetsCount = 0;
     mapping (uint => address) public cAssets;
     mapping(address => address) public assetToCAsset;
-
-    event NewCollateralPool(address indexed collateral, address indexed pool);
     
     constructor(ISystem _system){
         system = _system;
     }
 
-    function create(string memory name, string memory symbol, address asset, IPriceOracle oracle, uint minCollateral) public {
+    function create(string memory name, string memory symbol, uint decimals, address asset, IPriceOracle oracle, uint minCollateral) public {
         require(msg.sender == address(system), "Only system can create");
-        CollateralERC20 cAsset = new CollateralERC20(name, symbol, asset, oracle, minCollateral, system);
+        CollateralERC20 cAsset = new CollateralERC20(name, symbol, decimals, asset, oracle, minCollateral, system);
         cAssets[cAssetsCount] = address(cAsset);
         assetToCAsset[asset] = address(cAsset);
         cAssetsCount += 1;
-        emit NewCollateralPool(asset, address(cAsset));
     }
 
     function _increaseCollateral(address user, address asset, uint amount) external {
@@ -47,11 +44,11 @@ contract CollateralManager {
         return ICollateralERC20(assetToCAsset[asset]).balanceOf(user);
     }
 
+    // USD Amount (multiplied by 10**8)
     function totalCollateral(address account) public view returns(uint){
         uint total = 0;
         for(uint i = 0; i < cAssetsCount; i++){
-            (uint price, uint priceDecimals) = ICollateralERC20(cAssets[i]).get_price();
-            total += ICollateralERC20(cAssets[i]).balanceOf(account).mul(price).div(10**priceDecimals);
+            total += ICollateralERC20(cAssets[i]).balanceOf(account).mul(ICollateralERC20(cAssets[i]).get_price()).mul(1e18).div(10**uint(ICollateralERC20(cAssets[i]).decimals())).div(1e8);
         }
         return total;
     }
