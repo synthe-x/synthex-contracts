@@ -52,14 +52,14 @@ contract('Test', function (accounts) {
             return
         }
 
-        // let resp = await collateralManager.collateral(accounts[0], wtrx.address);
-        // console.log("Collateral before deposit:", resp.toString(), resp.div("1000000").toString());
+        let resp = await collateralManager.collateral(accounts[0], wtrx.address);
+        console.log("Collateral before deposit:", resp.toString(), resp.div("1000000").toString());
 
         resp = await system.deposit(wtrx.address, "10000000000", { from: accounts[0] })
         console.log("Deposit", resp);
 
-        // resp = await collateralManager.collateral(accounts[0], wtrx.address);
-        // console.log("Collateral after deposit:", resp.toString(), resp.div("1000000").toString());
+        resp = await collateralManager.collateral(accounts[0], wtrx.address);
+        console.log("Collateral after deposit:", resp.toString(), resp.div("1000000").toString());
     });
     
     it("deposit TRC20", async function () {

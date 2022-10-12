@@ -3,7 +3,37 @@
         {
             "name": "Bitcoin",
             "symbol": "BTC",
-            "feed": "TYY5GdNvHN8NVY6MYtgEPwx15pyUmLEw5J"
+            "price": "19099.92"
+        },
+        {
+            "name": "Ripple",
+            "symbol": "XRP",
+            "price": "0.52"
+        },
+        {
+            "name": "Cardano",
+            "symbol": "ADA",
+            "price": "0.42"
+        },
+        {
+            "name": "Apple",
+            "symbol": "AAPL",
+            "price": "140.09"
+        },
+        {
+            "name": "Microsoft",
+            "symbol": "MSFT",
+            "price": "234.39"
+        },
+        {
+            "name": "Euro Dollar",
+            "symbol": "EUR",
+            "price": "0.97"
+        },
+        {
+            "name": "Japanese Yen",
+            "symbol": "YEN",
+            "price": "0.0069"
         },
         {
             "name": "Indian Rupee",
@@ -16,8 +46,8 @@
             "name": "Tron",
             "symbol": "TRX",
             "decimals": "18",
-            "address": "TVp83gJ95LZ6DHBLbVyL8KuMFajZhCVDZo",
-            "feed": "TAL6RWymPLepKsLGCzWPUTKQQcWFsuHfNE",
+            "address": "TYsbWxNnyTgsZaTFaue9hqpxkU3Fkco94a",
+            "price": "0.0671",
             "minCollateral": "0"
         },
         {
