@@ -30,11 +30,11 @@ contract SynthERC20 is
         string memory name, 
         string memory symbol,
         ISystem _system,
-        IPriceOracle _oracle
+        address _oracle
     ) ERC20(name, symbol) {
         debt = IDebtTracker(msg.sender);
         system = _system;
-        oracle = _oracle;
+        oracle = IPriceOracle(_oracle);
     }
 
     function setPriceOracle(IPriceOracle _oracle) external {

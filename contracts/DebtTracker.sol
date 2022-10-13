@@ -44,15 +44,15 @@ contract DebtTracker {
     constructor(
         string memory name, 
         string memory symbol, 
-        IPriceOracle _oracle,
-        IInterestRate _interestRateModel,
+        address _oracle,
+        address _interestRateModel,
         ISystem _system
     ) {
         synth = new SynthERC20(name, symbol, _system, _oracle);
         system = _system;
         accrualTimestamp = block.timestamp;
         borrowIndex = 1e18;
-        interestRateModel = _interestRateModel;
+        interestRateModel = IInterestRate(_interestRateModel);
     }
 
     function setInterestRate(IInterestRate _interestRateModel) external {

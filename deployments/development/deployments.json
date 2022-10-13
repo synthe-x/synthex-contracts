@@ -2,151 +2,151 @@
   "contracts": {
     "AddressResolver": {
       "source": "AddressResolver",
-      "address": "TFmHVuBDh4DynufL84HSN7wGQTuAj79Qyh"
+      "address": "TAMys2G78asr4RZ5h8xaKDvQaduZVTmJot"
     },
     "System": {
       "source": "System",
-      "address": "TXqDPJuENi6DVSdBdQf1w7PemS2wsFBy1H"
+      "address": "TVozZasSQCiadhyb7fGWhmfBn8pnaMTN7Z"
     },
     "Reserve": {
       "source": "Reserve",
-      "address": "TYxDcpn8smCeJbwP7xwN3uoPhtdCT4Rbvn"
+      "address": "TT2eG8uoHuSwj9LkQG3NS4G1ox1QZsgF1e"
     },
     "DebtManager": {
       "source": "DebtManager",
-      "address": "TGa6ZEJY9JRgCfNbzQzwkVm8RB3q8skoeC"
+      "address": "TXu5zF1hS2DZsnNbDymYB1qDj4Pymx6UZ4"
     },
     "CollateralManager": {
       "source": "CollateralManager",
-      "address": "TCkxP6UNkhvdUtcYL2QN3zEL99XK3fE8k3"
+      "address": "TL9gNebC3Pdn67NiVJc4vLFeUqndFefC6w"
     },
     "FixedInterestRate": {
       "source": "FixedInterestRate",
-      "address": "TEYJBc4F3QT9SHoh1ncxduPtpco9yvJPja"
+      "address": "TVHbwUuJa3j8AndiurSaeRJTHnon6Dpzxw"
     },
     "Liquidator": {
       "source": "Liquidator",
-      "address": "TKo1cGMG8vqwc6VFxE5rmSnXNkFHDwvvhp"
+      "address": "TTxHmoHE3K7YiRrtyuMgKCRr5Zp8228GPW"
     },
     "cTRX_Oracle": {
       "source": "PriceOracle",
-      "address": "TMmf4XV9wnWBEhHiojMMHretWKFXxgLxbR"
+      "address": "TTps7RRFymp1CYdN86M5ALuYLMCMhqF9P1"
     },
     "WTRX": {
       "source": "WTRX",
-      "address": "TPzCRhun1rVzwGLf95Ri21Bg15UTBnW1FY"
+      "address": "TRXd67aeA3nRhtGV3a86cpQoa94ohgPfjs"
     },
     "cTRX": {
       "source": "CollateralERC20",
-      "address": "TQtvpZUvQmZtShu5sNBPaVf18H9AkXdzeo"
+      "address": "TPXsWfTqf6YTP8gh6LoUGhsXQT13Jy5Zon"
     },
     "cUSDD_Oracle": {
       "source": "PriceOracle",
-      "address": "TRaTe8x5AxRAoMzJeeKAQRBVxP5hzCQKug"
+      "address": "TCMsvysdNTQLvppwZxb8wPvFBQ2mTZQQxh"
     },
     "cUSDD": {
       "source": "CollateralERC20",
-      "address": "TXGvuRdXip17TkzQxwgbvLHJAxygFDvBM1"
+      "address": "TX7FJWjsU3dSgPAQqjJSiwtW8xNESW3LGN"
     },
     "BTCX_Oracle": {
       "source": "PriceOracle",
-      "address": "TStBGdjteucTNqXVFfAEvQNoEsbWdwniqE"
+      "address": "TXTNRCjDJ8Q17FvVovdK2HEAAf4jdeiSsT"
     },
     "DebtTrackerBTCX": {
       "source": "DebtTracker",
-      "address": "TXYXYBPmQnPTgamNDHMGU8YKsnBKWvQAgP"
+      "address": "TU6kLtdraoUmtvhyW6yHEy2oMa24fJSsRh"
     },
     "ETHX_Oracle": {
       "source": "PriceOracle",
-      "address": "TFb4CxVQdVEP7YLp9JxLsHBicqbRDsEx4x"
+      "address": "THjjcGqazkwKPyEEPCJCoymgLw83iRZmGs"
     },
     "DebtTrackerETHX": {
       "source": "DebtTracker",
-      "address": "TUSzrFA12WchZ844KCN6niw7s3WRBkS7Sp"
+      "address": "TRJCaMTjSCGrP7pftAnGnifHiEA8Xypfhx"
     },
     "XRPX_Oracle": {
       "source": "PriceOracle",
-      "address": "TWx1Jf3tFizq1ZckKDVK4DAwQqorE9S35d"
+      "address": "TLDPZHZy2o9YVhdPicYKyaD7DrfGuuZfma"
     },
     "DebtTrackerXRPX": {
       "source": "DebtTracker",
-      "address": "TC1XWbcqWD7KekVF2pJLZGdfjVbEfdTYxU"
+      "address": "TRDx3bGheh6SmNXD9TmktEnFrxdkBTDdT5"
     },
     "BNBX_Oracle": {
       "source": "PriceOracle",
-      "address": "TW5AyYVigvToqKbXSGk4qBLgrnFXmb33QP"
+      "address": "TPatTpZdkjhBRhEYU1xvjUPwpx7RdKGmGD"
     },
     "DebtTrackerBNBX": {
       "source": "DebtTracker",
-      "address": "TA1TzRvLPV9giPwb21K3BF868n1aP716pK"
+      "address": "TKYCrfDpngoJVGiMoQ7Pm47rAnXFLtpx81"
     },
     "ADAX_Oracle": {
       "source": "PriceOracle",
-      "address": "TCSDaAipXDGKEFJYNjb4qSCecT7kGCDZDo"
+      "address": "TXLD3NfDKigKxSSDQRd8MK4Yt8SKcZF2QK"
     },
     "DebtTrackerADAX": {
       "source": "DebtTracker",
-      "address": "TYUrtA6YjE1A5Evo5jLTLNdTFrKHNS9tsk"
+      "address": "TNaKuwco7xyEnXmFDt3Y8ywu8hezJmuPrG"
     },
     "AAPLX_Oracle": {
       "source": "PriceOracle",
-      "address": "TUoENDbbJyXXMrpCr89HUU4jWBQyfpm2k8"
+      "address": "TCX1mTs5wdadjbED54SwYgkJFC47QoMo87"
     },
     "DebtTrackerAAPLX": {
       "source": "DebtTracker",
-      "address": "TVRA1AboLRddKgkMFARzxEKWCPpmecDRs3"
+      "address": "TUtBKq1qFxSAFnf6TevERWypcSjagZvRYV"
     },
     "MSFTX_Oracle": {
       "source": "PriceOracle",
-      "address": "TN4w2CtMFYL7wPSzQNKpdUbJLEPW8xsoEs"
+      "address": "TEjkXDJGen6vYCVCkmt4oJTtmeb5zkuwjS"
     },
     "DebtTrackerMSFTX": {
       "source": "DebtTracker",
-      "address": "TRWBrTAfWgpqrs6oD83iEnEG5r9P9u245g"
+      "address": "TVFgrYF67bZLNwbGnAXyrppEs5jVdKBcoW"
     },
     "GOOGLX_Oracle": {
       "source": "PriceOracle",
-      "address": "TXDfAratc22Py7FCaPP6KyPmHKBrEc8vta"
+      "address": "TQ6jbm6aKApuTTHipG2EERWwMUBWRzySQ9"
     },
     "DebtTrackerGOOGLX": {
       "source": "DebtTracker",
-      "address": "TMBa5EiwzTKV6K5SUjfWjmwnf1HM69M4hc"
+      "address": "TDUVb1Rsws1iUR97eUddirrv5noBDci46x"
     },
     "^GSPCX_Oracle": {
       "source": "PriceOracle",
-      "address": "TKWJVoofdG9akB4JH6G698Y7GMT7grmbW6"
+      "address": "TUY7S1kJWnho37bWhqGU2fTM1vzBmHHpjg"
     },
     "DebtTracker^GSPCX": {
       "source": "DebtTracker",
-      "address": "TXwFT3snocj8ooTGLQwHFxc7PAf7gsi9Ws"
+      "address": "TVQjyB9myKpnNYmfSJJZWNQTv9mBG2jrSD"
     },
     "EURX_Oracle": {
       "source": "PriceOracle",
-      "address": "TAkCAJhypFLWRAsWtw3XmP7rCHZvv8wHvQ"
+      "address": "TR6D8jRDbyLKnbyc4MMF5Jb4Hc75PWVGuE"
     },
     "DebtTrackerEURX": {
       "source": "DebtTracker",
-      "address": "TWC9ssiZgeooYmkcbAhqJU5kpTqZ4JGF6V"
+      "address": "TDyauw8cWuP2knNU8XsompChhcPnjK8wB2"
     },
     "YENX_Oracle": {
       "source": "PriceOracle",
-      "address": "TEbdnCyCcXPmq5beuyHeHzEYPjgd2SuZN6"
+      "address": "TSmDny58Cmwu8ABtFA5Cp3VrZyvC9PN5MZ"
     },
     "DebtTrackerYENX": {
       "source": "DebtTracker",
-      "address": "TTSJJ46ZGpi2LrjxajiCvVzBqcTkzMkHsW"
+      "address": "TZ7tv2cL55r8ESpZCkUFfuwsM9gsYN9bFx"
     },
     "INRX_Oracle": {
       "source": "PriceOracle",
-      "address": "TLpStpcsxTiGvHHpiTGG9N7sxUqjFvadvL"
+      "address": "TFhxXgYZZYmVAFPGb6wkiE3xSFL3euydAJ"
     },
     "DebtTrackerINRX": {
       "source": "DebtTracker",
-      "address": "THkSuHi4pg7N78HqqhxzT9dMVqkCFiAVKm"
+      "address": "TQxNbAQY4cgyeUVpZVzM17sdpRinKQxJ4e"
     },
     "SXP0": {
       "source": "TradingPool",
-      "address": "TN8XMxbAezvEkajwfF4YbY6stD4MECgqYQ"
+      "address": "TG8bQg2qHyMAH1ui8gzMURBRzm3HFN32Xi"
     }
   },
   "sources": {
@@ -168,8 +168,7 @@
           }
         ],
         "name": "AddressImported",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -188,8 +187,7 @@
           }
         ],
         "name": "OwnershipTransferred",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "inputs": [
@@ -276,7 +274,7 @@
         "inputs": [
           {
             "internalType": "bytes32",
-            "name": "",
+            "name": "_key",
             "type": "bytes32"
           }
         ],
@@ -350,8 +348,7 @@
           }
         ],
         "name": "Borrow",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -376,8 +373,7 @@
           }
         ],
         "name": "Deposit",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -414,22 +410,19 @@
           }
         ],
         "name": "Exchange",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
         "inputs": [],
         "name": "IssuancePaused",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
         "inputs": [],
         "name": "IssuanceResumed",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -466,8 +459,7 @@
           }
         ],
         "name": "Liquidate",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -492,8 +484,7 @@
           }
         ],
         "name": "NewCollateralAsset",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -506,8 +497,7 @@
           }
         ],
         "name": "NewMinCRatio",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -520,8 +510,7 @@
           }
         ],
         "name": "NewSafeCRatio",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -546,8 +535,7 @@
           }
         ],
         "name": "NewSynthAsset",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -566,8 +554,7 @@
           }
         ],
         "name": "NewTradingPool",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -598,8 +585,7 @@
           }
         ],
         "name": "PoolEntered",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -630,8 +616,7 @@
           }
         ],
         "name": "PoolExited",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -656,22 +641,19 @@
           }
         ],
         "name": "Repay",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
         "inputs": [],
         "name": "TradingPaused",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
         "inputs": [],
         "name": "TradingResumed",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -696,8 +678,7 @@
           }
         ],
         "name": "Withdraw",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "inputs": [
@@ -1389,7 +1370,7 @@
         ],
         "name": "increaseCollateral",
         "outputs": [],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -1501,7 +1482,7 @@
         "inputs": [
           {
             "internalType": "address",
-            "name": "",
+            "name": "_asset",
             "type": "address"
           }
         ],
@@ -1529,12 +1510,12 @@
             "type": "string"
           },
           {
-            "internalType": "contract IPriceOracle",
+            "internalType": "address",
             "name": "_oracle",
             "type": "address"
           },
           {
-            "internalType": "contract IInterestRate",
+            "internalType": "address",
             "name": "_interestRateModel",
             "type": "address"
           }
@@ -1573,7 +1554,7 @@
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "",
+            "name": "_index",
             "type": "uint256"
           }
         ],
@@ -1720,7 +1701,7 @@
         "inputs": [
           {
             "internalType": "address",
-            "name": "",
+            "name": "_asset",
             "type": "address"
           }
         ],
@@ -1739,7 +1720,7 @@
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "",
+            "name": "_index",
             "type": "uint256"
           }
         ],
@@ -1814,7 +1795,7 @@
             "type": "address"
           },
           {
-            "internalType": "contract IPriceOracle",
+            "internalType": "address",
             "name": "oracle",
             "type": "address"
           },
@@ -2010,11 +1991,11 @@
           },
           {
             "internalType": "address",
-            "name": "_underlyingToken",
+            "name": "__underlyingToken",
             "type": "address"
           },
           {
-            "internalType": "contract IPriceOracle",
+            "internalType": "address",
             "name": "_oracle",
             "type": "address"
           },
@@ -2352,7 +2333,7 @@
       {
         "inputs": [
           {
-            "internalType": "contract IPriceOracle",
+            "internalType": "address",
             "name": "_oracle",
             "type": "address"
           }
@@ -2875,7 +2856,7 @@
             "type": "address"
           },
           {
-            "internalType": "contract IPriceOracle",
+            "internalType": "address",
             "name": "_oracle",
             "type": "address"
           }
@@ -3275,12 +3256,12 @@
             "type": "string"
           },
           {
-            "internalType": "contract IPriceOracle",
+            "internalType": "address",
             "name": "_oracle",
             "type": "address"
           },
           {
-            "internalType": "contract IInterestRate",
+            "internalType": "address",
             "name": "_interestRateModel",
             "type": "address"
           },

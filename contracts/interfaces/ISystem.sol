@@ -10,9 +10,8 @@ interface ISystem {
     function isTradingPool(address) external returns(bool);
 
     function collateralRatio(address account) external view returns(uint);
-    function collateralRatioStored(address account) external view returns(uint);
-    function totalCollateral(address account) external returns (uint);
-    function reservePoolDebt(address account) external returns (uint);
+    function totalCollateral(address account) external view returns (uint);
+    function reservePoolDebt(address account) external view returns (uint);
     function tradingPoolDebt(address account) external view returns (uint);
     function getDebtTracker(address asset) external view returns (address);
 

@@ -7,12 +7,12 @@ import "contracts/interfaces/IReserve.sol";
 import "./interfaces/ICollateralManager.sol";
 
 import "./interfaces/IPriceOracle.sol";
-import "hardhat/console.sol";
+import "./interfaces/ICollateralERC20.sol";
 
-contract CollateralERC20 is ERC20 {
+contract CollateralERC20 is ICollateralERC20, ERC20 {
     IPriceOracle public oracle;
     uint public minCollateral;
-    address public underlyingToken;
+    address private _underlyingToken;
     uint256 private _decimals;
 
     ISystem public system;
@@ -24,35 +24,39 @@ contract CollateralERC20 is ERC20 {
         string memory name, 
         string memory symbol, 
         uint __decimals,
-        address _underlyingToken,
-        IPriceOracle _oracle, 
+        address __underlyingToken,
+        address _oracle, 
         uint _minCollateral,
         ISystem _system
     ) ERC20(name, symbol) {
         _decimals = __decimals;
-        underlyingToken = _underlyingToken;
-        oracle = _oracle;
+        _underlyingToken = __underlyingToken;
+        oracle = IPriceOracle(_oracle);
         minCollateral = _minCollateral;
         system = _system;
     }
 
-    function decimals() public view virtual override returns (uint8) {
+    function underlyingToken() external view override returns (address) {
+        return _underlyingToken;
+    }
+
+    function decimals() public view virtual override(ERC20, ICollateralERC20) returns (uint8) {
         return uint8(_decimals);
     }
 
-    function setPriceOracle(IPriceOracle _oracle) external {
+    function setPriceOracle(address _oracle) external override {
         require(msg.sender == system.owner(), "CollateralERC20: Only owner can set price oracle");
         emit OracleUpdated(address(oracle), address(_oracle));
-        oracle = _oracle;
+        oracle = IPriceOracle(_oracle);
     }
 
-    function setMinCollateral(uint _newMinCollateral) external {
+    function setMinCollateral(uint _newMinCollateral) external override {
         require(msg.sender == system.owner(), "CollateralERC20: Only owner can set minimum collateral");
         emit MinCollateralUpdated(minCollateral, _newMinCollateral);
         minCollateral = _newMinCollateral;
     }
 
-    function mint(address account, uint amount) public {
+    function mint(address account, uint amount) public override {
         require(amount > minCollateral, "CollateralERC20: Amount must be greater than minimum collateral");
         require(msg.sender == system.cManager(), "CollateralERC20: Only Collateral Manager can mint");
         if(allowance(account, address(system))!=type(uint).max) {
@@ -61,18 +65,18 @@ contract CollateralERC20 is ERC20 {
         _mint(account, amount);
     }
 
-    function burn(address account, uint amount) public {
+    function burn(address account, uint amount) public override {
         require(msg.sender == system.cManager(), "CollateralERC20: Only Collateral Manager can burn");
         _burn(account, amount);
     }
 
-    function get_price() public view returns(uint){
+    function get_price() public view override returns(uint){
         return uint(oracle.latestAnswer());
     }
 
     function _afterTokenTransfer(address from, address to, uint256) override internal {
         if(from != address(0) && to != address(0)){
-            require(system.collateralRatioStored(from) > system.safeCRatio(), "CollateralERC20: Not enough collateral");
+            require(system.collateralRatio(from) > system.safeCRatio(), "CollateralERC20: Not enough collateral");
         }
     }
 }

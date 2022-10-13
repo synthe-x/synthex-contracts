@@ -9,12 +9,11 @@ import "./interfaces/ISynthERC20.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "hardhat/console.sol";
 
-contract Reserve is ReentrancyGuard {
+contract Reserve {
     using SafeMath for uint;
     ISystem system;
 
@@ -30,7 +29,7 @@ contract Reserve is ReentrancyGuard {
         IDebtManager(system.dManager())._increaseDebt(user, dst, dstAmt);
     }
 
-    function increaseCollateral(address user, address asset, uint amount) external nonReentrant payable {
+    function increaseCollateral(address user, address asset, uint amount) external {
         require(msg.sender == address(system), "BaseReserve: Only system can call exchange");
         ICollateralManager(system.cManager())._increaseCollateral(
             user,
@@ -39,7 +38,7 @@ contract Reserve is ReentrancyGuard {
         );
     }
 
-    function decreaseCollateral(address user, address asset, uint amount) external nonReentrant {
+    function decreaseCollateral(address user, address asset, uint amount) external {
         require(msg.sender == address(system), "BaseReserve: Only system can call exchange");
         ICollateralManager(system.cManager())._decreaseCollateral(
             user,
