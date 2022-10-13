@@ -3,5 +3,5 @@ pragma solidity ^0.8.6;
 
 interface IInterestRate {
     function setInterestRate(uint _interestRate, uint _interestRateDecimals) external;
-    function getInterestRate(uint, uint) external view returns(uint, uint);
+    function getInterestRate(uint) external view returns(uint);
 }

@@ -46,7 +46,7 @@ contract Reserve is ReentrancyGuard {
             asset,
             amount
         );
-        require(system.collateralRatioStored(user) > system.safeCRatio(), "Reserve: cRatio is below safeCRatio");        
+        require(system.collateralRatio(user) > system.safeCRatio(), "Reserve: cRatio is below safeCRatio");   
         transferOutInternal(user, asset, amount);
     }
 
@@ -68,11 +68,7 @@ contract Reserve is ReentrancyGuard {
         address asset,
         uint amount
     ) internal {
-        if (asset == address(0)) {
-            payable(user).transfer(amount);
-        } else {
-            IERC20(asset).transfer(user, amount);
-        }
+        IERC20(asset).transfer(user, amount);
     }
 
     function increaseDebt(address user, address asset, uint amount) external {

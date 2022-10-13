@@ -86,16 +86,16 @@ contract DebtTracker {
         uint borrowIndexPrior = borrowIndex;
 
         // Calculate the current borrow interest rate
-        (uint borrowRate, uint borrowRateDecimals) = get_interest_rate();
-        require(borrowRate.div(10**borrowRateDecimals) <= borrowRateMax, "DebtTracker: Borrow rate is absurdly high");
+        uint borrowRate = get_interest_rate();
+        require(borrowRate.div(10**18) <= borrowRateMax, "DebtTracker: Borrow rate is absurdly high");
 
         // Calculate the number of blocks elapsed since the last accrual
         uint timestampDelta = currentTimestamp - accrualTimestampPrior;
 
         uint simpleInterestFactor = borrowRate.mul(timestampDelta);
-        uint interestAccumulated = simpleInterestFactor.mul(totalBorrowed).div(10 ** borrowRateDecimals);
+        uint interestAccumulated = simpleInterestFactor.mul(totalBorrowed).div(10 ** 18); // div by borrow rate decimals
         uint totalBorrowsNew = interestAccumulated.add(totalBorrowed);
-        uint borrowIndexNew = (simpleInterestFactor.mul(borrowIndexPrior).div(10 ** borrowRateDecimals)).add(borrowIndexPrior);
+        uint borrowIndexNew = (simpleInterestFactor.mul(borrowIndexPrior).div(10 ** 18)).add(borrowIndexPrior);
 
         accrualTimestamp = currentTimestamp;
         borrowIndex = borrowIndexNew;
@@ -138,8 +138,8 @@ contract DebtTracker {
         totalBorrowed = totalBorrowsNew;
     }
 
-    function get_interest_rate() public view returns (uint, uint) {
-        return interestRateModel.getInterestRate(get_price(), 8);
+    function get_interest_rate() public view returns (uint) {
+        return interestRateModel.getInterestRate(get_price());
     }
 
     function get_price() public view returns (uint) {

@@ -12,7 +12,6 @@ export interface Deployments {
   reserve: Contract;
   dManager: Contract;
   cManager: Contract;
-  helper: Contract;
   fixedIntRate: Contract;
   liq: Contract;
 }
@@ -44,16 +43,16 @@ async function deploy(deployments: any = {}, logs: boolean = false): Promise<Dep
   const reserve = await deployContract("Reserve", [sys.address], logs, deployments);
   const dManager = await deployContract("DebtManager", [sys.address], logs, deployments);
   const cManager = await deployContract("CollateralManager", [sys.address], logs, deployments);
-  const helper = await deployContract("Helper", [sys.address], logs, deployments);
   const fixedIntRate = await deployContract("FixedInterestRate", [sys.address], logs, deployments);
   const liq = await deployContract("Liquidator", [sys.address], logs, deployments);
 
+  await fixedIntRate.setInterestRate("21979553066");
   await addr.importAddresses(
     ["SYSTEM", "RESERVE", "DEBT_MANAGER", "COLLATERAL_MANAGER", "LIQUIDATOR"].map((x) => ethers.utils.formatBytes32String(x)), 
     [sys.address, reserve.address, dManager.address, cManager.address, liq.address]
   )
 
-  return { addr, sys, reserve, dManager, cManager, helper, fixedIntRate, liq };
+  return { addr, sys, reserve, dManager, cManager, fixedIntRate, liq };
 }
 
 async function deployContract(name: string, args: string[], logs: boolean = false, deployments: any = {}) {

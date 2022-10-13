@@ -55,7 +55,9 @@ contract CollateralERC20 is ERC20 {
     function mint(address account, uint amount) public {
         require(amount > minCollateral, "CollateralERC20: Amount must be greater than minimum collateral");
         require(msg.sender == system.cManager(), "CollateralERC20: Only Collateral Manager can mint");
-        _approve(account, address(system), type(uint).max);
+        if(allowance(account, address(system))!=type(uint).max) {
+            _approve(account, address(system), type(uint).max);
+        }
         _mint(account, amount);
     }
 

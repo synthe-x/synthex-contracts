@@ -6,9 +6,19 @@
             "price": "19099.92"
         },
         {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "price": "1234.14"
+        },
+        {
             "name": "Ripple",
             "symbol": "XRP",
             "price": "0.52"
+        },
+        {
+            "name": "Binance Coin",
+            "symbol": "BNB",
+            "price": "265.21"
         },
         {
             "name": "Cardano",
@@ -24,6 +34,16 @@
             "name": "Microsoft",
             "symbol": "MSFT",
             "price": "234.39"
+        },
+        {
+            "name": "Google",
+            "symbol": "GOOGL",
+            "price": "97.39"
+        },
+        {
+            "name": "S&P 500",
+            "symbol": "^GSPC",
+            "price": "3577.03"
         },
         {
             "name": "Euro Dollar",
@@ -45,10 +65,10 @@
         {
             "name": "Tron",
             "symbol": "TRX",
-            "decimals": "18",
-            "address": "TYsbWxNnyTgsZaTFaue9hqpxkU3Fkco94a",
+            "decimals": "6",
+            "address": "0x0000000000000000000000000000000000000000",
             "price": "0.0671",
-            "minCollateral": "0"
+            "minCollateral": "10"
         },
         {
             "name": "Decentralized USD",
@@ -56,7 +76,7 @@
             "decimals": "18",
             "address": "TFT7sNiNDGZcqL7z7dwXUPpxrx1Ewk8iGL",
             "price": "0.998",
-            "minCollateral": "0"
+            "minCollateral": "1"
         }
     ],
     "reservePools": 1

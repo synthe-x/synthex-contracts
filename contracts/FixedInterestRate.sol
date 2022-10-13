@@ -8,7 +8,6 @@ contract FixedInterestRate {
 
     // Interest rate per second
     uint interestRate;
-    uint interestRateDecimals;
 
     constructor(ISystem _system){
         system = _system;
@@ -18,13 +17,13 @@ contract FixedInterestRate {
     // y = interest rate per year
     // x = (y+1)**(1/31536000) - 1
     // 1 % APR = 0.000000021979553066 % APS
-    function setInterestRate(uint _interestRate, uint _interestRateDecimals) external {
+    function setInterestRate(uint _interestRate) external {
         require(system.owner() == msg.sender, "FixedInterestRate: Only owner can set interest rate");
         interestRate = _interestRate;
-        interestRateDecimals = _interestRateDecimals;
     }
 
-    function getInterestRate(uint, uint) external view returns(uint, uint){
-        return (interestRate, interestRateDecimals);
+    // args: price
+    function getInterestRate(uint) external view returns(uint){
+        return (interestRate);
     }
 }

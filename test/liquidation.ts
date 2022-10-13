@@ -68,7 +68,7 @@ describe("Checking Liquidations", function () {
   it("should set fixed interest rate", async function () {
     let rate = ethers.utils.parseUnits("0.0000000003171", 36)
     await fixedIntRate.setInterestRate(rate, "36");
-    let setRate = await fixedIntRate.getInterestRate("0", "0")
+    let setRate = await fixedIntRate.getInterestRate("0")
     expect(setRate[0]).to.equal(rate);
   })
 

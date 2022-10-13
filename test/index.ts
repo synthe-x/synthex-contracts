@@ -13,7 +13,7 @@ const FORTHUSD = "0x7A65Cf6C2ACE993f09231EC1Ea7363fb29C13f2F";
 describe("ETH Collateral, 3 Debt Assets, Single User", function () {
   let reserve: Contract, cManager: Contract, dManager: Contract, 
   usdOracle: Contract, ethOracle: Contract, btcOracle: Contract, 
-  system: Contract, helper: Contract;
+  system: Contract, helper: Contract, weth: Contract;
   let usdpool: Contract, dusdpool: Contract, 
   btcpool: Contract, dbtcpool: Contract, 
   ethpool: Contract, dethpool: Contract;
@@ -36,14 +36,15 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     ethPrice = 1000
     await ethOracle.setPrice(ethPrice*100000000)
 
-    const deployments = await main()
+    const deployments = await main(false)
     reserve = deployments.reserve
     cManager = deployments.cManager
     dManager = deployments.dManager
     helper = deployments.helper
     system = deployments.sys
+    weth = deployments.weth
     
-    let scxeth = deployments.scxeth
+    let scxeth = deployments.ceth
     await scxeth.setPriceOracle(ethOracle.address)
     dusdpool = deployments.usddebt
     usdpool = deployments.usdpool
@@ -57,25 +58,27 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
   })
 
   it("should deposit 1.1 ETH", async function () {
+    await weth.deposit();
     let depositAmount = ethers.utils.parseEther("1.1");
-    await system.connect(accounts[0]).deposit(ethers.constants.AddressZero, 0, {value: depositAmount});
+    await weth.connect(accounts[0]).approve(system.address, depositAmount);
+    await system.connect(accounts[0]).deposit(weth.address, depositAmount);
     expect(await system.totalCollateral(accounts[0].address)).to.be.equal(depositAmount.mul(ethPrice));
-    expect(await cManager.collateral(accounts[0].address, ethers.constants.AddressZero)).to.be.equal(depositAmount);
+    expect(await cManager.collateral(accounts[0].address, weth.address)).to.be.equal(depositAmount);
   })
 
   it("should withdraw 0.1 ETH", async function () {
     let withdrawAmount = ethers.utils.parseEther("0.1");
-    await system.connect(accounts[0]).withdraw(ethers.constants.AddressZero, withdrawAmount);
+    await system.connect(accounts[0]).withdraw(weth.address, withdrawAmount);
     let afterBalance = ethers.utils.parseEther("1");
     expect(await system.totalCollateral(accounts[0].address)).to.be.equal(afterBalance.mul(ethPrice));
-    expect(await cManager.collateral(accounts[0].address, ethers.constants.AddressZero)).to.be.equal(afterBalance);
+    expect(await cManager.collateral(accounts[0].address, weth.address)).to.be.equal(afterBalance);
   })
 
   it("should borrow 100 sUSD", async function () {
     let borrowAmount = ethers.utils.parseEther("100");
 
     await system.connect(accounts[0]).borrow(usdpool.address, borrowAmount);
-    expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.equal(borrowAmount.mul(usdPrice));
+    expect(await dManager.totalDebt(accounts[0].address)).to.be.equal(borrowAmount.mul(usdPrice));
     expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(borrowAmount);
     expect(await usdpool.balanceOf(accounts[0].address)).to.be.equal(borrowAmount);
     expect(await usdpool.totalSupply()).to.be.equal(borrowAmount);
@@ -88,8 +91,8 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
 
     await system.connect(accounts[0]).exchange(0, usdpool.address, sUSDAmount, ethpool.address);
 
-    expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.greaterThanOrEqual(sETHAmount.mul(ethPrice));
-    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.closeTo(0, 100000000000); // plus interest
+    expect(await dManager.totalDebt(accounts[0].address)).to.be.greaterThanOrEqual(sETHAmount.mul(ethPrice));
+    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.closeTo(0, 2197955306599*2); // plus interest
     expect(await dethpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.equal(sETHAmount);
 
     expect(await usdpool.balanceOf(accounts[0].address)).to.be.equal(0);
@@ -106,8 +109,8 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     await system.connect(accounts[0]).exchange(0, ethpool.address, sETHAmount, usdpool.address);
 
     expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.greaterThanOrEqual(sUSDAmount.mul(usdPrice));
-    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.closeTo(sUSDAmount, 100000000000); // plus interest
-    expect(await dethpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.closeTo(0, 100000000000); // plus interest
+    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.closeTo(sUSDAmount, 2197955306599*2); // plus interest
+    expect(await dethpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.closeTo(0, 2197955306599*2); // plus interest
 
     expect(await usdpool.balanceOf(accounts[0].address)).to.be.equal(sUSDAmount);
     expect(await ethpool.balanceOf(accounts[0].address)).to.be.equal(0);
@@ -120,8 +123,8 @@ describe("ETH Collateral, 3 Debt Assets, Single User", function () {
     let borrowedAmount = ethers.utils.parseEther("100");
 
     await system.connect(accounts[0]).repay(usdpool.address, borrowedAmount);
-    expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.closeTo(0, 100000000000); // plus interest
-    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.closeTo(0, 100000000000); // plus interest
+    expect(await dManager.callStatic.totalDebt(accounts[0].address)).to.be.closeTo(0, 2197955306599*4); // plus interest
+    expect(await dusdpool.callStatic.getBorrowBalance(accounts[0].address)).to.be.closeTo(0, 2197955306599*4); // plus interest
     expect(await usdpool.balanceOf(accounts[0].address)).to.be.equal(0);
     expect(await usdpool.totalSupply()).to.be.equal(0);
     expect(await system.callStatic.collateralRatio(accounts[0].address)).to.be.greaterThan(1);
