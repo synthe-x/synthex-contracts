@@ -1,214 +1,242 @@
-// SPDX-License-Identifier: SEE LICENSE IN LICENSE
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.6;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "./interfaces/ISynthERC20.sol";
+import "./interfaces/IPool.sol";
 
-import "./interfaces/ISystem.sol";
-import "./interfaces/IExchanger.sol";
-import "./interfaces/IDebtManager.sol";
-import "./interfaces/ICollateralManager.sol";
-import "./interfaces/ICollateralERC20.sol";
 
-import "contracts/interfaces/IReserve.sol";
-import "./interfaces/IReservePool.sol";
 
-import "contracts/interfaces/ISynthERC20.sol";
-
-import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-
-import "hardhat/console.sol";
-
-contract Helper {
-    using SafeMath for uint;
-    
-    struct AssetInfo {
-        address id;
-        string name;
-        string symbol;
-        uint decimals;
-        uint price;
-        uint priceDecimals;
-        uint totalLiquidity;
-        uint interestRate;
-        uint interestRateDecimals;
+/// @title Multicall3
+/// @notice Aggregate results from multiple function calls
+/// @dev Multicall & Multicall2 backwards-compatible
+/// @dev Aggregate methods are marked `payable` to save 24 gas per call
+/// @author Michael Elliot <mike@makerdao.com>
+/// @author Joshua Levine <joshua@makerdao.com>
+/// @author Nick Johnson <arachnid@notdot.net>
+/// @author Andreas Bigger <andreas@nascent.xyz>
+/// @author Matt Solomon <matt@mattsolomon.dev>
+contract Multicall {
+    struct Call {
+        address target;
+        bytes callData;
     }
 
-    struct UserPosition {
-        address id;
-        uint collateralBalance;
-        Position[] collaterals;
-        uint debtBalance;
-        Position[] debts;
-        uint poolBalance;
-        Position[] poolAssets;
+    struct Call3 {
+        address target;
+        bool allowFailure;
+        bytes callData;
     }
 
-    struct Position {
-        AssetInfo asset;
-        uint amount;
-        uint walletBalance;
+    struct Call3Value {
+        address target;
+        bool allowFailure;
+        uint256 value;
+        bytes callData;
     }
 
-    ISystem public system;
-
-    constructor(ISystem _system) {
-        system = _system;
+    struct Result {
+        bool success;
+        bytes returnData;
     }
 
-    function getAllAssets() public view returns(AssetInfo[] memory, AssetInfo[] memory){
-        return (getCollateralAssets(), getDebtAssets());
-    }
-
-    function dAssetToAsset(address dAsset) public view returns(address){
-        return IDebtTracker(dAsset).synth();
-    }
-
-    
-    /* -------------------------------------------------------------------------- */
-    /*                               Debt Assets                                  */
-    /* -------------------------------------------------------------------------- */
-
-    function getDebtAssets() public view returns(AssetInfo[] memory){
-        AssetInfo[] memory response = new AssetInfo[](IDebtManager(system.dManager()).dAssetsCount());
-        for(uint i = 0; i < response.length; i++){
-            response[i] = getDebtAsset(i);
+    /// @notice Backwards-compatible call aggregation with Multicall
+    /// @param calls An array of Call structs
+    /// @return blockNumber The block number where the calls were executed
+    /// @return returnData An array of bytes containing the responses
+    function aggregate(Call[] calldata calls) public payable returns (uint256 blockNumber, bytes[] memory returnData) {
+        blockNumber = block.number;
+        uint256 length = calls.length;
+        returnData = new bytes[](length);
+        Call calldata call;
+        for (uint256 i = 0; i < length;) {
+            bool success;
+            call = calls[i];
+            (success, returnData[i]) = call.target.call(call.callData);
+            require(success, "Multicall3: call failed");
+            unchecked { ++i; }
         }
-        return response;
-    }
-    
-    function getDebtAsset(uint index) public view returns(AssetInfo memory){
-        AssetInfo memory response;
-        IDebtTracker debtAsset = IDebtTracker(IDebtManager(system.dManager()).dAssets(index));
-        response.id = debtAsset.synth();
-        response.name = IERC20Metadata(response.id).name();
-        response.symbol = IERC20Metadata(response.id).symbol();
-        response.decimals = IERC20Metadata(response.id).decimals();
-        response.totalLiquidity = IERC20Metadata(response.id).totalSupply();
-        response.price = ISynthERC20(response.id).get_price();
-        (response.interestRate, response.interestRateDecimals) = debtAsset.get_interest_rate();
-        return response;
     }
 
-    function getDebtAssetPrices() public view returns(uint[] memory){
-        uint[] memory response = new uint[](IDebtManager(system.dManager()).dAssetsCount());
-        for(uint i = 0; i < response.length; i++){
-            IDebtTracker asset = IDebtTracker(IDebtManager(system.dManager()).dAssets(i));
-            response[i] = asset.get_price();
+    /// @notice Backwards-compatible with Multicall2
+    /// @notice Aggregate calls without requiring success
+    /// @param requireSuccess If true, require all calls to succeed
+    /// @param calls An array of Call structs
+    /// @return returnData An array of Result structs
+    function tryAggregate(bool requireSuccess, Call[] calldata calls) public payable returns (Result[] memory returnData) {
+        uint256 length = calls.length;
+        returnData = new Result[](length);
+        Call calldata call;
+        for (uint256 i = 0; i < length;) {
+            Result memory result = returnData[i];
+            call = calls[i];
+            (result.success, result.returnData) = call.target.call(call.callData);
+            if (requireSuccess) require(result.success, "Multicall3: call failed");
+            unchecked { ++i; }
         }
-        return response;
     }
 
-    function getDebtAssetAddresses() public view returns(address[] memory){
-        address[] memory response = new address[](IDebtManager(system.dManager()).dAssetsCount());
-        for(uint i = 0; i < response.length; i++){
-            response[i] = IDebtTracker(IDebtManager(system.dManager()).dAssets(i)).synth();
-        }
-        return response;
+    /// @notice Backwards-compatible with Multicall2
+    /// @notice Aggregate calls and allow failures using tryAggregate
+    /// @param calls An array of Call structs
+    /// @return blockNumber The block number where the calls were executed
+    /// @return blockHash The hash of the block where the calls were executed
+    /// @return returnData An array of Result structs
+    function tryBlockAndAggregate(bool requireSuccess, Call[] calldata calls) public payable returns (uint256 blockNumber, bytes32 blockHash, Result[] memory returnData) {
+        blockNumber = block.number;
+        blockHash = blockhash(block.number);
+        returnData = tryAggregate(requireSuccess, calls);
     }
 
-    function getDebtPositionArray(address user) public view returns(uint[] memory){
-        uint[] memory response = new uint[](IDebtManager(system.dManager()).dAssetsCount());
-        for(uint i = 0; i < response.length; i++){
-            response[i] = IDebtTracker(IDebtManager(system.dManager()).dAssets(i)).getBorrowBalanceStored(user);
-        }
-        return response;
+    /// @notice Backwards-compatible with Multicall2
+    /// @notice Aggregate calls and allow failures using tryAggregate
+    /// @param calls An array of Call structs
+    /// @return blockNumber The block number where the calls were executed
+    /// @return blockHash The hash of the block where the calls were executed
+    /// @return returnData An array of Result structs
+    function blockAndAggregate(Call[] calldata calls) public payable returns (uint256 blockNumber, bytes32 blockHash, Result[] memory returnData) {
+        (blockNumber, blockHash, returnData) = tryBlockAndAggregate(true, calls);
     }
 
-    /* -------------------------------------------------------------------------- */
-    /*                              Collateral Assets                             */
-    /* -------------------------------------------------------------------------- */
-
-    function getCollateralAssets() public view returns(AssetInfo[] memory){
-        AssetInfo[] memory response = new AssetInfo[](ICollateralManager(system.cManager()).cAssetsCount());
-        for(uint i = 0; i < response.length; i++){
-            response[i] = getCollateralAsset(i);
-        }
-        return response;
-    }
-
-    function getCollateralAssetAddresses() public view returns(address[] memory){
-        address[] memory response = new address[](ICollateralManager(system.cManager()).cAssetsCount());
-        for(uint i = 0; i < response.length; i++){
-            response[i] = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(i)).underlyingToken();
-        }
-        return response;
-    }
-
-    function getCollateralAsset(uint index) public view returns(AssetInfo memory) {
-        AssetInfo memory response;
-        response.id =  ICollateralERC20(ICollateralManager(system.cManager()).cAssets(index)).underlyingToken();
-        if(response.id == address(0)){
-            response.name = "Ethereum";
-            response.symbol = "ETH";
-            response.decimals = 18;
-            response.totalLiquidity = system.reserve().balance;
-        } else {
-            response.name = IERC20Metadata(response.id).name();
-            response.symbol = IERC20Metadata(response.id).symbol();
-            response.decimals = IERC20Metadata(response.id).decimals();
-            response.totalLiquidity = IERC20Metadata(response.id).balanceOf(system.reserve());
-        }
-        response.price = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(index)).get_price();
-        return response;
-    }
-
-    function getCollateralAssetPrices() public view returns(uint[] memory){
-        uint[] memory response = new uint[](ICollateralManager(system.cManager()).cAssetsCount());
-        for(uint i = 0; i < response.length; i++){
-            ICollateralERC20 asset = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(i));
-            response[i] = asset.get_price();
-        }
-        return response;
-    }
-
-    // [[amount, price, priceDecimals], ...]
-    function getCollateralPositionArray(address user) public view returns(uint[] memory){
-        uint[] memory response = new uint[](ICollateralManager(system.cManager()).cAssetsCount());
-        for(uint i = 0; i < response.length; i++){
-            ICollateralERC20 asset = ICollateralERC20(ICollateralManager(system.cManager()).cAssets(i));
-            response[i] = ICollateralManager(system.cManager()).collateral(user, asset.underlyingToken());
-        }
-        return response;
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /*                                User Position                               */
-    /* -------------------------------------------------------------------------- */
-    function getUserPosition(address user) public returns(UserPosition memory){
-        UserPosition memory response = UserPosition({
-            id: user,
-            collateralBalance: ICollateralManager(system.cManager()).totalCollateral(user),
-            collaterals: new Position[](ICollateralManager(system.cManager()).cAssetsCount()),
-            debtBalance: IDebtManager(system.dManager()).totalDebt(user),
-            debts: new Position[](IDebtManager(system.dManager()).dAssetsCount()),
-            poolBalance: 0,
-            poolAssets: new Position[](IDebtManager(system.dManager()).dAssetsCount())
-        });
-
-        for(uint i = 0; i < response.collaterals.length; i++){
-            response.collaterals[i].asset = getCollateralAsset(i);
-            response.collaterals[i].amount = ICollateralManager(system.cManager()).collateral(user, response.collaterals[i].asset.id);
-            if(response.collaterals[i].asset.id == address(0)){
-                response.collaterals[i].walletBalance = user.balance;
-            } else {
-                response.collaterals[i].walletBalance = IERC20Metadata(response.collaterals[i].asset.id).balanceOf(user);
+    /// @notice Aggregate calls, ensuring each returns success if required
+    /// @param calls An array of Call3 structs
+    /// @return returnData An array of Result structs
+    function aggregate3(Call3[] calldata calls) public payable returns (Result[] memory returnData) {
+        uint256 length = calls.length;
+        returnData = new Result[](length);
+        Call3 calldata calli;
+        for (uint256 i = 0; i < length;) {
+            Result memory result = returnData[i];
+            calli = calls[i];
+            (result.success, result.returnData) = calli.target.call(calli.callData);
+            assembly {
+                // Revert if the call fails and failure is not allowed
+                // `allowFailure := calldataload(add(calli, 0x20))` and `success := mload(result)`
+                if iszero(or(calldataload(add(calli, 0x20)), mload(result))) {
+                    // set "Error(string)" signature: bytes32(bytes4(keccak256("Error(string)")))
+                    mstore(0x00, 0x08c379a000000000000000000000000000000000000000000000000000000000)
+                    // set data offset
+                    mstore(0x04, 0x0000000000000000000000000000000000000000000000000000000000000020)
+                    // set length of revert string
+                    mstore(0x24, 0x0000000000000000000000000000000000000000000000000000000000000017)
+                    // set revert string: bytes32(abi.encodePacked("Multicall3: call failed"))
+                    mstore(0x44, 0x4d756c746963616c6c333a2063616c6c206661696c6564000000000000000000)
+                    revert(0x00, 0x64)
+                }
             }
+            unchecked { ++i; }
         }
+    }
 
-        for(uint i = 0; i < response.debts.length; i++){
-            response.debts[i].asset = getDebtAsset(i);
-            response.poolAssets[i].asset = getDebtAsset(i);
-            response.debts[i].amount = IDebtTracker(IDebtManager(system.dManager()).dAssets(i)).getBorrowBalance(user);
-            response.debts[i].walletBalance = IERC20Metadata(response.debts[i].asset.id).balanceOf(user);
-            response.poolAssets[i].walletBalance = IERC20Metadata(response.debts[i].asset.id).balanceOf(user);
+    /// @notice Aggregate calls with a msg value
+    /// @notice Reverts if msg.value is less than the sum of the call values
+    /// @param calls An array of Call3Value structs
+    /// @return returnData An array of Result structs
+    function aggregate3Value(Call3Value[] calldata calls) public payable returns (Result[] memory returnData) {
+        uint256 valAccumulator;
+        uint256 length = calls.length;
+        returnData = new Result[](length);
+        Call3Value calldata calli;
+        for (uint256 i = 0; i < length;) {
+            Result memory result = returnData[i];
+            calli = calls[i];
+            uint256 val = calli.value;
+            // Humanity will be a Type V Kardashev Civilization before this overflows - andreas
+            // ~ 10^25 Wei in existence << ~ 10^76 size uint fits in a uint256
+            unchecked { valAccumulator += val; }
+            (result.success, result.returnData) = calli.target.call{value: val}(calli.callData);
+            assembly {
+                // Revert if the call fails and failure is not allowed
+                // `allowFailure := calldataload(add(calli, 0x20))` and `success := mload(result)`
+                if iszero(or(calldataload(add(calli, 0x20)), mload(result))) {
+                    // set "Error(string)" signature: bytes32(bytes4(keccak256("Error(string)")))
+                    mstore(0x00, 0x08c379a000000000000000000000000000000000000000000000000000000000)
+                    // set data offset
+                    mstore(0x04, 0x0000000000000000000000000000000000000000000000000000000000000020)
+                    // set length of revert string
+                    mstore(0x24, 0x0000000000000000000000000000000000000000000000000000000000000017)
+                    // set revert string: bytes32(abi.encodePacked("Multicall3: call failed"))
+                    mstore(0x44, 0x4d756c746963616c6c333a2063616c6c206661696c6564000000000000000000)
+                    revert(0x00, 0x84)
+                }
+            }
+            unchecked { ++i; }
         }
+        // Finally, make sure the msg.value = SUM(call[0...i].value)
+        require(msg.value == valAccumulator, "Multicall3: value mismatch");
+    }
 
-        // for(uint i = 1; i <= IReserve(system.reserve()).poolCount(); i++){
-        //     IReservePool pool = IReservePool(IReserve(system.reserve()).pools(i));
-        //     for(uint j = 0; j < response.poolAssets.length; j++){
-        //         response.poolAssets[j].amount = response.poolAssets[j].amount.add(pool.debts(user, address(ISynthERC20(response.poolAssets[j].asset.id).debt())));   
-        //     }
-        // }
+    /// @notice Returns the block hash for the given block number
+    /// @param blockNumber The block number
+    function getBlockHash(uint256 blockNumber) public view returns (bytes32 blockHash) {
+        blockHash = blockhash(blockNumber);
+    }
 
-        return response;
+    /// @notice Returns the block number
+    function getBlockNumber() public view returns (uint256 blockNumber) {
+        blockNumber = block.number;
+    }
+
+    /// @notice Returns the block coinbase
+    function getCurrentBlockCoinbase() public view returns (address coinbase) {
+        coinbase = block.coinbase;
+    }
+
+    /// @notice Returns the block difficulty
+    function getCurrentBlockDifficulty() public view returns (uint256 difficulty) {
+        difficulty = block.difficulty;
+    }
+
+    /// @notice Returns the block gas limit
+    function getCurrentBlockGasLimit() public view returns (uint256 gaslimit) {
+        gaslimit = block.gaslimit;
+    }
+
+    /// @notice Returns the block timestamp
+    function getCurrentBlockTimestamp() public view returns (uint256 timestamp) {
+        timestamp = block.timestamp;
+    }
+
+    /// @notice Returns the (ETH) balance of a given address
+    function getEthBalance(address addr) public view returns (uint256 balance) {
+        balance = addr.balance;
+    }
+
+    /// @notice Returns the block hash of the last block
+    function getLastBlockHash() public view returns (bytes32 blockHash) {
+        unchecked {
+            blockHash = blockhash(block.number - 1);
+        }
+    }
+
+    /// @notice Returns the chain id
+    function getChainId() public view returns (uint256 chainid) {
+        chainid = block.chainid;
+    }
+}
+
+// extend multicall with support for tronweb response
+contract Helper is Multicall {
+    function balanceOf(address[] memory tokens, address user) public view returns (uint[] memory balance) {
+        uint[] memory returnData = new uint[](tokens.length);
+        for(uint256 i = 0; i < tokens.length; i++) {
+            returnData[i] = IERC20(tokens[i]).balanceOf(user);
+        }
+        return returnData;
+    }
+    
+    function debtBalanceOf(address[] memory tokens, address user) public view returns (uint[] memory balance) {
+        uint[] memory returnData = new uint[](tokens.length);
+        for(uint256 i = 0; i < tokens.length; i++) {
+            returnData[i] = IDebtTracker(ISynthERC20(tokens[i]).debt()).getBorrowBalanceStored(user);
+        }
+        return returnData;
+    }
+    
+    function tradingBalanceOf(address pool, address[] memory tokens, address user) public view returns(uint[] memory balance){
+        uint[] memory returnData = new uint[](tokens.length);
+        for(uint256 i = 0; i < tokens.length; i++) {
+            returnData[i] = IPool(pool).debts(user, tokens[i]);
+        }
+        return returnData;
     }
 }

@@ -1,0 +1,25 @@
+{
+    "synths": [
+        {
+            "name": "Bitcoin",
+            "symbol": "BTC",
+            "price": "19099.92"
+        },
+        {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "price": "1234.14"
+        }
+    ],
+    "collaterals": [
+        {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": "18",
+            "address": "0x0000000000000000000000000000000000000000",
+            "price": "1234.12",
+            "minCollateral": "0.01"
+        }
+    ],
+    "reservePools": 1
+}

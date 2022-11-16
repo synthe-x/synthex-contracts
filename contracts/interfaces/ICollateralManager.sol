@@ -14,4 +14,9 @@ interface ICollateralManager {
     function _decreaseCollateral(address user, address asset, uint amount) external;
 
     function totalCollateral(address account) external view returns(uint);
+    function isCollateral(address _asset) external view returns (bool);
+    function isActiveCollateral(address _asset) external view returns (bool);
+
+    function pause(address _asset) external;
+    function unpause(address _asset) external;
 }

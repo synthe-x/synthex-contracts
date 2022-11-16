@@ -8,12 +8,14 @@ import "./interfaces/ILiquidator.sol";
 import "./interfaces/ICollateralManager.sol";
 import "./interfaces/IDebtManager.sol";
 import "./interfaces/IInterestRate.sol";
+import "./interfaces/ILimitOrder.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./pool/TradingPool.sol";
 import "./BaseSystem.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract System is BaseSystem{
+contract System is BaseSystem, ReentrancyGuard {
     using SafeMath for uint;
 
     constructor(address addrResolver, uint minCRatio_, uint safeCRatio_) {
@@ -26,33 +28,35 @@ contract System is BaseSystem{
     /*                              Public Functions                              */
     /* -------------------------------------------------------------------------- */
 
-    function deposit(address asset, uint amount) external {
+    function deposit(address asset, uint amount) external nonReentrant {
         require(asset != address(0), "System: asset cannot be 0x0");
         require(amount > 0, "System: amount must be greater than 0");
+        require(ICollateralManager(cManager()).isActiveCollateral(asset), "System: asset is not active collateral");
         depositInternal(msg.sender, asset, amount);
     }
 
-    function withdraw(address asset, uint amount) external {
+    function withdraw(address asset, uint amount) external nonReentrant {
         require(amount > 0, "System: amount must be greater than 0");
         require(asset != address(0), "System: asset cannot be 0x0");
         withdrawInternal(msg.sender, asset, amount);
     }
 
-    function borrow(address asset, uint amount) external {
-        require(isIssuancePaused == false, "SYSTEM: Issuance is paused");
+    function borrow(address asset, uint amount) external nonReentrant {
+        require(!isIssuancePaused, "SYSTEM: Issuance is paused");
         require(amount > 0, "System: amount must be greater than 0");
         require(asset != address(0), "System: asset cannot be 0x0");
+        require(IDebtManager(dManager()).isActiveSynth(asset), "System: asset is not active synth");
         borrowInternal(msg.sender, asset, amount);
     }
 
-    function repay(address asset, uint amount) external {
-        require(isIssuancePaused == false, "SYSTEM: Issuance is paused");
+    function repay(address asset, uint amount) external nonReentrant {
+        require(!isIssuancePaused, "SYSTEM: Issuance is paused");
         require(amount > 0, "System: amount must be greater than 0");
         require(asset != address(0), "System: asset cannot be 0x0");
         repayInternal(msg.sender, asset, amount);
     }
 
-    function exchange(uint poolIndex, address src, uint srcAmount, address dst) external {
+    function exchange(uint poolIndex, address src, uint srcAmount, address dst) external nonReentrant {
         require(!isExchangePaused, "SYSTEM: Exchange is paused");
         require(srcAmount > 0, "System: amount must be greater than 0");
         require(src != address(0) && dst != address(0), "System: asset cannot be 0x0");
@@ -60,21 +64,29 @@ contract System is BaseSystem{
         exchangeInternal(msg.sender, poolIndex, src, srcAmount, dst);
     }
 
-    function enterPool(uint poolIndex, address asset, uint amount) external {
+    function executeOrder(address maker, address src, address dst, uint srcAmount, bytes memory signature) external nonReentrant {
+        require(!isExchangePaused, "SYSTEM: Exchange is paused");
+        require(srcAmount > 0, "System: amount must be greater than 0");
+        require(src != address(0) && dst != address(0), "System: asset cannot be 0x0");
+        require(ILimitOrder(limitOrder()).verifyOrder(maker, src, dst, srcAmount, signature), "System: invalid order");
+        executeLimitOrderInternal(maker, msg.sender, src, dst, srcAmount);
+    }
+
+    function enterPool(uint poolIndex, address asset, uint amount) external nonReentrant {
         require(amount > 0, "System: amount must be greater than 0");
         repayInternal(msg.sender, asset, amount);
         tradingPools[poolIndex].increaseDebt(msg.sender, asset, amount);
         emit PoolEntered(address(tradingPools[poolIndex]), msg.sender, asset, amount);
     }
 
-    function exitPool(uint poolIndex, address asset, uint amount) external {
+    function exitPool(uint poolIndex, address asset, uint amount) external nonReentrant {
         require(amount > 0, "System: amount must be greater than 0");
         tradingPools[poolIndex].decreaseDebt(msg.sender, asset, amount);
         borrowInternal(msg.sender, asset, amount);
         emit PoolExited(address(tradingPools[poolIndex]), msg.sender, asset, amount);
     }
 
-    function liquidate(address user) external {
+    function liquidate(address user) external nonReentrant {
         uint cRatio = collateralRatio(user);
         require(
             cRatio < minCRatio && cRatio > 0,
@@ -83,7 +95,7 @@ contract System is BaseSystem{
         ILiquidator(liquidator()).liquidate(msg.sender, user);
     }
 
-    function partialLiquidate(address user, address borrowedAsset, uint borrowedAmount) external {
+    function partialLiquidate(address user, address borrowedAsset, uint borrowedAmount) external nonReentrant {
         uint cRatio = collateralRatio(user);
         require(
             collateralRatio(user) < minCRatio && cRatio > 0,
@@ -126,6 +138,36 @@ contract System is BaseSystem{
     function setSafeCRatio(uint _safeCRatio) external onlySysAdmin {
         safeCRatio = _safeCRatio;
         emit NewSafeCRatio(_safeCRatio);
+    }
+
+    function enableSynthInTradingPool(uint poolIndex, address[] memory synths) external onlySysAdmin {
+        tradingPools[poolIndex].enableSynth(synths);
+        emit SynthEnabledInTradingPool(address(tradingPools[poolIndex]), synths);
+    }
+
+    function disableSynthInTradingPool(uint poolIndex, address[] memory synths) external onlySysAdmin {
+        tradingPools[poolIndex].disableSynth(synths);
+        emit SynthDisabledInTradingPool(address(tradingPools[poolIndex]), synths);
+    }
+
+    function pauseCollateral(address asset) external onlySysAdmin {
+        ICollateralManager(cManager()).pause(asset);
+        emit CollateralPaused(asset);
+    }
+
+    function unpauseCollateral(address asset) external onlySysAdmin {
+        ICollateralManager(cManager()).unpause(asset);
+        emit CollateralResumed(asset);
+    }
+
+    function pauseSynth(address asset) external onlySysAdmin {
+        IDebtManager(dManager()).pause(asset);
+        emit SynthPaused(asset);
+    }
+
+    function unpauseSynth(address asset) external onlySysAdmin {
+        IDebtManager(dManager()).unpause(asset);
+        emit SynthResumed(asset);
     }
 
     /* -------------------------------------------------------------------------- */

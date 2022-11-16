@@ -17,11 +17,49 @@ contract CollateralManager is ICollateralManager {
     uint private _cAssetsCount = 0;
     mapping (uint => address) private _cAssets;
     mapping(address => address) private _assetToCAsset;
+    mapping(address => bool) private _isPaused;
     
     constructor(ISystem _system){
         system = _system;
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                               Admin Functions                              */
+    /* -------------------------------------------------------------------------- */
+    function create(string memory name, string memory symbol, uint decimals, address asset, address oracle, uint minCollateral) public override {
+        require(msg.sender == address(system), "Only system can create");
+        CollateralERC20 cAsset = new CollateralERC20(name, symbol, decimals, asset, oracle, minCollateral, system);
+        _cAssets[_cAssetsCount] = address(cAsset);
+        _assetToCAsset[asset] = address(cAsset);
+        _cAssetsCount += 1;
+    }
+
+    function pause(address _asset) external override {
+        require(msg.sender == address(system), "Not owner");
+        _isPaused[_asset] = true;
+    }
+
+    function unpause(address _asset) external override {
+        require(msg.sender == address(system), "Not owner");
+        _isPaused[_asset] = false;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                              Public Functions                              */
+    /* -------------------------------------------------------------------------- */
+    function _increaseCollateral(address user, address asset, uint amount) external override {
+        require(msg.sender == system.reserve(), "CollateralManager: Not reserve");
+        ICollateralERC20(_assetToCAsset[asset]).mint(user, amount);
+    }
+
+    function _decreaseCollateral(address user, address asset, uint amount) external override {
+        require(msg.sender == system.reserve() || msg.sender == system.liquidator(), "CollateralManager: Not reserve or liquidator");
+        ICollateralERC20(_assetToCAsset[asset]).burn(user, amount);
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                               View Functions                               */
+    /* -------------------------------------------------------------------------- */
     function cAssets(uint _index) external view override returns (address) {
         return _cAssets[_index];
     }
@@ -34,22 +72,12 @@ contract CollateralManager is ICollateralManager {
         return _assetToCAsset[_asset];
     }
 
-    function create(string memory name, string memory symbol, uint decimals, address asset, address oracle, uint minCollateral) public override {
-        require(msg.sender == address(system), "Only system can create");
-        CollateralERC20 cAsset = new CollateralERC20(name, symbol, decimals, asset, oracle, minCollateral, system);
-        _cAssets[_cAssetsCount] = address(cAsset);
-        _assetToCAsset[asset] = address(cAsset);
-        _cAssetsCount += 1;
+    function isCollateral(address _asset) external view override returns (bool) {
+        return _assetToCAsset[_asset] != address(0);
     }
 
-    function _increaseCollateral(address user, address asset, uint amount) external override {
-        require(msg.sender == system.reserve(), "CollateralManager: Not reserve");
-        ICollateralERC20(_assetToCAsset[asset]).mint(user, amount);
-    }
-
-    function _decreaseCollateral(address user, address asset, uint amount) external override {
-        require(msg.sender == system.reserve() || msg.sender == system.liquidator(), "CollateralManager: Not reserve or liquidator");
-        ICollateralERC20(_assetToCAsset[asset]).burn(user, amount);
+    function isActiveCollateral(address _asset) external view override returns (bool) {
+        return _assetToCAsset[_asset] != address(0) && !_isPaused[_asset];
     }
 
     function collateral(address user, address asset) public view override returns(uint){

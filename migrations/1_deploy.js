@@ -141,15 +141,16 @@ module.exports = async function(deployer, network) {
     dir = fs.readFileSync(process.cwd() + `/build/contracts/TradingPool.json`, "utf-8");
     abi = JSON.parse(dir);
     abi = abi.abi;
+    let tradingPools = config["tradingPools"];
     deployments["sources"]["TradingPool"] = abi;
-    for(let i = 0; i < config["reservePools"]; i++) {
-        await sys.newTradingPool("Synthex Tradng Pool " + i, "SXP" + i);
+    for(let i = 0; i < tradingPools.length; i++) {
+        await sys.newTradingPool(config["tradingPools"][i].name, config["tradingPools"][i].symbol);
         let poolAddress = await sys.tradingPools(i+1);
-        deployments["contracts"]["SXP" + i] = {
+        deployments["contracts"][config["tradingPools"][i].symbol] = {
             source: "TradingPool",
             address: tronWeb.address.fromHex(poolAddress),
         };
-        console.log(`SXP${i}: ${tronWeb.address.fromHex(poolAddress)}`);
+        console.log(`${config["tradingPools"][i].symbol}: ${tronWeb.address.fromHex(poolAddress)}`);
     }
 
     fs.writeFileSync(process.cwd() + `/deployments/${network}/deployments.json`, JSON.stringify(deployments, null, 2));

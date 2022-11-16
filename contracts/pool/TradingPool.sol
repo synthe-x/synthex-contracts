@@ -18,14 +18,36 @@ contract TradingPool is ERC20 {
     mapping(address => mapping(address => uint)) public debts;
     mapping(address => uint) public totalDebt;
 
-    ISystem system;
+    ISystem private system;
+    mapping (address => bool) public isSynth;
 
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {
         system = ISystem(msg.sender);
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                               Admin Functions                              */
+    /* -------------------------------------------------------------------------- */
+    function enableSynth(address[] memory _synths) external {
+        require(msg.sender == address(system), "Not owner");
+        for (uint i = 0; i < _synths.length; i++) {
+            isSynth[_synths[i]] = true;
+        }
+    }
+
+    function diableSynth(address[] memory _synths) external {
+        require(msg.sender == address(system), "Not owner");
+        for (uint i = 0; i < _synths.length; i++) {
+            isSynth[_synths[i]] = false;
+        }
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                              Public Functions                              */
+    /* -------------------------------------------------------------------------- */
     function increaseDebt(address user, address asset, uint amount) external {
         require(address(system) == msg.sender, "TradingPool: Only reserve can call enter pool");
+        require(isSynth[asset], "TradingPool: Not a synth");
         // mint dept pool shares
         uint dspAmount = amount.mul(ISynthERC20(asset).get_price()).div(10**8);
         if(totalSupply() != 0){
@@ -43,7 +65,7 @@ contract TradingPool is ERC20 {
     function decreaseDebt(address user, address asset, uint amount) external {
         require(address(system) == msg.sender, "TradingPool: Only reserve can call exit pool");
         // burn dept pool shares
-        uint dspAmount = amount.mul( ISynthERC20(asset).get_price()).div(10**8).mul(totalSupply()).div(getTotalDebtUSD());
+        uint dspAmount = amount.mul(ISynthERC20(asset).get_price()).div(10**8).mul(totalSupply()).div(getTotalDebtUSD());
         _burn(user, dspAmount);
 
         debts[user][asset] = debts[user][asset].sub(amount);
@@ -53,6 +75,8 @@ contract TradingPool is ERC20 {
 
     function exchange(address user, address fromAsset, uint fromAmount, address toAsset) external {
         require(address(system) == msg.sender, "TradingPool: Only reserve can call exchange");
+        require(isSynth[fromAsset], "TradingPool: fromAsset not a synth");
+        require(isSynth[toAsset], "TradingPool: toAsset not a synth");
         
         debts[user][fromAsset] = debts[user][fromAsset].sub(fromAmount);
         totalDebt[fromAsset] = totalDebt[fromAsset].sub(fromAmount);
@@ -64,6 +88,9 @@ contract TradingPool is ERC20 {
         ISynthERC20(toAsset).issue(user, toAmount);
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                               View Functions                               */
+    /* -------------------------------------------------------------------------- */
     function getTotalDebtUSD() public view returns(uint){
         uint total = 0;
         for(uint i = 0; i < IDebtManager(system.dManager()).dAssetsCount(); i++){

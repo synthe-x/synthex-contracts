@@ -83,19 +83,11 @@
     ],
     "collaterals": [
         {
-            "name": "Tron",
-            "symbol": "TRX",
-            "decimals": "6",
-            "address": "0x0000000000000000000000000000000000000000",
-            "price": "0.0671",
-            "minCollateral": "10"
-        },
-        {
-            "name": "Decentralized USD",
-            "symbol": "USDD",
+            "name": "BitTorrent",
+            "symbol": "BTT",
             "decimals": "18",
-            "address": "TFT7sNiNDGZcqL7z7dwXUPpxrx1Ewk8iGL",
-            "price": "0.998",
+            "address": "0x0000000000000000000000000000000000000000",
+            "price": "0.00000077",
             "minCollateral": "1"
         }
     ],
@@ -123,7 +115,7 @@
         {
             "name": "Commodities",
             "symbol": "COMD",
-            "assets": ["AUX", "CLX"]
+            "assets": ["AUXX", "CLXX"]
         }
     ]
 }

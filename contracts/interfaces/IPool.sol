@@ -8,4 +8,7 @@ interface IPool {
     function transferOut(address to, address asset, uint amount) external;
     function getBorrowBalanceUSD(address account) external view returns (uint);
     function getTotalDebtUSD() external view returns(uint);
+    function enableSynth(address[] memory _synth) external;
+    function disableSynth(address[] memory _synth) external;
+    function debts(address, address) external view returns(uint);
 }

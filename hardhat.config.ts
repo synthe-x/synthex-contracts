@@ -16,9 +16,24 @@ const config: HardhatUserConfig = {
       url: "https://goerli.infura.io/v3/bb621c9372d048979f8677ba78fe41d7",
       accounts: ["0x" + process.env.PRIVATE_KEY],
     },
+    harmony_testnet: {
+      url: "https://api.s0.b.hmny.io",
+      accounts: ["0x" + process.env.PRIVATE_KEY],
+    },
+    aurora_testnet: {
+      url: "https://testnet.aurora.dev",
+      accounts: ["0x" + process.env.PRIVATE_KEY],
+    },
+    bttc_donau: {
+      url: 'https://pre-rpc.bt.io/',
+      accounts: ["0x" + process.env.PRIVATE_KEY]
+    },
     localhost:{
       url: "http://localhost:8545"
     }
+  },
+  etherscan: {
+    apiKey: "ABCDE12345ABCDE12345ABCDE123456789",
   },
   solidity: {
     compilers: [
@@ -27,7 +42,7 @@ const config: HardhatUserConfig = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 200,
+            runs: 1000,
           },
           // viaIR: true,
         },

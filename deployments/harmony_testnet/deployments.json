@@ -2,87 +2,541 @@
   "contracts": {
     "AddressResolver": {
       "source": "AddressResolver",
-      "address": "TXJiqYyjMPM4S2vAwDEyuzuUybyWzuYFZh"
+      "constructorArguments": [],
+      "address": "0x71aaE3d0e332063F47FBdCa4666e2F3316e3B89C"
     },
     "System": {
       "source": "System",
-      "address": "TKZkeJxSZaGDqwh2G7FkDo9omXS7C4UoBA"
+      "constructorArguments": [
+        "0x71aaE3d0e332063F47FBdCa4666e2F3316e3B89C",
+        "1300000000000000000",
+        "2000000000000000000"
+      ],
+      "address": "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
     },
     "Reserve": {
       "source": "Reserve",
-      "address": "TTHnyJUgSCmGHmHZ8qMxKGPx5y4NXmg9tN"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0x35aff928Cf198206894249b4E4dc46bB8955c9AF"
+    },
+    "Helper": {
+      "source": "Helper",
+      "constructorArguments": [],
+      "address": "0xDb376bB42Ef5dA9cD8936AE71f533bbD5e735524"
     },
     "DebtManager": {
       "source": "DebtManager",
-      "address": "TKGUMxt73L8SpziKC3VrQXuBHCZFPP7tNJ"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0x75A5700837d21B801C311Ca7F4e0215A213169D3"
     },
     "CollateralManager": {
       "source": "CollateralManager",
-      "address": "TGTxT3mEE4tqSkj7ATbVvpxWuQbSN2UsHS"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0x09D93c95BD7851301Fe72f935961E997AE67e42c"
     },
     "FixedInterestRate": {
       "source": "FixedInterestRate",
-      "address": "TKph5A4NCZL5buEWyMQjMqTHVHs63DLgw4"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
     },
     "Liquidator": {
       "source": "Liquidator",
-      "address": "TWaHdwMLALaSYg9kbDaxAhmirvujocY9mX"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0xC98a573b4f80363fc2Fddd5Ca06f4cE386DE5AeC"
     },
-    "cTRX_Oracle": {
+    "cONE_Oracle": {
       "source": "PriceOracle",
-      "address": "TDV5jCe7srL9pF4NJH8aQuMsiEc2NqAsVG"
+      "constructorArguments": [],
+      "address": "0x975D4afebC966A0A320B0371617AaDA655C99089"
     },
-    "WTRX": {
-      "source": "WTRX",
-      "address": "TBV8rEb2ToBVnBwZrzQpzK5qFC59Hym4We"
+    "WONE": {
+      "source": "WONE",
+      "constructorArguments": [],
+      "address": "0x639B982a698e4740248896079608a07755Acd0F4"
     },
-    "cTRX": {
+    "SynthexCollateralizedHarmony ONE": {
       "source": "CollateralERC20",
-      "address": "TRrpHhpW3eaJziS4xeFPRUSdvnS3MztLqJ"
-    },
-    "cUSDD_Oracle": {
-      "source": "PriceOracle",
-      "address": "TVhMH1KTgUDWtZuFJwvESdfHKVkN3WhJWd"
-    },
-    "cUSDD": {
-      "source": "CollateralERC20",
-      "address": "TPfncbtRisqigMSxUou4JnYXLvxNuU1DFV"
+      "constructorArguments": [
+        "Synthex CollateralizedHarmony ONE",
+        "cONE",
+        "0x0000000000000000000000000000000000000000",
+        null,
+        {
+          "type": "BigNumber",
+          "hex": "0x056bc75e2d63100000"
+        }
+      ],
+      "address": "0x4ea6527302B200901d8BD2E40E489749d56Ae263"
     },
     "USDX_Oracle": {
       "source": "PriceOracle",
-      "address": "TSJJnEmWGavqpvyWh1RrMqEAj5BzKwkrDZ"
+      "constructorArguments": [],
+      "address": "0x308e649c62270ca8353697CC1701F0be426d9822"
     },
-    "DebtTrackerUSDX": {
+    "USDX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex US Dollar",
+        "USDX",
+        "0x308e649c62270ca8353697CC1701F0be426d9822",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xc1d9d3b3197f59748cE8F1d61e5015de18c98E90"
+    },
+    "USDX_DEBT": {
       "source": "DebtTracker",
-      "address": "TRab8M9tfqVP1dUz5oMvjPDNYgzQvRqDc8"
+      "constructorArguments": [
+        "Synthex US Dollar",
+        "USDX",
+        "0x308e649c62270ca8353697CC1701F0be426d9822",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x88eb5cb81d77b06973C0fd63B86ae736B5388190"
     },
     "BTCX_Oracle": {
       "source": "PriceOracle",
-      "address": "TQNCv7JXCu9kNzZvLtfvCKXXvs9Ao6Ya2Q"
+      "constructorArguments": [],
+      "address": "0xc80BBfe1c57c7aAdD78D1518D2925E33B5352805"
     },
-    "DebtTrackerBTCX": {
+    "BTCX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Bitcoin",
+        "BTCX",
+        "0xc80BBfe1c57c7aAdD78D1518D2925E33B5352805",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x42dfF8E72D7526927F08C1Ed52b473ed1CB90158"
+    },
+    "BTCX_DEBT": {
       "source": "DebtTracker",
-      "address": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
+      "constructorArguments": [
+        "Synthex Bitcoin",
+        "BTCX",
+        "0xc80BBfe1c57c7aAdD78D1518D2925E33B5352805",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xe18BDBc6aed436A15d413B727E85960b3118a04c"
+    },
+    "ETHX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x30535A4477aF6B013F7d327Fd7C65D782a0203E7"
+    },
+    "ETHX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Ethereum",
+        "ETHX",
+        "0x30535A4477aF6B013F7d327Fd7C65D782a0203E7",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xc3AA8905e25EE82e82219a5FF023C77FF56d787d"
+    },
+    "ETHX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Ethereum",
+        "ETHX",
+        "0x30535A4477aF6B013F7d327Fd7C65D782a0203E7",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x9Bf1cB1C3479AF161e3133CcEA0b3608cd658f27"
+    },
+    "TRXX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x2eE0c0fA4695F55ADa4282F955935BFf97265546"
+    },
+    "TRXX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Tron",
+        "TRXX",
+        "0x2eE0c0fA4695F55ADa4282F955935BFf97265546",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x16c50C554003C22472Ce3C1686EaEd7bace6702C"
+    },
+    "TRXX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Tron",
+        "TRXX",
+        "0x2eE0c0fA4695F55ADa4282F955935BFf97265546",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x8fF3b26acec00838AaB31f823aE8Ca81a658eDcA"
+    },
+    "ONEX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x9cBad008aB9DF28D796A190C92c86728577f5471"
+    },
+    "ONEX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Harmony ONE",
+        "ONEX",
+        "0x9cBad008aB9DF28D796A190C92c86728577f5471",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x2BaC31823d4F34fD4C7F0EC26D30747Df0DffD72"
+    },
+    "ONEX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Harmony ONE",
+        "ONEX",
+        "0x9cBad008aB9DF28D796A190C92c86728577f5471",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xE6557E6c0A5613eb72ffEecAfB7010aEA12900D6"
+    },
+    "XRPX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x6B34c03F802fdBe034aAd498183831e3edFB304b"
+    },
+    "XRPX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Ripple",
+        "XRPX",
+        "0x6B34c03F802fdBe034aAd498183831e3edFB304b",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xD259F589B10884e40A039140299447c6189f921B"
+    },
+    "XRPX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Ripple",
+        "XRPX",
+        "0x6B34c03F802fdBe034aAd498183831e3edFB304b",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x208B2B5BACa9f70730B505e19A69465D7d83CD77"
+    },
+    "BNBX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x62B66794B9Fe4F95FB391c72b544948FdCaE12db"
+    },
+    "BNBX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Binance Coin",
+        "BNBX",
+        "0x62B66794B9Fe4F95FB391c72b544948FdCaE12db",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x41340c52eEA0939ca7B0EeAAa0525Fa2496aA83D"
+    },
+    "BNBX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Binance Coin",
+        "BNBX",
+        "0x62B66794B9Fe4F95FB391c72b544948FdCaE12db",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x79060A60Da2a5096583c5De1aC92C012F58Fa595"
+    },
+    "ADAX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x81cf57B394Ceb1Ee7B217C2e833fa698E79180C3"
+    },
+    "ADAX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Cardano",
+        "ADAX",
+        "0x81cf57B394Ceb1Ee7B217C2e833fa698E79180C3",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xe59065Fabc8e0DaB5F087028b4f477013bcB72a8"
+    },
+    "ADAX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Cardano",
+        "ADAX",
+        "0x81cf57B394Ceb1Ee7B217C2e833fa698E79180C3",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x191df1e5282bF13071b91f1F582F2e2b4349B543"
+    },
+    "AAPLX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x8Ca40232E6cEBD9F9887722ac4C30B2085B0db0f"
+    },
+    "AAPLX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Apple",
+        "AAPLX",
+        "0x8Ca40232E6cEBD9F9887722ac4C30B2085B0db0f",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x65F39A2F73FD376A123C57E17Cc54708D6937b8e"
+    },
+    "AAPLX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Apple",
+        "AAPLX",
+        "0x8Ca40232E6cEBD9F9887722ac4C30B2085B0db0f",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x19320AB0561d52455aA27f0247b984aEC328eBAC"
+    },
+    "MSFTX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x3B68185Cd2200EEba4d49039A785375e4a78D451"
+    },
+    "MSFTX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Microsoft",
+        "MSFTX",
+        "0x3B68185Cd2200EEba4d49039A785375e4a78D451",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x58f0fAF4EE289c3A22C9dcC73d9B8B018F08Fb85"
+    },
+    "MSFTX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Microsoft",
+        "MSFTX",
+        "0x3B68185Cd2200EEba4d49039A785375e4a78D451",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xcb607657F5421FBA7b82A13Db9113c0719D5dD85"
+    },
+    "GOOGLX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0xf6b55f3Bfe2d670C936aaa50A42104EF22E4b9ba"
+    },
+    "GOOGLX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Google",
+        "GOOGLX",
+        "0xf6b55f3Bfe2d670C936aaa50A42104EF22E4b9ba",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xB6f054673CB6C2EE3B979B124cc846e175E43EAB"
+    },
+    "GOOGLX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Google",
+        "GOOGLX",
+        "0xf6b55f3Bfe2d670C936aaa50A42104EF22E4b9ba",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xd445f2378E89ea8dCA153980a07191F1ef70d1ca"
+    },
+    "^GSPCX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0xF86648832534254560E233c7F33afeD518b3c609"
+    },
+    "^GSPCX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex S&P 500",
+        "^GSPCX",
+        "0xF86648832534254560E233c7F33afeD518b3c609",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xe62BC39Bf3CA37F25f92D69e00EeF727aD67F1d1"
+    },
+    "^GSPCX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex S&P 500",
+        "^GSPCX",
+        "0xF86648832534254560E233c7F33afeD518b3c609",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x2bB401975Ba0a7752D3fA8Eb5D935E5C45Fb8e86"
+    },
+    "EURX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0xf8B5d22f25B19E2bd0fF787274791aA98C0b58FA"
+    },
+    "EURX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Euro Dollar",
+        "EURX",
+        "0xf8B5d22f25B19E2bd0fF787274791aA98C0b58FA",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xdEe852d4964d3c2AbcB2D36fC227581577DFfee9"
+    },
+    "EURX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Euro Dollar",
+        "EURX",
+        "0xf8B5d22f25B19E2bd0fF787274791aA98C0b58FA",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xEB360CE62078E183E7CE75dbB36cef18FF0B604d"
+    },
+    "YENX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x63cEc940DA04B4327Cb73C579AD31ABD6dCD6bb7"
+    },
+    "YENX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Japanese Yen",
+        "YENX",
+        "0x63cEc940DA04B4327Cb73C579AD31ABD6dCD6bb7",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x57d399790e836f5a18E7eF497AEe7E085A8B3B08"
+    },
+    "YENX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Japanese Yen",
+        "YENX",
+        "0x63cEc940DA04B4327Cb73C579AD31ABD6dCD6bb7",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xc72fB96e3A3E2124F4643Cc5534fB42db16889EF"
+    },
+    "INRX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0xc9174AAAbd9a0ABF57dc889da649A10E0E8F70Cb"
+    },
+    "INRX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Indian Rupee",
+        "INRX",
+        "0xc9174AAAbd9a0ABF57dc889da649A10E0E8F70Cb",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xa1AB5A9651ba92ABfBD47C5b744752bF6b9458A5"
+    },
+    "INRX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Indian Rupee",
+        "INRX",
+        "0xc9174AAAbd9a0ABF57dc889da649A10E0E8F70Cb",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x5B4c8B4CBe50178cbc7ad7823E603899e609bD45"
+    },
+    "AUXX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x9Fa75307AfCA8fb3A2A34793a5E047D42980e801"
+    },
+    "AUXX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Gold",
+        "AUXX",
+        "0x9Fa75307AfCA8fb3A2A34793a5E047D42980e801",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x4EE37F050D2114F604498acCe7E5CAb40E4B3Eb8"
+    },
+    "AUXX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Gold",
+        "AUXX",
+        "0x9Fa75307AfCA8fb3A2A34793a5E047D42980e801",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0x8736Bbe88B95686Cc7c7ee9024C59Ae9170539Db"
+    },
+    "CLXX_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0x40f63772668ccbE2BfFD1D62198eD5255877F959"
+    },
+    "CLXX": {
+      "source": "SynthERC20",
+      "constructorArguments": [
+        "Synthex Oil",
+        "CLXX",
+        "0x40f63772668ccbE2BfFD1D62198eD5255877F959",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xC6FBD8EC4286b1fc3636EB65AEF8C5bE3e8FD4FA"
+    },
+    "CLXX_DEBT": {
+      "source": "DebtTracker",
+      "constructorArguments": [
+        "Synthex Oil",
+        "CLXX",
+        "0x40f63772668ccbE2BfFD1D62198eD5255877F959",
+        "0x909F6e1C75C74f5029aFaEFEe2f56298D41Ca3Be"
+      ],
+      "address": "0xC2737c5Efc45FF192b902eAb5FC18De66b3fD50D"
     },
     "SYXAR": {
       "source": "TradingPool",
-      "address": "TRMxCsGzbJeozukqR8oJtKjnjRGoReS1CB"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0xa21E97928756a8dB7E574d800300bf755E81F8d2"
     },
     "CRYPT": {
       "source": "TradingPool",
-      "address": "TUdZa3tENzPb3Mo6FKKa7r1YnK4PfFT8As"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0x858EC83c566F2C636CbdAA311aC98465D4A91999"
     },
     "FX": {
       "source": "TradingPool",
-      "address": "TBZseTnJjG8Y952xXuSRs3ifYbmMekDy5r"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0x25e20aCEC4CdB6D2e8820ba9f02Ea128C501bA2B"
     },
     "STOK": {
       "source": "TradingPool",
-      "address": "TCXHJAJZ28xXUfHzcwt7hBEWciMUhZ4KrP"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0x22e07B7ff6c1329d9F1FaB6ECCCf297eeD962126"
     },
     "COMD": {
       "source": "TradingPool",
-      "address": "TBjV4gaSaw26zsfidc4mEArzGkyjSx7DYi"
+      "constructorArguments": [
+        "0xD5Ae0980edf077f67193FE4e5a7D6b24Ea0BCe2C"
+      ],
+      "address": "0xd1Cbc64F8BAA32e9A8106379f9CE852b81a601fF"
     }
   },
   "sources": {
@@ -104,8 +558,7 @@
           }
         ],
         "name": "AddressImported",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -124,8 +577,7 @@
           }
         ],
         "name": "OwnershipTransferred",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "inputs": [
@@ -286,8 +738,7 @@
           }
         ],
         "name": "Borrow",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -300,8 +751,7 @@
           }
         ],
         "name": "CollateralPaused",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -314,8 +764,7 @@
           }
         ],
         "name": "CollateralResumed",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -340,8 +789,7 @@
           }
         ],
         "name": "Deposit",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -378,22 +826,19 @@
           }
         ],
         "name": "Exchange",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
         "inputs": [],
         "name": "IssuancePaused",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
         "inputs": [],
         "name": "IssuanceResumed",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -430,8 +875,7 @@
           }
         ],
         "name": "Liquidate",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -456,8 +900,7 @@
           }
         ],
         "name": "NewCollateralAsset",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -470,8 +913,7 @@
           }
         ],
         "name": "NewMinCRatio",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -484,8 +926,7 @@
           }
         ],
         "name": "NewSafeCRatio",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -510,8 +951,7 @@
           }
         ],
         "name": "NewSynthAsset",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -530,8 +970,7 @@
           }
         ],
         "name": "NewTradingPool",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -562,8 +1001,7 @@
           }
         ],
         "name": "PoolEntered",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -594,8 +1032,7 @@
           }
         ],
         "name": "PoolExited",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -620,8 +1057,7 @@
           }
         ],
         "name": "Repay",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -640,8 +1076,7 @@
           }
         ],
         "name": "SynthDisabledInTradingPool",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -660,8 +1095,7 @@
           }
         ],
         "name": "SynthEnabledInTradingPool",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -674,8 +1108,7 @@
           }
         ],
         "name": "SynthPaused",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -688,22 +1121,19 @@
           }
         ],
         "name": "SynthResumed",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
         "inputs": [],
         "name": "TradingPaused",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
         "inputs": [],
         "name": "TradingResumed",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "anonymous": false,
@@ -728,8 +1158,7 @@
           }
         ],
         "name": "Withdraw",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "inputs": [
@@ -2240,484 +2669,6 @@
     ],
     "CollateralERC20": [
       {
-        "inputs": [
-          {
-            "internalType": "string",
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "symbol",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "__decimals",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "__underlyingToken",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "_oracle",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_minCollateral",
-            "type": "uint256"
-          },
-          {
-            "internalType": "contract ISystem",
-            "name": "_system",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Approval",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "name": "MinCollateralUpdated",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "name": "OracleUpdated",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Transfer",
-        "type": "event"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          }
-        ],
-        "name": "allowance",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "approve",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          }
-        ],
-        "name": "balanceOf",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "burn",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "decimals",
-        "outputs": [
-          {
-            "internalType": "uint8",
-            "name": "",
-            "type": "uint8"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "subtractedValue",
-            "type": "uint256"
-          }
-        ],
-        "name": "decreaseAllowance",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "get_price",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "addedValue",
-            "type": "uint256"
-          }
-        ],
-        "name": "increaseAllowance",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "minCollateral",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "mint",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "name",
-        "outputs": [
-          {
-            "internalType": "string",
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "oracle",
-        "outputs": [
-          {
-            "internalType": "contract IPriceOracle",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "_newMinCollateral",
-            "type": "uint256"
-          }
-        ],
-        "name": "setMinCollateral",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "_oracle",
-            "type": "address"
-          }
-        ],
-        "name": "setPriceOracle",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "symbol",
-        "outputs": [
-          {
-            "internalType": "string",
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "system",
-        "outputs": [
-          {
-            "internalType": "contract ISystem",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "totalSupply",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "transfer",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "transferFrom",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "underlyingToken",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      }
-    ],
-    "PriceOracle": [
-      {
         "anonymous": false,
         "inputs": [
           {
@@ -2734,8 +2685,7 @@
           }
         ],
         "name": "OwnershipTransferred",
-        "type": "event",
-        "stateMutability": "nonpayable"
+        "type": "event"
       },
       {
         "inputs": [],
@@ -2797,147 +2747,34 @@
         "type": "function"
       }
     ],
-    "WTRX": [
+    "PriceOracle": [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
       {
         "inputs": [],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Approval",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "Claim",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "Transfer",
-        "type": "event"
-      },
-      {
-        "stateMutability": "nonpayable",
-        "type": "fallback"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          }
-        ],
-        "name": "allowance",
+        "name": "latestAnswer",
         "outputs": [
           {
-            "internalType": "uint256",
+            "internalType": "int256",
             "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "approve",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          }
-        ],
-        "name": "balanceOf",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+            "type": "int256"
           }
         ],
         "stateMutability": "view",
@@ -2945,44 +2782,33 @@
       },
       {
         "inputs": [],
-        "name": "decimals",
+        "name": "owner",
         "outputs": [
           {
-            "internalType": "uint8",
+            "internalType": "address",
             "name": "",
-            "type": "uint8"
+            "type": "address"
           }
         ],
         "stateMutability": "view",
         "type": "function"
       },
       {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "spender",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "subtractedValue",
-            "type": "uint256"
-          }
-        ],
-        "name": "decreaseAllowance",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
       },
       {
-        "inputs": [],
-        "name": "deposit",
+        "inputs": [
+          {
+            "internalType": "int256",
+            "name": "_price",
+            "type": "int256"
+          }
+        ],
+        "name": "setPrice",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -2991,115 +2817,12 @@
         "inputs": [
           {
             "internalType": "address",
-            "name": "spender",
+            "name": "newOwner",
             "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "addedValue",
-            "type": "uint256"
           }
         ],
-        "name": "increaseAllowance",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "name",
-        "outputs": [
-          {
-            "internalType": "string",
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "symbol",
-        "outputs": [
-          {
-            "internalType": "string",
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "totalSupply",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "transfer",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "transferFrom",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
+        "name": "transferOwnership",
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
       }
@@ -4091,30 +3814,6 @@
             "internalType": "address",
             "name": "account",
             "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "asset",
-            "type": "address"
-          }
-        ],
-        "name": "getBorrowBalanceStored",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
           }
         ],
         "name": "getBorrowBalanceUSD",
@@ -4247,6 +3946,817 @@
             "internalType": "uint256",
             "name": "",
             "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "Helper": [
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Call[]",
+            "name": "calls",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "aggregate",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "blockNumber",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes[]",
+            "name": "returnData",
+            "type": "bytes[]"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+              },
+              {
+                "internalType": "bool",
+                "name": "allowFailure",
+                "type": "bool"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Call3[]",
+            "name": "calls",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "aggregate3",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+              },
+              {
+                "internalType": "bytes",
+                "name": "returnData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Result[]",
+            "name": "returnData",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+              },
+              {
+                "internalType": "bool",
+                "name": "allowFailure",
+                "type": "bool"
+              },
+              {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Call3Value[]",
+            "name": "calls",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "aggregate3Value",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+              },
+              {
+                "internalType": "bytes",
+                "name": "returnData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Result[]",
+            "name": "returnData",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "balance",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Call[]",
+            "name": "calls",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "blockAndAggregate",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "blockNumber",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "blockHash",
+            "type": "bytes32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+              },
+              {
+                "internalType": "bytes",
+                "name": "returnData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Result[]",
+            "name": "returnData",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "debtBalanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "balance",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "blockNumber",
+            "type": "uint256"
+          }
+        ],
+        "name": "getBlockHash",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "blockHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getBlockNumber",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "blockNumber",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getChainId",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "chainid",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getCurrentBlockCoinbase",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "coinbase",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getCurrentBlockDifficulty",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "difficulty",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getCurrentBlockGasLimit",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "gaslimit",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getCurrentBlockTimestamp",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "addr",
+            "type": "address"
+          }
+        ],
+        "name": "getEthBalance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "balance",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getLastBlockHash",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "blockHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "pool",
+            "type": "address"
+          },
+          {
+            "internalType": "address[]",
+            "name": "tokens",
+            "type": "address[]"
+          },
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          }
+        ],
+        "name": "tradingBalanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "balance",
+            "type": "uint256[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bool",
+            "name": "requireSuccess",
+            "type": "bool"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Call[]",
+            "name": "calls",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "tryAggregate",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+              },
+              {
+                "internalType": "bytes",
+                "name": "returnData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Result[]",
+            "name": "returnData",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bool",
+            "name": "requireSuccess",
+            "type": "bool"
+          },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "callData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Call[]",
+            "name": "calls",
+            "type": "tuple[]"
+          }
+        ],
+        "name": "tryBlockAndAggregate",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "blockNumber",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "blockHash",
+            "type": "bytes32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+              },
+              {
+                "internalType": "bytes",
+                "name": "returnData",
+                "type": "bytes"
+              }
+            ],
+            "internalType": "struct Multicall.Result[]",
+            "name": "returnData",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+      }
+    ],
+    "WONE": [
+      {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Claim",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "stateMutability": "nonpayable",
+        "type": "fallback"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "subtractedValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "decreaseAllowance",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "addedValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "increaseAllowance",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
           }
         ],
         "stateMutability": "view",

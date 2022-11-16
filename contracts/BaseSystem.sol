@@ -29,6 +29,12 @@ abstract contract BaseSystem {
     event TradingPaused();
     event IssuanceResumed();
     event TradingResumed();
+    event SynthEnabledInTradingPool(address tradingPool, address[] synths);
+    event SynthDisabledInTradingPool(address tradingPool, address[] synths);
+    event CollateralPaused(address asset);
+    event CollateralResumed(address asset);
+    event SynthPaused(address asset);
+    event SynthResumed(address asset);
 
     event NewTradingPool(address pool, uint poolId);
     event NewCollateralAsset(address asset, address priceOracle, uint minCollateral);
@@ -81,6 +87,14 @@ abstract contract BaseSystem {
         emit Exchange(poolIndex, user, src, srcAmount, dst);
     }
 
+    function executeLimitOrderInternal(address maker, address taker, address src, address dst, uint srcAmount) public {
+        // calculate amount of dst tokens to send
+        uint256 dstAmount = srcAmount * ISynthERC20(src).get_price() / ISynthERC20(dst).get_price();
+        // transfer tokens
+        IERC20(dst).transferFrom(taker, maker, dstAmount);
+        IERC20(src).transferFrom(maker, taker, srcAmount);
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                               View Functions                               */
     /* -------------------------------------------------------------------------- */
@@ -124,6 +138,10 @@ abstract contract BaseSystem {
 
     function liquidator() public view returns (address){
         return _addrResolver.getAddress("LIQUIDATOR");
+    }
+
+    function limitOrder() public view returns (address){
+        return _addrResolver.getAddress("LIMIT_ORDER");
     }
 
     /* -------------------------------------------------------------------------- */

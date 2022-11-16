@@ -1,33 +1,41 @@
 {
     "synths": [
         {
+            "name": "US Dollar",
+            "symbol": "USD",
+            "price": "1"
+        },
+        {
             "name": "Bitcoin",
             "symbol": "BTC",
-            "price": "19010.21"
+            "price": "19099.92"
         },
         {
             "name": "Ethereum",
             "symbol": "ETH",
-            "price": "1241.01"
+            "price": "1234.14"
         }
     ],
     "collaterals": [
         {
             "name": "Ethereum",
             "symbol": "ETH",
-            "address": "0x0000000000000000000000000000000000000000",
             "decimals": "18",
-            "price": "1241.01",
-            "minCollateral": "0.1"
-        },
-        {
-            "name": "Tron",
-            "symbol": "TRX",
             "address": "0x0000000000000000000000000000000000000000",
-            "decimals": "6",
-            "price": "0.067",
-            "minCollateral": "10"
+            "price": "1200",
+            "minCollateral": "1"
         }
     ],
-    "reservePools": 1
+    "tradingPools": [
+        {
+            "name": "SyntheX All Rounder",
+            "symbol": "SYXAR",
+            "assets": ["USDX", "BTCX", "ETHX"]
+        },
+        {
+            "name": "Crypto Markets",
+            "symbol": "CRYPT",
+            "assets": ["BTCX", "ETHX"]
+        }
+    ]
 }

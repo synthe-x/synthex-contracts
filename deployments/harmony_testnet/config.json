@@ -21,6 +21,11 @@
             "price": "0.0671"
         },
         {
+            "name": "Harmony ONE",
+            "symbol": "ONE",
+            "price": "0.018"
+        },
+        {
             "name": "Ripple",
             "symbol": "XRP",
             "price": "0.52"
@@ -83,20 +88,12 @@
     ],
     "collaterals": [
         {
-            "name": "Tron",
-            "symbol": "TRX",
-            "decimals": "6",
-            "address": "0x0000000000000000000000000000000000000000",
-            "price": "0.0671",
-            "minCollateral": "10"
-        },
-        {
-            "name": "Decentralized USD",
-            "symbol": "USDD",
+            "name": "Harmony ONE",
+            "symbol": "ONE",
             "decimals": "18",
-            "address": "TFT7sNiNDGZcqL7z7dwXUPpxrx1Ewk8iGL",
-            "price": "0.998",
-            "minCollateral": "1"
+            "address": "0x0000000000000000000000000000000000000000",
+            "price": "0.018",
+            "minCollateral": "100"
         }
     ],
     "tradingPools": [
@@ -123,7 +120,7 @@
         {
             "name": "Commodities",
             "symbol": "COMD",
-            "assets": ["AUX", "CLX"]
+            "assets": ["AUXX", "CLXX"]
         }
     ]
 }

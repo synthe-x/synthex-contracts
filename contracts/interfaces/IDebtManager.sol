@@ -13,4 +13,9 @@ interface IDebtManager {
     function _decreaseDebt(address user, address asset, uint amount) external;
 
     function totalDebt(address account) external view returns(uint);
+    function isSynth(address _asset) external view returns (bool);
+    function isActiveSynth(address _asset) external view returns (bool);
+
+    function pause(address _asset) external;
+    function unpause(address _asset) external;
 }

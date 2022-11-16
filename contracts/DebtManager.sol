@@ -17,24 +17,17 @@ contract DebtManager is IDebtManager {
     uint private _dAssetsCount;
     mapping(uint => address) private _dAssets;
     mapping(address => address) private _assetToDAsset;
+
+    mapping(address => bool) private _isPaused;
     
     constructor(ISystem _system){
         system = _system;
         _dAssetsCount = 0;
     }
 
-    function dAssetsCount() external view override returns (uint) {
-        return _dAssetsCount;
-    }
-
-    function dAssets(uint _index) external view override returns (address) {
-        return _dAssets[_index];
-    }
-
-    function assetToDAsset(address _asset) external view override returns (address) {
-        return _assetToDAsset[_asset];
-    }
-
+    /* -------------------------------------------------------------------------- */
+    /*                               Admin Functions                              */
+    /* -------------------------------------------------------------------------- */
     function create(string memory name, string memory symbol, address _oracle, address _interestRateModel) public override returns(address) {
         require(msg.sender == address(system), "Not owner");
         DebtTracker dAsset = new DebtTracker(name, symbol, _oracle, _interestRateModel, system);
@@ -48,6 +41,19 @@ contract DebtManager is IDebtManager {
         return synth;
     }
 
+    function pause(address _asset) external override {
+        require(msg.sender == address(system), "Not owner");
+        _isPaused[_asset] = true;
+    }
+
+    function unpause(address _asset) external override {
+        require(msg.sender == address(system), "Not owner");
+        _isPaused[_asset] = false;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                              Public Functions                              */
+    /* -------------------------------------------------------------------------- */
     function _increaseDebt(address user, address asset, uint amount) external override {
         require(msg.sender == system.reserve(), "DebtManager: Not Reserve or Exchanger");
         DebtTracker(_assetToDAsset[asset]).borrow(user, amount);
@@ -58,6 +64,9 @@ contract DebtManager is IDebtManager {
         DebtTracker(_assetToDAsset[asset]).repay(user, user, amount);
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                               View Functions                               */
+    /* -------------------------------------------------------------------------- */
     function totalDebt(address account) public view override returns(uint){
         uint total = 0;
         for(uint i = 0; i < _dAssetsCount; i++){
@@ -73,5 +82,25 @@ contract DebtManager is IDebtManager {
 
     function dAssetToAsset(address dAsset) external view returns(address){
         return address(DebtTracker(dAsset).synth());
+    }
+
+    function dAssetsCount() external view override returns (uint) {
+        return _dAssetsCount;
+    }
+
+    function dAssets(uint _index) external view override returns (address) {
+        return _dAssets[_index];
+    }
+
+    function assetToDAsset(address _asset) external view override returns (address) {
+        return _assetToDAsset[_asset];
+    }
+
+    function isSynth(address _asset) external view override returns (bool) {
+        return _assetToDAsset[_asset] != address(0);
+    }
+
+    function isActiveSynth(address _asset) external view override returns (bool) {
+        return _assetToDAsset[_asset] != address(0) && !_isPaused[_asset];
     }
 }

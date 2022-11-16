@@ -1,71 +1,21 @@
 {
     "synths": [
         {
+            "name": "US Dollar",
+            "symbol": "USD",
+            "price": "1"
+        },
+        {
             "name": "Bitcoin",
             "symbol": "BTC",
             "price": "19099.92"
-        },
-        {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "price": "1234.14"
-        },
-        {
-            "name": "Ripple",
-            "symbol": "XRP",
-            "price": "0.52"
-        },
-        {
-            "name": "Binance Coin",
-            "symbol": "BNB",
-            "price": "265.21"
-        },
-        {
-            "name": "Cardano",
-            "symbol": "ADA",
-            "price": "0.42"
-        },
-        {
-            "name": "Apple",
-            "symbol": "AAPL",
-            "price": "140.09"
-        },
-        {
-            "name": "Microsoft",
-            "symbol": "MSFT",
-            "price": "234.39"
-        },
-        {
-            "name": "Google",
-            "symbol": "GOOGL",
-            "price": "97.39"
-        },
-        {
-            "name": "S&P 500",
-            "symbol": "^GSPC",
-            "price": "3577.03"
-        },
-        {
-            "name": "Euro Dollar",
-            "symbol": "EUR",
-            "price": "0.97"
-        },
-        {
-            "name": "Japanese Yen",
-            "symbol": "YEN",
-            "price": "0.0069"
-        },
-        {
-            "name": "Indian Rupee",
-            "symbol": "INR",
-            "price": "0.0122"
         }
     ],
     "collaterals": [
         {
             "name": "Tron",
             "symbol": "TRX",
-            "decimals": "18",
+            "decimals": "6",
             "address": "0x0000000000000000000000000000000000000000",
             "price": "0.0671",
             "minCollateral": "10"
@@ -79,5 +29,31 @@
             "minCollateral": "1"
         }
     ],
-    "reservePools": 1
+    "tradingPools": [
+        {
+            "name": "SyntheX All Rounder",
+            "symbol": "SYXAR",
+            "assets": ["USDX", "BTCX", "ETHX", "BNBX", "XRPX", "TRXX", "ADAX", "AAPLX", "MSFTX", "GOOGLX", "EURX", "YENX", "INRX"]
+        },
+        {
+            "name": "Crypto Markets",
+            "symbol": "CRYPT",
+            "assets": ["BTCX", "ETHX", "BNBX", "XRPX", "TRXX", "ADAX"]
+        },
+        {
+            "name": "Foreign Exchange",
+            "symbol": "FX",
+            "assets": ["USDX", "EURX", "YENX", "INRX"]
+        },
+        {
+            "name": "Global Stocks",
+            "symbol": "STOK",
+            "assets": ["AAPLX", "MSFTX", "GOOGLX"]
+        },
+        {
+            "name": "Commodities",
+            "symbol": "COMD",
+            "assets": ["AUXX", "CLXX"]
+        }
+    ]
 }
