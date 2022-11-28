@@ -12,10 +12,10 @@ import "./interfaces/ILimitOrder.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./pool/TradingPool.sol";
-import "./BaseSystem.sol";
+import "./BaseSyntheX.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract System is BaseSystem, ReentrancyGuard {
+contract SyntheX is BaseSyntheX, ReentrancyGuard {
     using SafeMath for uint;
 
     constructor(address addrResolver, uint minCRatio_, uint safeCRatio_) {

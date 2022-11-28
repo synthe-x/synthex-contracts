@@ -37,9 +37,17 @@ export default async function initiate(contracts: Deployments, deployments: any 
                     oracle = MockPriceOracle.attach(deployments['contracts']["c"+collateral.symbol+"_Oracle"].address)
                 }
                 else {
-                    oracle = await MockPriceOracle.deploy();
+                    try{
+                        oracle = await MockPriceOracle.deploy();
+                    } catch {
+                        oracle = await MockPriceOracle.deploy();
+                    }
                 }
-                await oracle.setPrice(ethers.utils.parseUnits(collateral.price, 8).toString());
+                try{
+                    await oracle.setPrice(ethers.utils.parseUnits(collateral.price, 8).toString());
+                } catch {
+                    await oracle.setPrice(ethers.utils.parseUnits(collateral.price, 8).toString());
+                }
                 feed = oracle.address;
                 deployments["contracts"]["c"+collateral.symbol+"_Oracle"] = {
                     source: "PriceOracle",
@@ -52,25 +60,28 @@ export default async function initiate(contracts: Deployments, deployments: any 
 
             let address = collateral.address;
             if(address == "0x0000000000000000000000000000000000000000"){
-                let wrap = hre.network.name == "harmony_testnet" ? "WONE" : hre.network.name == "bttc_donau" ? "WBTT" : "WETH"
-                const WETH = await ethers.getContractFactory(wrap);
+                const WETH = await ethers.getContractFactory('WETH');
                 
                 let _weth;
                 
-                if(override && deployments['contracts']['WETH']){
+                if(override && deployments['contracts']['W'+collateral.symbol]){
                     _weth = WETH.attach(deployments['contracts']['WETH'].address)
                 }
                 else {
-                    _weth = await WETH.deploy();
+                    try{
+                        _weth = await WETH.deploy(collateral.name, collateral.symbol);
+                    } catch {
+                        _weth = await WETH.deploy(collateral.name, collateral.symbol);
+                    }
                 }
-                address = _weth.address;
+                address = _weth.address; 
                 weth = _weth;
-                dir = fs.readFileSync(process.cwd() + `/artifacts/contracts/mock/${wrap}.sol/${wrap}.json`, "utf-8");
+                dir = fs.readFileSync(process.cwd() + `/artifacts/contracts/mock/WETH.sol/WETH.json`, "utf-8");
                 abi = JSON.parse(dir)
                 abi = abi.abi;
-                deployments["sources"][wrap] = abi;
-                deployments["contracts"][wrap] = {
-                    source: wrap,
+                deployments["sources"]['WETH'] = abi;
+                deployments["contracts"]['W'+collateral.symbol] = {
+                    source: 'WETH',
                     constructorArguments: [],
                     address: _weth.address,
                 }
@@ -78,9 +89,21 @@ export default async function initiate(contracts: Deployments, deployments: any 
                 (collaterals as any)['weth'] = _weth;
                 fs.writeFileSync(process.cwd() +  `/deployments/${hre.network.name}/deployments.json`, JSON.stringify(deployments, null, 2));
             }
-
-            await contracts.sys.newCollateralAsset("SyntheX Collateralized " + collateral.name, "c" + collateral.symbol, collateral.decimals ?? 18, address, feed, ethers.utils.parseEther(collateral.minCollateral));
-            let collateralAddress = await contracts.cManager.cAssets(i);
+            try{
+                await contracts.sys.newCollateralAsset("SyntheX Collateralized " + collateral.name, "c" + collateral.symbol, collateral.decimals ?? 18, address, feed, ethers.utils.parseEther(collateral.minCollateral));
+            } catch (err) {
+                console.log('Errored while deploying synth...');
+                delay(5000);
+                continue;
+                // await contracts.sys.newCollateralAsset("SyntheX Collateralized " + collateral.name, "c" + collateral.symbol, collateral.decimals ?? 18, address, feed, ethers.utils.parseEther(collateral.minCollateral));
+            }
+            let collateralAddress;
+            try{ 
+                collateralAddress = await contracts.cManager.cAssets(i);
+            } catch (err) {
+                collateralAddress = await contracts.cManager.cAssets(i);
+            }
+            
             (deployments as any)["contracts"]["SynthexCollateralized" + collateral.name] = {
                 source: "CollateralERC20",
                 constructorArguments: ["Synthex Collateralized" + collateral.name, "c" + collateral.symbol, collateral.address, collateral.feed, ethers.utils.parseEther(collateral.minCollateral)],
@@ -119,10 +142,18 @@ export default async function initiate(contracts: Deployments, deployments: any 
                     oracle = MockPriceOracle.attach(deployments['contracts'][synth.symbol+"X"+"_Oracle"].address)
                 }
                 else {
-                    oracle = await MockPriceOracle.deploy();
+                    try{
+                        oracle = await MockPriceOracle.deploy();
+                    } catch {
+                        oracle = await MockPriceOracle.deploy();
+                    }
                 }
                 if(logs) console.log(`${synth.symbol}X_ORACLE`, oracle.address);
-                await oracle.setPrice(ethers.utils.parseUnits(synth.price, 8).toString());
+                try{
+                    await oracle.setPrice(ethers.utils.parseUnits(synth.price, 8).toString());
+                } catch {
+                    await oracle.setPrice(ethers.utils.parseUnits(synth.price, 8).toString());
+                }
                 feed = oracle.address;
                 deployments["contracts"][synth.symbol+"X"+"_Oracle"] = {
                     source: "PriceOracle",
@@ -131,9 +162,25 @@ export default async function initiate(contracts: Deployments, deployments: any 
                 }
                 fs.writeFileSync(process.cwd() +  `/deployments/${hre.network.name}/deployments.json`, JSON.stringify(deployments, null, 2));
             }
-
-            await contracts.sys.newSynthAsset("SyntheX " + synth.name, synth.symbol+"X", feed, contracts.fixedIntRate.address);
-            let debtTracker = DebtTracker.attach(await contracts.dManager.dAssets(i));
+            try{
+                await contracts.sys.newSynthAsset("SyntheX " + synth.name, synth.symbol+"X", feed, contracts.fixedIntRate.address);
+            } catch (err){
+                console.log('Errored while deploying synth...');
+                delay(5000);
+                continue;
+                // await contracts.sys.newSynthAsset("SyntheX " + synth.name, synth.symbol+"X", feed, contracts.fixedIntRate.address);
+            }
+            let dasset;
+            try{
+                dasset = await contracts.dManager.dAssets(i);
+            } catch (err){
+                dasset = await contracts.dManager.dAssets(i);
+            }
+            if(dasset == ethers.constants.AddressZero){
+                delay(5000);
+                dasset = await contracts.dManager.dAssets(i);
+            }
+            let debtTracker = DebtTracker.attach(dasset);
             debtTracker = await debtTracker._deployed() as DebtTracker
             let synthAddress = await debtTracker.synth();
             (deployments as any)["contracts"][synth.symbol+"X"] = {
@@ -183,3 +230,5 @@ export default async function initiate(contracts: Deployments, deployments: any 
 
     return {...synths, ...collaterals, ...pools, weth};
 }
+
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));

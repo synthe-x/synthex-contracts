@@ -12,7 +12,7 @@ import "./interfaces/IInterestRate.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./pool/TradingPool.sol";
 
-abstract contract BaseSystem {
+abstract contract BaseSyntheX {
     using SafeMath for uint;
     bool public isExchangePaused = false;
     bool public isIssuancePaused = false;

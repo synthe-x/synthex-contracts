@@ -28,8 +28,8 @@ export interface Synths {
 export default async function deploy(logs: boolean = true, test: boolean = false) {
   let deployments = fs.readFileSync( process.cwd() +  `/deployments/${hre.network.name}/deployments.json`, "utf8");
   deployments = JSON.parse(deployments);
-  // (deployments as any)["contracts"] = {};
-  // (deployments as any)["sources"] = {};
+  (deployments as any)["contracts"] = {};
+  (deployments as any)["sources"] = {};
 
   let allDeployments = await deployMain(deployments, logs)
   let synths: Synths|{} = {}
@@ -38,7 +38,6 @@ export default async function deploy(logs: boolean = true, test: boolean = false
   fs.writeFileSync(process.cwd() +  `/deployments/${hre.network.name}/deployments.json`, JSON.stringify(deployments, null, 2));
   return {...allDeployments, ...synths};
 }
-
 
 async function deployMain(deployments: any, logs: boolean = false): Promise<Deployments> {
   const addr = await deployContract("AddressResolver", [], logs, deployments);
@@ -61,12 +60,12 @@ async function deployMain(deployments: any, logs: boolean = false): Promise<Depl
     )
   }
 
-  // try{
-  //   await settup();
-  // } catch (err) {
-  //   console.log('errxx', err);
-  //   await settup();
-  // }
+  try{
+    await settup();
+  } catch (err) {
+    console.log('errxx', err);
+    await settup();
+  }
 
   return { addr, sys, reserve, dManager, cManager, fixedIntRate, liq, helper, limit };
 }

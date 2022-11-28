@@ -35,6 +35,7 @@ contract DebtTracker {
     uint public accrualTimestamp;
     uint public borrowRateMax = 1000;
     IInterestRate public interestRateModel;
+    uint public volatilityRatio;
 
     event AccureInterest(uint accrualTimestamp, uint totalBorrowed, uint borrowIndex);
     event InterestRateModelUpdated(address oldRate, address newRate);
@@ -55,11 +56,24 @@ contract DebtTracker {
         interestRateModel = IInterestRate(_interestRateModel);
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                               Admin Functions                              */
+    /* -------------------------------------------------------------------------- */
+
     function setInterestRate(IInterestRate _interestRateModel) external {
         require(msg.sender == system.owner(), "OneERC20: Only owner can set interest rate model");
         interestRateModel = _interestRateModel;
         emit InterestRateModelUpdated(address(interestRateModel), address(_interestRateModel));
     }
+
+    function setVolatilityRatio(uint _volatilityRatio) external {
+        require(msg.sender == system.owner(), "OneERC20: Only owner can set volatility ratio");
+        volatilityRatio = _volatilityRatio;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                               View Functions                               */
+    /* -------------------------------------------------------------------------- */
 
     function getBorrowBalance(address account) public returns(uint){
         accureInterest();
@@ -72,6 +86,19 @@ contract DebtTracker {
             return 0;
         }
         return borrowBalances[account].principle.mul(borrowIndex).div(interestIndex);
+    }
+
+    function getAdjustedBorrowBalanceStoredUSD(address account) public view returns(uint){
+        uint balance = getBorrowBalanceStored(account);
+        return balance.mul(get_price()).mul(volatilityRatio).div(1e18).div(1e18);
+    }
+
+    function get_interest_rate() public view returns (uint) {
+        return interestRateModel.getInterestRate(get_price());
+    }
+
+    function get_price() public view returns (uint) {
+        return synth.get_price();
     }
 
     function accureInterest() public {
@@ -138,11 +165,5 @@ contract DebtTracker {
         totalBorrowed = totalBorrowsNew;
     }
 
-    function get_interest_rate() public view returns (uint) {
-        return interestRateModel.getInterestRate(get_price());
-    }
-
-    function get_price() public view returns (uint) {
-        return synth.get_price();
-    }
+    
 }

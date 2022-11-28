@@ -3,73 +3,73 @@
     "AddressResolver": {
       "source": "AddressResolver",
       "constructorArguments": [],
-      "address": "0xf5c1CCcceA60dc3a96F746c1bE81C2a19129270e"
+      "address": "0x3c79De1C480669458013269aF953931170188889"
     },
     "System": {
       "source": "System",
       "constructorArguments": [
-        "0xf5c1CCcceA60dc3a96F746c1bE81C2a19129270e",
+        "0x3c79De1C480669458013269aF953931170188889",
         "1300000000000000000",
         "2000000000000000000"
       ],
-      "address": "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+      "address": "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
     },
     "Reserve": {
       "source": "Reserve",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0xf80e041c2e00792EB478e4f6F7E97ebA6659466F"
+      "address": "0x721EaaaA8DcD96E3d8FBDe3a28346C29204A1eBC"
     },
     "Helper": {
       "source": "Helper",
       "constructorArguments": [],
-      "address": "0x93cC35C57457ac13BD0168a57b7EdB767c5f01d3"
+      "address": "0x5872F8e37c4031962f20382eE81B9a4f2442faB1"
     },
     "DebtManager": {
       "source": "DebtManager",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0xf4e5042529Cd3d0E95D01d797bA8863066D8446a"
+      "address": "0xf5A1891eC82449448BaD3d79bCcD2e4CB69AAadA"
     },
     "CollateralManager": {
       "source": "CollateralManager",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0xE774eF7Fbe6F95E82C6bD5D464A35234DDcd02E8"
+      "address": "0xB4C3BddD027a8e0890DBBec15B98712151D50EdF"
     },
     "FixedInterestRate": {
       "source": "FixedInterestRate",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0xB46916f119569B681a4A58c54Ab84034105De254"
+      "address": "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
     },
     "Liquidator": {
       "source": "Liquidator",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0x8d57Dd2F51ea46A2E0E59b4aFE9573A0dFe23061"
+      "address": "0x7476F14cD5f8229cce7a9A6110FAe559C979e453"
     },
     "LimitOrder": {
       "source": "LimitOrder",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0xf46e54bb391694BEB369e881758fcA2D44E6feBC"
+      "address": "0xD60867d31c61e2EF9160d551e5a490Cdbcbc6E6c"
     },
     "cETH_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0x103B625e2FeE4441033a10ca7a47a7C5Ca8a033F"
+      "address": "0xBBb390ae61b793db796974d741A288D0Ec4879f1"
     },
     "WETH": {
       "source": "WETH",
       "constructorArguments": [],
-      "address": "0x4397CBc22246933c07F04bc3A7fDF12619D90af6"
+      "address": "0x6CF5B73CC04D54418686dc9FE389fc7b90ad0e89"
     },
     "SynthexCollateralizedEthereum": {
       "source": "CollateralERC20",
@@ -80,295 +80,319 @@
         null,
         {
           "type": "BigNumber",
+          "hex": "0x016345785d8a0000"
+        }
+      ],
+      "address": "0x38c0d24dc60645ad8EcBcBB0d8215B70be3dDEF2"
+    },
+    "cNEAR_Oracle": {
+      "source": "PriceOracle",
+      "constructorArguments": [],
+      "address": "0xd811721beBbE4ad61c6a99c9B0cC9645b28982D2"
+    },
+    "WNEAR": {
+      "source": "WETH",
+      "constructorArguments": [],
+      "address": "0x54E1C67DE0a86Cf951c8DE0BDd04CEc5E5e13639"
+    },
+    "SynthexCollateralizedNear": {
+      "source": "CollateralERC20",
+      "constructorArguments": [
+        "Synthex CollateralizedNear",
+        "cNEAR",
+        "0x0000000000000000000000000000000000000000",
+        null,
+        {
+          "type": "BigNumber",
           "hex": "0x0de0b6b3a7640000"
         }
       ],
-      "address": "0xbCBbEEe60b4b539c4BD58BF0ec1ed272A281ae5e"
+      "address": "0x49BB4F6371C5A8fB03c497eF230aA9DFe8dacAc4"
     },
     "USDX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0xCe745E2a8F688580ea1AFD4c66Db493c760f14B4"
+      "address": "0xf5113D4ccF7c528AC8a0E7dab5913C501cacC546"
     },
     "USDX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex US Dollar",
         "USDX",
-        "0xCe745E2a8F688580ea1AFD4c66Db493c760f14B4",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0xf5113D4ccF7c528AC8a0E7dab5913C501cacC546",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x16ABe9932c81536f7Ca4FCe71acc7C3684F0013b"
+      "address": "0xdD0c2f4c4e83f4bfd4B4f5d9429701115c0df451"
     },
     "USDX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
         "Synthex US Dollar",
         "USDX",
-        "0xCe745E2a8F688580ea1AFD4c66Db493c760f14B4",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0xf5113D4ccF7c528AC8a0E7dab5913C501cacC546",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xd1cEd0CBA9E6994A3ab9f3458a1F4703c06d7957"
+      "address": "0xF05A8FDd62c062416a1B9A5503E25134f1f2f7Fe"
     },
     "BTCX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0x53F99BDe7274748F8226b223B7b0547652f9D387"
+      "address": "0x4DB814B0709daDCd61C6096b6Ba186666d54BF51"
     },
     "BTCX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex Bitcoin",
         "BTCX",
-        "0x53F99BDe7274748F8226b223B7b0547652f9D387",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x4DB814B0709daDCd61C6096b6Ba186666d54BF51",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x01161098810910369BC3d90cb50D9d54330A4915"
+      "address": "0x93A23fF85de8509d301c3d596468BeACB1bf53b4"
     },
     "BTCX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
         "Synthex Bitcoin",
         "BTCX",
-        "0x53F99BDe7274748F8226b223B7b0547652f9D387",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x4DB814B0709daDCd61C6096b6Ba186666d54BF51",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x34573c31FDFB90087FB9865e9b9F2143c77ff234"
+      "address": "0xAF1EeC7DfaCD47eD789cfD7b5FE5cC6E32Bc7261"
     },
-    "XRPX_Oracle": {
+    "LTCX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0xe7eB5397421142C77439875b64C11bA5A006703f"
+      "address": "0x2A7f81187Ec4d3dd66f409C2304589FDce8ECf78"
     },
-    "XRPX": {
+    "LTCX": {
       "source": "SynthERC20",
       "constructorArguments": [
-        "Synthex Ripple",
-        "XRPX",
-        "0xe7eB5397421142C77439875b64C11bA5A006703f",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "Synthex Litecoin",
+        "LTCX",
+        "0x2A7f81187Ec4d3dd66f409C2304589FDce8ECf78",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x3Aad9023b0490CD7D26D90Ed8A0ce0902c039505"
+      "address": "0xc78a439Cd19bA564A4b63F2baDA607A8223c31E5"
     },
-    "XRPX_DEBT": {
+    "LTCX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
-        "Synthex Ripple",
-        "XRPX",
-        "0xe7eB5397421142C77439875b64C11bA5A006703f",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "Synthex Litecoin",
+        "LTCX",
+        "0x2A7f81187Ec4d3dd66f409C2304589FDce8ECf78",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x8B2Df57D7C0B390512Bc7C69C7C3Da1Ef372E06C"
+      "address": "0x52BE874cB65146E197A18a1a6d0Af9C0F7A0001d"
     },
     "ADAX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0x33B793A4b3B2702E0E207Febc124D78CC036111a"
+      "address": "0xFBbD0b5fa6DDbcFC26022b0b42216D0c5801676D"
     },
     "ADAX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex Cardano",
         "ADAX",
-        "0x33B793A4b3B2702E0E207Febc124D78CC036111a",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0xFBbD0b5fa6DDbcFC26022b0b42216D0c5801676D",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xf26452047748AED6c5be3fC2Db9e7b46A82403ea"
+      "address": "0xB74422269363E4Fa474339D3C371938F700B10bC"
     },
     "ADAX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
         "Synthex Cardano",
         "ADAX",
-        "0x33B793A4b3B2702E0E207Febc124D78CC036111a",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0xFBbD0b5fa6DDbcFC26022b0b42216D0c5801676D",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xa4818dc060c9C43e84d7d27A438bCdb5176C25Bf"
+      "address": "0x0e079492468ccf6075eB373958f782Ac2055266D"
     },
     "AAPLX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0x8e5c5dC64b5B60CCB8BfE4b388Db915956F8B1cF"
+      "address": "0x7d685c1E7305EDF623892A166B47ec1e4D36DEDF"
     },
     "AAPLX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex Apple",
         "AAPLX",
-        "0x8e5c5dC64b5B60CCB8BfE4b388Db915956F8B1cF",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x7d685c1E7305EDF623892A166B47ec1e4D36DEDF",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x55E5B8CE3e64744223620E579d15705E112F289e"
+      "address": "0x4d36C58dFcC041252E4159E87bF0CA5417c6097C"
     },
     "AAPLX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
         "Synthex Apple",
         "AAPLX",
-        "0x8e5c5dC64b5B60CCB8BfE4b388Db915956F8B1cF",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x7d685c1E7305EDF623892A166B47ec1e4D36DEDF",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xC6b1FC1D2D665A62a26a707086FF84774cA08238"
+      "address": "0x025a81B8DdB144719304c99f6815aBA123ad82A9"
     },
     "MSFTX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0xE453F39F3783bc1FB709aE683578dA7cbE3cb812"
+      "address": "0x51bbe822AF0e2Be42fCBdF71191a34Fd31e32C45"
     },
     "MSFTX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex Microsoft",
         "MSFTX",
-        "0xE453F39F3783bc1FB709aE683578dA7cbE3cb812",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x51bbe822AF0e2Be42fCBdF71191a34Fd31e32C45",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x0bE066c8ee39Fc25f0eAb24fb5F81D5562F5b47F"
+      "address": "0x163DBC8D1c5C0221B74e99587CF5a603420adcEC"
     },
     "MSFTX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
         "Synthex Microsoft",
         "MSFTX",
-        "0xE453F39F3783bc1FB709aE683578dA7cbE3cb812",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x51bbe822AF0e2Be42fCBdF71191a34Fd31e32C45",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xA312Dd6519d03F5DA376Ad1B2Cb674e567022b79"
+      "address": "0x8a56DFB5443Ce9cB8aDD863758B7ce08937217da"
     },
     "EURX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0x84b584aDb45e568EAbfcEb7D4bf64a9D0ed632d1"
+      "address": "0xa0dE3b09b8d3F4E0f7CC51B4A6B7A0BF4e5E8Bfb"
     },
     "EURX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex Euro Dollar",
         "EURX",
-        "0x84b584aDb45e568EAbfcEb7D4bf64a9D0ed632d1",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0xa0dE3b09b8d3F4E0f7CC51B4A6B7A0BF4e5E8Bfb",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x5d1D4521E66f775d578BcC371a988A884785Eb51"
+      "address": "0xbead679d95188f98a490b7B8833D38716E50B17f"
     },
     "EURX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
         "Synthex Euro Dollar",
         "EURX",
-        "0x84b584aDb45e568EAbfcEb7D4bf64a9D0ed632d1",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0xa0dE3b09b8d3F4E0f7CC51B4A6B7A0BF4e5E8Bfb",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xe1579a99fC0f8C84413a3B454E30d775d31F1d64"
+      "address": "0x5B49B30De2f52F8EC7EADf3474fAbE1861975B1F"
     },
     "YENX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0xEC055C6ADAc3AEcf0b741D009Ed3B9cC5b7375d5"
+      "address": "0xFAA333fD18dCB9254482Fb365486Ce6D8d9201dB"
     },
     "YENX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex Japanese Yen",
         "YENX",
-        "0xEC055C6ADAc3AEcf0b741D009Ed3B9cC5b7375d5",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0xFAA333fD18dCB9254482Fb365486Ce6D8d9201dB",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x492Ec7f654A19bA0aF4Cfb94997df37b68E58Dc6"
+      "address": "0x497Ff088ba90678585F1E02f9F2133e4A5C57Caf"
     },
     "YENX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
         "Synthex Japanese Yen",
         "YENX",
-        "0xEC055C6ADAc3AEcf0b741D009Ed3B9cC5b7375d5",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0xFAA333fD18dCB9254482Fb365486Ce6D8d9201dB",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xBD3d15C9eFF553dA98D9b130C0dF258033b0d474"
+      "address": "0x3408F40D936DBa98e738D405858eD5dc0703Db92"
     },
     "AUXX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0xC86213e60b45C26f9097Eb654E11133c524A43CB"
+      "address": "0x84bBaeEF89AA92354060bF12C3C570478768d331"
     },
     "AUXX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex Gold",
         "AUXX",
-        "0xC86213e60b45C26f9097Eb654E11133c524A43CB",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x84bBaeEF89AA92354060bF12C3C570478768d331",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xE45B11B961d3Ee7DC4E3c7EAEE914C640A0aB817"
+      "address": "0xF13448689a8ED3ADec274B6D516DfE352E409Ed0"
     },
     "AUXX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
         "Synthex Gold",
         "AUXX",
-        "0xC86213e60b45C26f9097Eb654E11133c524A43CB",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x84bBaeEF89AA92354060bF12C3C570478768d331",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xB4de7bdC1B90268425E40F9388ecB3A91C64a40E"
+      "address": "0xc1fAe1338aEF7E23dA854c1867F7D41f12762FF8"
     },
     "CLXX_Oracle": {
       "source": "PriceOracle",
       "constructorArguments": [],
-      "address": "0x3Dd565f0BD197cB1d090C8bd46756f52ac40d8D9"
+      "address": "0x66A22b0a6BeC63aBD931f88B562f24D136C1ad39"
     },
     "CLXX": {
       "source": "SynthERC20",
       "constructorArguments": [
         "Synthex Oil",
         "CLXX",
-        "0x3Dd565f0BD197cB1d090C8bd46756f52ac40d8D9",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x66A22b0a6BeC63aBD931f88B562f24D136C1ad39",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0xA2515d09088179f0c1Bc0DeD0F44be2D5fe35386"
+      "address": "0x538ba1abf2753C5cA253B6BA6Ee3B5639a10fAF7"
     },
     "CLXX_DEBT": {
       "source": "DebtTracker",
       "constructorArguments": [
         "Synthex Oil",
         "CLXX",
-        "0x3Dd565f0BD197cB1d090C8bd46756f52ac40d8D9",
-        "0xB46916f119569B681a4A58c54Ab84034105De254"
+        "0x66A22b0a6BeC63aBD931f88B562f24D136C1ad39",
+        "0x29FfFA3A051b4384bb2c08bd5FA835a88cd30C10"
       ],
-      "address": "0x4EcF9AB2e3e2b7a76E2bd0633A85869D2c4Bcc1f"
+      "address": "0xD433fb5E5671Ec68b02711BCB41DcA68fBc287F3"
     },
     "SYXAR": {
       "source": "TradingPool",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0x8Da79DC5280718B62400341617C3E8C931A8FD37"
+      "address": "0x5C1aCa4aD9a4F5D802309c75EEA879F8B034ca71"
     },
     "CRYPT": {
       "source": "TradingPool",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0x9767443C10437CD7E483053570C0295771c5a572"
+      "address": "0x048C08D307D71eE9eCd6D1251264644b8D0e1633"
     },
     "FX": {
       "source": "TradingPool",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0x2AE56b03605E6b5E68b6Dea09A101468404C9199"
+      "address": "0xC927EbC5FC92B360ae1be0E0C010062211eD5498"
     },
     "STOK": {
       "source": "TradingPool",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0x18e451699e535B51d9b6323BBf3447dFCcC658bE"
+      "address": "0x771409c534eC155fE7E1D0Ff4fF3F26F0c80cb38"
     },
     "COMD": {
       "source": "TradingPool",
       "constructorArguments": [
-        "0x8Db9C36E8ef7d7C397c56A7a1f7833fFEe7b7865"
+        "0xFac2F4ce393Bc7253d3795D6f415d792ee4eca3A"
       ],
-      "address": "0x8f3D993D587632deFd9df2bd0218c2B525c732a2"
+      "address": "0x4367B863ea11a4AC6d6e07e52A238A15C8075367"
     }
   },
   "sources": {
@@ -3314,7 +3338,18 @@
     ],
     "WETH": [
       {
-        "inputs": [],
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
         "stateMutability": "nonpayable",
         "type": "constructor"
       },
@@ -3496,7 +3531,13 @@
         "type": "function"
       },
       {
-        "inputs": [],
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
         "name": "deposit",
         "outputs": [],
         "stateMutability": "nonpayable",

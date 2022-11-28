@@ -11,9 +11,9 @@
             "price": "19099.92"
         },
         {
-            "name": "Ripple",
-            "symbol": "XRP",
-            "price": "0.52"
+            "name": "Litecoin",
+            "symbol": "LTC",
+            "price": "19099.92"
         },
         {
             "name": "Cardano",
@@ -58,6 +58,14 @@
             "decimals": "18",
             "address": "0x0000000000000000000000000000000000000000",
             "price": "1200",
+            "minCollateral": "0.1"
+        },
+        {
+            "name": "Near",
+            "symbol": "NEAR",
+            "decimals": "18",
+            "address": "0x0000000000000000000000000000000000000000",
+            "price": "3.48",
             "minCollateral": "1"
         }
     ],
@@ -65,12 +73,12 @@
         {
             "name": "SyntheX All Rounder",
             "symbol": "SYXAR",
-            "assets": ["USDX", "BTCX", "XRPX", "ADAX", "AAPLX", "MSFTX", "EURX", "YENX", "AUXX", "CLXX"]
+            "assets": ["USDX", "BTCX", "LTCX", "ADAX", "AAPLX", "MSFTX", "EURX", "YENX", "AUXX", "CLXX"]
         },
         {
             "name": "Crypto Markets",
             "symbol": "CRYPT",
-            "assets": ["BTCX", "XRPX", "ADAX"]
+            "assets": ["BTCX", "ADAX", "LTCX"]
         },
         {
             "name": "Foreign Exchange",
